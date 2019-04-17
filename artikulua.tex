@@ -135,75 +135,11 @@ General obs.
 
 Data extraction.
 
-\subsection{Young/Adult Identifier}\label{sec:identifier_background}
+\subsection{Young/Adult Identification}\label{sec:identifier_background}
 
-Classification. 
+Analyzing demographic characteristics in social media is receiving increasing attention in the area of Social Media Mining.
 
-\subsection{Topics}\label{sec:topics_background}
-Extracting information from huge amounts of unstructured text is the aim of topic modeling. In this way, different approaches try to extract the common information that contains the numerous tweets scattered through the network, such as extract the topics covered by the event and the tweets \citep{hu2012lda}, real-time classification of twitter trends \citep{zubiaga2015real} or to compare the content of Twitter with a traditional news medium \citep{zhao2011comparing}. Apart from the different uses, they have to take into account the nature of the tweets because the length of the text makes the topic modeling have to be applied in a certain way, appropriate for short texts \citep{hong2010empirical}.  
- 
-
-\subsection{Relations}\label{sec:connections_background}
-There are several studies that have tried to identify different communities based on retweets. Among these, one can find studies about political polarization \citep{conover2011political}, political affiliation detection \citep{pennacchiotti2011democrats} or even studies about identifying communities in movements for independence \citep{zubiaga2017stance}. In these studies, based on the retweets made by the user, it shows that there is the possibility of identifying communities or groups. Therefore, in this specific work, similar methodologies will be used to predict how communities are formed and how they are related.
-
-
-
-\section{Methodology}\label{sec:methodology}
-To investigate the reality of young Basque Twitter users, the study is going to be divided into four different steps. The first step consist on identifying Basque Twitter users and extracting the data from this Social Network. After that, as second step, Basque Twitter users have been classified between adult and young users, based on the stile of the written tweet. Once basque Twitter users are separated between young and adults, we will try to find out the topics and relations of each of the groups. To find out the topics of these communities, we will take into account the personal tweets in basque of each user. On the other hand, to find out the relations, we will take into account the retweets in basque of each user. For each task indicated, a specific methodology will be used, as will be demonstrated below.
-
-\paragraph{Data Extraction} 
-The first step consists on defining the social universe to investigate. The social universe is defined as all Twitter users who write in basque. With the purpose of identifying those basque writers in the whole Twitter network, a shortcut will be used, the list of Umap.eus\footnote{\url{https://umap.eus/}}. Once we know which users data extract, tweepy \citep{roesslein2009tweepy} package from Python will be used. Thanks to this package it will be possible to extract all the necessary information from each basque Twitter user.
-
-\paragraph{Young/Adult Identifier}
-The aim of this section is identifying young basque users, differentiating young users from the adult ones. This classification will not be made according to age, but based on the content of the messages, by which the text of personal tweets will be taken as a reference. Based on the text of the tweets, each tweet of a user is classified as formal or informal, depending on the writing style. When the concentration of informal tweets is high, it will be considered a young user, since young people have a more informal style \citep{nguyen2013old}. For that purpose, a small corpus has been labeled, labeling manually over 1,000 tweets as informal or formal. Three different methods have been used to train the classifier that will distinguish between formal and informal tweets, a non-supervised statistical model, machine learning and IXA pipes document classifier.
-
-\paragraph{Topics}
-On the one hand, for identifying the topics which basque users speak of, personal tweets in Basque language have been used. To do this, the Topic-Modeling technique is used, applying the LDA algorithm for that purpose. Specifically, gensim \citep{rehurek2010software} package has been used for applying LDA, so LDA can be applied to the obtained text from tweets. For an intuitive display, the \textit{LDAvis} method \citep{sievert2014ldavis} is used. This method publishes results as images, which helps interpreting the results.
-
-\paragraph{Connections}
-On the other hand, to know what the way of relating of the users is, retweets will be used. For that purpose, a graph based on the retweets will be used, the nodes being the users and each edges a retweet. For the creation of the graph the Ghepi program \citep{bastian2009gephi} has been used. Apart from that, modularity \citep{blondel2008fast} has been used to identify the subgroups of the graph that would represent different communities.
-
-
-% #########################################################
-% ################     DATA EXTRACTION     ################
-% #########################################################
-% Euskal txiolarietaz gain ere, modu orokorrago batean azaldu ataza (abstrakzio malia altuagoa) -->> hiztun gutxituen komunitateari buruzko analisia.
-
-\section{Data Extraction}\label{sec:extraction}
-\label{sec:erauz}
-
-\indent As the first step the community we have to focus on has to be specified, in order to start extracting data from somewhere. With the intention of investigating a specific community, it is necessary to identify this community in the whole network, specifying the universe to be studied. In this case, people who publish tweets in Basque will be the community to investigate. For identifying basque speakers in Twitter, a list already prepared by Umap.eus has been used. This website includes in the list users who publish at least 20\% of their tweets in Basque\footnote{\url{https://umap.eus/}}. In this way, a list of 8,189 Basque users has been obtained, which will consist the sample for the investigation.
-
-Once the community to investigate is specified and the sample of users, whom information is going to be gathered, is chosen, the data extraction will began. To extract the data from Twitter, \textit{tweepy} package from Python is used, choosing the \textit{timeline extraction} mode to gather the last 3,200 available tweets of each user of the sample. The data collection was performed between May 30 and 31, 2018, gathering more than 10 million tweets from 7,980 basque Twitter users. As the purpose of this investigation is to identify the content in basque language of this users, the tweets generated are classified by language using metadata stored in the tweet. Once the content in basque is selected, personal tweets and retweets are separated, using each one for a specific task. After the classification, the characteristics of the data set can be seen in the table \ref{tab:useful-data}.
-
-\begin{table}[H]
-  \centering
-  \begin{tabular}{|l|l|l|}
-    \hline
-     & \textbf{Personal tweets in Basque} & \textbf{Retweets in Basque}\\ \hline
-    \textbf{Tweets} & 3,171,785 & 2,891,136\\ \hline
-    \textbf{Terms} & 1,434,050 & 813,833\\ \hline
-    \textbf{Tokens}  & 37,350,268 & 39,329,204\\ \hline
-  \end{tabular}
-  \caption{Useful extracted data, characteristics of tweets in Basque.}
-  \label{tab:useful-data}
-\end{table}
-
-\section{Young/Adult Classifier}\label{sec:identifier}
-
-This section describes the work performed in order to classify if a given tweet in Basque has been written by a young or adult user.
-
-Horretarako metodologia ezberdinak erabili dira, metodoen artean konparaketa bat egiteko asmoarekin, haien artean, ez-gainbegiratutako metodo estatistikoa, ikasketa automatikoan (\textit{Machine Learning}) oinarritutako hainbat sailkatzaile, zein \textit{IXA pipes} dokumentu sailkatzailea erabili dira. Horrela, hiru sistemetatik emaitza onenak lortzen dituena zein den aztertuko da eta zergatia argitu.
-
-
-
-Klaseak zein ezaugarriak definituta daudelarik, sailkatzailea garatzea izango da hurrengo pausua, hiru modelo ezberdin erabilita: eredu estatistikoan oinarritutako sailkatzaile ez-gainbegiratua, ikasketa automatikoan oinarritutako hainbat sailkatzaile eta \textit{IXA pipes}en dokumentu sailkatzailea. Sailkatzaile ezberdinak garatu ostean, emaitza onenak lortzen dituena aukeratu eta datu errealetan aplikatua izango da, gure corpusa osatzen duten erabiltzaileen artean helduak eta gazteak zeintzuk diren antzemanez.
-
-%\subsection{Erlazionatutako lanak}\label{sec:erl lan}
-
-\indent Sare sozialen arloan ezaugarri demografikoak zeintzuk diren iragartzea, \textit{Social Media Mining} arloan gai ikertuetako bat da. Era honetan, sare sozialetako erabiltzaileen ezaugarriak antzemateko hainbat sistema garatu dira, adina edota sexua izanik ohikoenak \citep{cesare2017detection}. Kasu zehatz honetan, Twitterreko erabiltzaile euskaldunen bizitza etapa identifikatzea izango da asmoa, erabiltzaile hauek gazte edo helduen artean ezberdinduz. Gazte/heldu identifikatzaile honekin, bi bizitza etapen arteko konparaketa egitea izango da intentzioa, gai eta harremanetan ezberdintasunak antzemateko.\\
-
-\indent Twitterren adinaren detekziorako
+Twitterren adinaren detekziorako
 %, artearen egoerako metodo aipagarrienak bildu dira jarraian azaltzen zaigun taulan (\ref{tab:arte}. taula). %Taula horretan metodo bakoitzaren erreferentzia, sailkatzaile mota eta asmatze tasa ikusi daitezke. Taula %honetan ikusi daitekeen moduan,
 sailkatzaile ohikoenak ataza honetarako \textit{Logistic Regression} \citep{nguyen2013old,morgan2017predicting} eta \textit{Support Vector Machine} \citep{rao2010classifying,al2012homophily,marquardt2014age} dira. Sailkatzaile guzti horiek ikasketa automatikoan oinarritutako metodo gainbegiratuak dira, guztiak tamaina esanguratsu bateko etiketatutako corpus batean oinarrituta. Ikerketa guzti horietan datuen etiketatzea erabiltzaile bakoitzaren adinean oinarrituta dago, eskuz erabiltzaile kopuru esanguratsu bat anotatu dutelarik.
 
@@ -222,8 +158,9 @@ sailkatzaile ohikoenak ataza honetarako \textit{Logistic Regression} \citep{nguy
 %  \label{tab:arte}
 %\end{table}
 
-\indent Jarraian sistema bakoitzean murgilketa txiki bat egingo da, etiketatutako corpusa eta klase kopurua ezagutzeko asmoarekin (\ref{tab:arte ezaug}. taula). Sistemak oso ezberdinak dira ikusi daitekeen moduan, behar ezberdinetara egokitutako ikerketak baitira. Alde batetik, eskuz etiketatutako corpus hauen tamaina ikerketaren arabera aldatuz doa, baina guztiek 300 eta 3000 erabiltzaile artean dauzkate etiketatuta. Bestalde, bibliografiako sistema onenek, beren sailkapena burutzeko asmoarekin, adin tarte bitarrak \citep{rao2010classifying,al2012homophily} edo hirutarrak \citep{nguyen2013old,morgan2017predicting} erabili dituzte, geroz eta klase gutxiago edukiz (bitarra edo hirutarra) sailkatzeko ataza errazago burutzen dela frogatuz.\\
-\indent Erabiltzaile bakoitza adinaren arabera sailkatzeko asmoz, lortutako txio bakoitzeko testua zein meta-datuak bezalako aldagaiak erabili dira. Honela, artearen egoerako autore ezberdinek, bakoitzak bere ezaugarri propioak aukeratu ditu, txioen testuaz gain, erabiltzaile zehatzen meta-datuetan oinarritutako hainbat ezaugarri ere konbinatuz. Hala ere, sistema hauek bata bestearengandik oso ezberdinak direla ikusi den arren, guztiek testua hartzen dute kontutan, gehienak sailkatzailea txioen idazkera estiloan oinarritzen direlarik \citep{rao2010classifying,al2012homophily,nguyen2013old,morgan2017predicting}.\\
+Jarraian sistema bakoitzean murgilketa txiki bat egingo da, etiketatutako corpusa eta klase kopurua ezagutzeko asmoarekin (\ref{tab:arte ezaug}. taula). Sistemak oso ezberdinak dira ikusi daitekeen moduan, behar ezberdinetara egokitutako ikerketak baitira. Alde batetik, eskuz etiketatutako corpus hauen tamaina ikerketaren arabera aldatuz doa, baina guztiek 300 eta 3000 erabiltzaile artean dauzkate etiketatuta. Bestalde, bibliografiako sistema onenek, beren sailkapena burutzeko asmoarekin, adin tarte bitarrak \citep{rao2010classifying,al2012homophily} edo hirutarrak \citep{nguyen2013old,morgan2017predicting} erabili dituzte, geroz eta klase gutxiago edukiz (bitarra edo hirutarra) sailkatzeko ataza errazago burutzen dela frogatuz.
+
+Erabiltzaile bakoitza adinaren arabera sailkatzeko asmoz, lortutako txio bakoitzeko testua zein meta-datuak bezalako aldagaiak erabili dira. Honela, artearen egoerako autore ezberdinek, bakoitzak bere ezaugarri propioak aukeratu ditu, txioen testuaz gain, erabiltzaile zehatzen meta-datuetan oinarritutako hainbat ezaugarri ere konbinatuz. Hala ere, sistema hauek bata bestearengandik oso ezberdinak direla ikusi den arren, guztiek testua hartzen dute kontutan, gehienak sailkatzailea txioen idazkera estiloan oinarritzen direlarik \citep{rao2010classifying,al2012homophily,nguyen2013old,morgan2017predicting}.\\
 
 \begin{table}[H]
   \centering
@@ -240,12 +177,82 @@ sailkatzaile ohikoenak ataza honetarako \textit{Logistic Regression} \citep{nguy
   \label{tab:arte ezaug}
 \end{table}
 
-\indent Amaitzeko, esan beharra dago sailkatzaile bakoitzaren asmatze tasari (\textit{accuracy}) erreparatuz gero, oraindik bide luze bat geratzen dela adina bezalako ezaugarri demografikoak egoki iragartzeko sare sozialetan. Adinaren sailkatzaileen asmatze ahalmena perfekziotik urruti daudela kontutan hartuta, ikerketa soziala zaildu egiten da, oinarrizkoak diren datu demografikoetan errore altuak daudelako. Adina bezalako datuk gizarte ikerketaren oinarrietako bat dira eta errore altuak emaitzak desitxuratu ditzake. Hala ere, ezin dugu ahaztu, txikia baldin bada ere, errorea beti egongo dela, gizartea konplexutasunez beteta baitago eta orokortze perfektu bat izatea ezinezkoa izango litzateke. Horregatik, errorea izanda ere, gizarte multzo zehatz honen orokortasunak jasotzeko arazorik ez da egongo, euskal txiolari gazteen eta helduen arteko konparaketa orokor bat egitea baita asmoa.\\
+Amaitzeko, esan beharra dago sailkatzaile bakoitzaren asmatze tasari (\textit{accuracy}) erreparatuz gero, oraindik bide luze bat geratzen dela adina bezalako ezaugarri demografikoak egoki iragartzeko sare sozialetan. Adinaren sailkatzaileen asmatze ahalmena perfekziotik urruti daudela kontutan hartuta, ikerketa soziala zaildu egiten da, oinarrizkoak diren datu demografikoetan errore altuak daudelako. Adina bezalako datuk gizarte ikerketaren oinarrietako bat dira eta errore altuak emaitzak desitxuratu ditzake. Hala ere, ezin dugu ahaztu, txikia baldin bada ere, errorea beti egongo dela, gizartea konplexutasunez beteta baitago eta orokortze perfektu bat izatea ezinezkoa izango litzateke. Horregatik, errorea izanda ere, gizarte multzo zehatz honen orokortasunak jasotzeko arazorik ez da egongo, euskal txiolari gazteen eta helduen arteko konparaketa orokor bat egitea baita asmoa.\\
+
+\subsection{Topics}\label{sec:topics_background}
+
+Extracting information from huge amounts of unstructured text is the aim of topic modeling. In this way, different approaches try to extract the common information that contains the numerous tweets scattered through the network, such as extract the topics covered by the event and the tweets \citep{hu2012lda}, real-time classification of twitter trends \citep{zubiaga2015real} or to compare the content of Twitter with a traditional news medium \citep{zhao2011comparing}. Apart from the different uses, they have to take into account the nature of the tweets because the length of the text makes the topic modeling have to be applied in a certain way, appropriate for short texts \citep{hong2010empirical}.
+
+\subsection{Relations}\label{sec:connections_background}
+
+There are several studies that have tried to identify different communities based on retweets. Among these, one can find studies about political polarization \citep{conover2011political}, political affiliation detection \citep{pennacchiotti2011democrats} or even studies about identifying communities in movements for independence \citep{zubiaga2017stance}. In these studies, based on the retweets made by the user, it shows that there is the possibility of identifying communities or groups. Therefore, in this specific work, similar methodologies will be used to predict how communities are formed and how they are related.
+
+
+\section{Methodology}\label{sec:methodology}
+
+To investigate the reality of young Basque Twitter users, the study is going to be divided into four different steps. The first step consist on identifying Basque Twitter users and extracting the data from this Social Network. After that, as second step, Basque Twitter users have been classified between adult and young users, based on the stile of the written tweet. Once basque Twitter users are separated between young and adults, we will try to find out the topics and relations of each of the groups. To find out the topics of these communities, we will take into account the personal tweets in basque of each user. On the other hand, to find out the relations, we will take into account the retweets in basque of each user. For each task indicated, a specific methodology will be used, as will be demonstrated below.
+
+\paragraph{Data Extraction}
+
+The first step consists on defining the social universe to investigate. The social universe is defined as all Twitter users who write in basque. With the purpose of identifying those basque writers in the whole Twitter network, a shortcut will be used, the list of Umap.eus\footnote{\url{https://umap.eus/}}. Once we know which users data extract, tweepy \citep{roesslein2009tweepy} package from Python will be used. Thanks to this package it will be possible to extract all the necessary information from each basque Twitter user.
+
+\paragraph{Young/Adult Identifier}
+
+The aim of this section is identifying young basque users, differentiating young users from the adult ones. This classification will not be made according to age, but based on the content of the messages, by which the text of personal tweets will be taken as a reference. Based on the text of the tweets, each tweet of a user is classified as formal or informal, depending on the writing style. When the concentration of informal tweets is high, it will be considered a young user, since young people have a more informal style \citep{nguyen2013old}. For that purpose, a small corpus has been labeled, labeling manually over 1,000 tweets as informal or formal. Three different methods have been used to train the classifier that will distinguish between formal and informal tweets, a non-supervised statistical model, machine learning and IXA pipes document classifier.
+
+\paragraph{Topics}
+
+On the one hand, for identifying the topics which basque users speak of, personal tweets in Basque language have been used. To do this, the Topic-Modeling technique is used, applying the LDA algorithm for that purpose. Specifically, gensim \citep{rehurek2010software} package has been used for applying LDA, so LDA can be applied to the obtained text from tweets. For an intuitive display, the \textit{LDAvis} method \citep{sievert2014ldavis} is used. This method publishes results as images, which helps interpreting the results.
+
+\paragraph{Connections}
+
+On the other hand, to know what the way of relating of the users is, retweets will be used. For that purpose, a graph based on the retweets will be used, the nodes being the users and each edges a retweet. For the creation of the graph the Ghepi program \citep{bastian2009gephi} has been used. Apart from that, modularity \citep{blondel2008fast} has been used to identify the subgroups of the graph that would represent different communities.
+
+
+% #########################################################
+% ################     DATA EXTRACTION     ################
+% #########################################################
+% Euskal txiolarietaz gain ere, modu orokorrago batean azaldu ataza (abstrakzio malia altuagoa) -->> hiztun gutxituen komunitateari buruzko analisia.
+
+\section{Data Extraction}\label{sec:data-extraction}
+
+\indent As the first step the community we have to focus on has to be specified, in order to start extracting data from somewhere. With the intention of investigating a specific community, it is necessary to identify this community in the whole network, specifying the universe to be studied. In this case, people who publish tweets in Basque will be the community to investigate. For identifying basque speakers in Twitter, a list already prepared by Umap.eus has been used. This website includes in the list users who publish at least 20\% of their tweets in Basque\footnote{\url{https://umap.eus/}}. In this way, a list of 8,189 Basque users has been obtained, which will consist the sample for the investigation.
+
+Once the community to investigate is specified and the sample of users, whom information is going to be gathered, is chosen, the data extraction will began. To extract the data from Twitter, \textit{tweepy} package from Python is used, choosing the \textit{timeline extraction} mode to gather the last 3,200 available tweets of each user of the sample. The data collection was performed between May 30 and 31, 2018, gathering more than 10 million tweets from 7,980 basque Twitter users. As the purpose of this investigation is to identify the content in basque language of this users, the tweets generated are classified by language using metadata stored in the tweet. Once the content in basque is selected, personal tweets and retweets are separated, using each one for a specific task. After the classification, the characteristics of the data set can be seen in the table \ref{tab:useful-data}.
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|l|l|l|}
+    \hline
+     & \textbf{Personal tweets in Basque} & \textbf{Retweets in Basque}\\ \hline
+    \textbf{Tweets} & 3,171,785 & 2,891,136\\ \hline
+    \textbf{Terms} & 1,434,050 & 813,833\\ \hline
+    \textbf{Tokens}  & 37,350,268 & 39,329,204\\ \hline
+  \end{tabular}
+  \caption{Useful extracted data, characteristics of tweets in Basque.}
+  \label{tab:useful-data}
+\end{table}
+
+\section{Classifying Young/Adult Users}\label{sec:class-young-users}
+
+In this section we present our work to classify Basque Twitter users as young or adult based on the tweets they write. As we have seen in Section \ref{sec:identifier_background}. previous work includes automatic approaches to characterize users in the context of social networks and media, the most common being those related with genre and age \citep{cesare2017detection}. This is in line with our objective of developing a classifier to characterizing Basque Twitter users according to two stages of life (young, adult).
+
+Section \ref{sec:identifier_background} shows that most of previous work addresses the problem of classifying age stages using supervised machine learning techniques. This means that data is annotated according to the age or age stage of each user. Furthermore, previous results indicate that classifying by age stages allows to obtain better results than by formulating the problem in terms of age ranges \citep{nguyen2013old}. This seems to be due to the fact that shared experiences are easier to relate along time by using age stages \citep{nguyen2016computational,eckert2017age}. Therefore, in this work we have decided to focus on classifying users in terms of two general age stages, namely, young and adult.
+
+However, this decision encountered an early methodological problem. In order to annotate tweets written in Basque according to the age stages of their authors it is obviously necessary to know that beforehand. Unfortunately, for the large majority of users from which we mined tweets this information is not available. Our decision to overcome this problem consisted of focusing on the information available on the tweets themselves by taking into account writing style features. After all, most of the previous work widely uses these type of features in order to classify users in terms of age stages \citep{rao2010classifying,al2012homophily,nguyen2013old,morgan2017predicting}.
+
+As suggested by \cite{nguyen2013old}, adults tend to use more conventional language whereas for young people it is more common to display repetitions and out of dictionary words \citep{rao2010classifying,rosenthal2011age,morgan2017predicting}.
+
+ Ondorio orokorragoetara joz, idazkera aldatu egiten da adinean aurrera egin ahala, gazteagoek estilo ezohikoagoa edo informalagoa daukatelarik \citep{nguyen2013old}. Era honetan, gazteen idazteko modua, idazkera formal batetik gehien aldentzen dena bezala kontsideratuko da, helduen idazkera estilo formalarekin erlazionatuz eta gazteena estilo informalarekin. Horrela, euskal erabiltzaileak etiketatu ordez, txioak etiketatzeari ekingo zaio, formal eta informal artean desberdinduz, zailtasunak gaindituz. Era honetan, txioen motaren kontzentrazioren arabera sailkatuko dira erabiltzaileak gazte eta heldu artean.
+
 
 \subsection{Experimental setup}\label{sec:met}
 
-\indent Artearen egoerako sistema ezberdinak ikusi ostean, antzeman daiteke sistema onenak bitarrak edo hirutarrak direla, sistema sinpleenekin emaitza onenak lortzen direla erakutsiz. Honez gain, aztertutako sistema guztiek komunean daukate, adin tarte konkretuen arabera sailkatzen dutela. Hala ere, artearen egoerako sistema onena, adin tarteekin baino, bizitza etapekin sailkapen hobea egiten duela ikusi da \citep{nguyen2013old}, denboran zeharreko esperientzia konpartituak argiago ikusten baitira bizitza etapetan \citep{nguyen2016computational,eckert2017age}. Horregatik, adin tarte zehatzetan zentratu ordez, bizitza etapetan zentratzea erabaki da, gazte/heldu klaseak aukeratuz, adin zehatza markatu ordez.\\
-\indent Bibliografiako sistema ezberdinetan ikusi ahal izan den moduan, sistema guztiak erabiltzaileen etiketatzean oinarritu dira, erabiltzailearen adina edo adin tartea eskuz etiketatu dutelarik. Erabiltzaile euskaldunen kasuan, ostera, zailtasunak aurkitu dira erabiltzaileen adina eskuz etiketatzeko, askok identitatea ezkutuan mantentzen baitute. Zailtasun honen aurrean, saihesbide metodologiko bat burutzea proposatu da, bibliografiako sistemen etiketatze estrategiatik aldendu arren, sistema hauek argitaratutako ondorioetan zentratzen dena. Hau da, adina iradokitzeko ezaugarririk garrantzitsuena idazkeran oinarritzen da \citep{rao2010classifying,al2012homophily,nguyen2013old,morgan2017predicting} eta horretan zentratzea erabaki da. Bibliografiako sistemen ondorioetan antzeman den moduan, helduek gazteak baino hitz konbentzionalagoak erabiltzen dituzte \citep{nguyen2013old}, hizkien errepikapena nabarmen gehiago ematen da erabiltzaile gazteen artean \citep{rao2010classifying,rosenthal2011age} eta hiztegiz kanpoko hitzak ohikoagoak dira gazteen artean \citep{rosenthal2011age,morgan2017predicting}. Ondorio orokorragoetara joz, idazkera aldatu egiten da adinean aurrera egin ahala, gazteagoek estilo ezohikoagoa edo informalagoa daukatelarik \citep{nguyen2013old}. Era honetan, gazteen idazteko modua, idazkera formal batetik gehien aldentzen dena bezala kontsideratuko da, helduen idazkera estilo formalarekin erlazionatuz eta gazteena estilo informalarekin. Horrela, euskal erabiltzaileak etiketatu ordez, txioak etiketatzeari ekingo zaio, formal eta informal artean desberdinduz, zailtasunak gaindituz. Era honetan, txioen motaren kontzentrazioren arabera sailkatuko dira erabiltzaileak gazte eta heldu artean.\\
+Horretarako metodologia ezberdinak erabili dira, metodoen artean konparaketa bat egiteko asmoarekin, haien artean, ez-gainbegiratutako metodo estatistikoa, ikasketa automatikoan (\textit{Machine Learning}) oinarritutako hainbat sailkatzaile, zein \textit{IXA pipes} dokumentu sailkatzailea erabili dira. Horrela, hiru sistemetatik emaitza onenak lortzen dituena zein den aztertuko da eta zergatia argitu.
+
+Klaseak zein ezaugarriak definituta daudelarik, sailkatzailea garatzea izango da hurrengo pausua, hiru modelo ezberdin erabilita: eredu estatistikoan oinarritutako sailkatzaile ez-gainbegiratua, ikasketa automatikoan oinarritutako hainbat sailkatzaile eta \textit{IXA pipes}en dokumentu sailkatzailea. Sailkatzaile ezberdinak garatu ostean, emaitza onenak lortzen dituena aukeratu eta datu errealetan aplikatua izango da, gure corpusa osatzen duten erabiltzaileen artean helduak eta gazteak zeintzuk diren antzemanez.
+
+
 
 \subsubsection{Data} \label{sec:for inf sail}
 
@@ -522,6 +529,8 @@ The number of clusters trained with each algorithm and data source was the follo
 \indent Garatu den sistema onena ariketa praktiko erreal batean aplikatuko da hurrengo atalean, txiolari gazteak eta helduak desberdintzeko erabiliko dena idazteko eran oinarrituz. Honela, \textit{IXA pipes} dokumentu sailkatzailea erabiliko da, Twitterretik erauzitako corpus erraldoia sailkatzeko asmoekin, txio bakoitza formal eta informal artean banatuz. Erabiltzaileen txio informalen kontzentrazioan oinarrituta, gazteen eta helduen artean ezberdintzeari ekingo zaio, adinaren arabera egin ordez, idazteko moduaren arabera eginez. Sailkapen honek, gerora bereizitako bi talde hauen gai ohikoenak eta harremanak azaleratzeko aukera emango du. Era honetan, modu independentean landu ahalko da talde bakoitza eta lortutako emaitzak alderatuz, heldu eta gazteen ezberdintasun zein puntu komunak zeintzuk diren argitara emango da.
 
 \subsection{Sailkatzailea corpusean aplikatuz}\label{sec:apl}
+
+This young/adult classifier will then allow us to compare those two life stages by taking into account the topics that appear on users' tweets and the relations that arise between them.
 
 \indent \textit{IXA pipes} dokumentu sailkatzailea erabilita, erauzitako 7.980 euskal txiolarietatik, 7.087 erabiltzaile sailkatzea lortu da, gutxienez 10 txio euskaraz dauzkaten erabiltzaileak soilik sailkatu direlarik. Sailkatzaileak txioak informal eta formal artean sailkatzen dituenez, txio informalen kontzentrazioan oinarrituko dugu erabiltzaile baten gaztetasuna. Hasiera batean txioen \%50a informala izatea ezarri zen erabiltzailea gaztetzat jotzeko. Hala ere, azterketa kualitatibo sinple bat eginda,  txio informalen muga \%45era jaistea erabaki zen, horrela erabiltzaile gazteen kopuru minimo bat bermatzen delarik. Era honetan, erabiltzaile gazte moduan kontsideratuko da txioen \%45a baino gehiago txio informalena baldin bada. Bestalde, txioen \%45a baino gutxiago informala baldin bada, erabiltzaile heldutzat joko da erabiltzaile zehatz hori. Honela, gure metodologia aplikatu da txio informalen bitartez erabiltzaile gazteak antzemanez, adina igartzeko zailtasuna alboratuz eta lasterbide metodologikoa aplikatuz.\\
 \indent Era honetan 5.508 erabiltzaile heldu bezala kontsideratu dira eta 1.579 gazte moduan, beti ere idazteko era kontutan hartuz. Gazte eta helduen erabiltzaileen banaketa nahiko desorekatua dagoela esan daiteke, gazteak nabarmen urriago izanik. Sailkatutako erabiltzaileen txio kopuruari erreparatuz gero, 10 milioi txioetatik, 8 milioi helduen taldeari dagozkio eta 2 milioi gazteen taldeari, berriz ere desoreka dagoela antzemanez. Hala ere, talde bakoitza modu independentean aztertuko denez, tamainaren arabera moldatu beharko dira aplikatuko diren ikerketa-teknika ezberdinak. Lehenik eta behin, heldu eta gazteen multzoak bereizi direla, azaleko azterketa bat burutu da, talde bakoitzaren baitan txioen hizkuntza ezberdinak nola banatzen diren ikusteko asmoarekin.\\
