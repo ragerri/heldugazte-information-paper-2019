@@ -245,7 +245,7 @@ It has been suggested that adults tend to use more conventional language \cite{n
 
 \subsection{Experimental Framework}\label{sec:exper-fram}
 
-Following the setting established above, we will address the problem of classifying each tweet as \emph{formal} or \emph{informal} by means of several machine learning approaches. First, we will try one unsupervised statistical method based on perplexity \cite{gamallo2017language}. Second, we will experiment with several supervised approaches: (i) a baseline method using sparse, \emph{one-hot} word representations \cite{pedregosa2011scikit}; (ii) a feature-based method using word representations as continuous word vectors, namely, word embeddings \cite{mikolov2013distributed,pennington-etal-2014-glove,mikolov-etal-2018-advances}; (iii) a feature-based method using word clusters \cite{agerri2016robust,agerri2019language} and (iv), a deep learning approach leveraging character contextual word embeddings and a neural network architecture \cite{akbik2018contextual}.
+Following the setting established above, we will address the problem of classifying each tweet as \emph{formal} or \emph{informal} by means of several machine learning approaches. First, we will apply one unsupervised statistical method based on perplexity \cite{gamallo2017language}. Second, we will experiment with several supervised approaches: (i) a baseline method using sparse, \emph{one-hot} word representations \cite{pedregosa2011scikit}; (ii) a feature-based method using word representations as continuous word vectors, namely, word embeddings \cite{mikolov2013distributed,pennington-etal-2014-glove,mikolov-etal-2018-advances}; (iii) a feature-based method using word clusters \cite{agerri2016robust,agerri2019language} and (iv), a deep learning approach leveraging character contextual word embeddings and a neural network architecture \cite{akbik2018contextual}.
 
 We will develop a classifier with each of the methods listed above and evaluate it on a held-out, gold-standard dataset manually annotated at tweet level for the categories of \emph{formal} and \emph{informal}. The method that obtains the best results in the experiments will be then used to annotate the 6 million tweets obtained thereby classifying their authors as \emph{young} or \emph{adult}. In this sense, users will be classified according to the writing style of the tweets in their timelines.
 
@@ -267,7 +267,6 @@ In the rest of this section we will describe the process of manual annotation of
   \label{tab:gold-corpus}
 \end{table}
 
-
 In order to focus on learning to classify tweets according to writing style, we decided to clean the tweets keeping only those words that contained alphanumeric characters. Thus, we removed emoticons, hashtags, users' names (@) and URL links. Furthermore, we only considered those tweets that contained more than 4 tokens. We then randomly selected 1000 tweets sent from personal accounts from the 6 million tweet dataset collected as described in Section \ref{sec:data-extraction}. One annotator manually labeled every tweet as \emph{formal} or \emph{informal}. To manually label the tweets, a qualitative methodology was followed: all those tweets that contained out of vocabulary words or colloquial expressions were classified as informal. This methodology has been motivated by previous work on classifying formal and colloquial tweets \cite{gonzalez2015analysis}. Table \ref{tab:gold-corpus} shows the main features of our manually annotated dataset. For the experiments described in the next four subsections, we split the gold standard corpus in two sets, leaving 65\% for training and \%35 for testing.
 
 \subsubsection{Unsupervised approach: \textit{Perplexity}}\label{sec:unsup-appr-text}
@@ -278,8 +277,8 @@ A perplexity-based distance between two languages is established by ``comparing 
 
 In order to classify tweets as \emph{formal} or \emph{informal}, we will calculate the perplexity-based distance between a tweet with respect to a character-based 7-gram language model. If the perplexity-based distance between each tweet and the character-based n-gram language model is low, then we will classify it as \emph{formal} and \emph{vice versa}. Of course, for this approach to work we need to establish a threshold so that if the perplexity-based distance is lower than the threshold the tweet is labeled as \emph{formal} and if higher, as \emph{informal}.
 
-Our method to calculate such threshold proceeds in the following manner. First, we take the tweets in the training set (65\% of the dataset) and classify each of them according to the perplexity-based distance with respect to the language model. We tried every value in the [0,10] range
-with an increment of 0.1 as threshold. Second, we computed precision, recall and accuracy comparing the prediction of the threshold according to the perplexity value with respect to the gold-standard labels in the training data. Finally, the threshold chosen will be the value in which all the three metrics converge. As shown by Figure \ref{fig:threshold}, we found out that the best threshold value was close to 4.4.
+Our method to calculate such threshold proceeds in the following manner. First, we build a 7-gram character-based language model using the data from Second, we take the tweets in the training set (65\% of the dataset) and classify each of them according to the perplexity-based distance with respect to the language model. We tried every value in the [0,10] range
+with an increment of 0.1 as threshold. Third, we computed precision, recall and accuracy comparing the prediction of the threshold according to the perplexity value with respect to the gold-standard labels in the training data. Finally, the threshold chosen will be the value in which all the three metrics converge. As shown by Figure \ref{fig:threshold}, we found out that the best threshold value was around 4.4. We will use this value in order to evaluate this approach in Section \ref{sec:experimental-results}.
 
 \begin{figure}[H]
   \centering
@@ -301,7 +300,7 @@ with an increment of 0.1 as threshold. Second, we computed precision, recall and
   \end{subfigure}
 \end{figure}
 
-Table \ref{tab:perplexitytrain} displays the results of classifying the tweets in the training data using perplexity-based distance using the value 4.4 as threshold.
+Table \ref{tab:perplexitytrain} displays the results of classifying the tweets in the training data using perplexity-based distance using the value 4.4 as threshold. The obtained overall accuracy using 4.4 as threshold was 0.831.
 
 \begin{table}[H]
   \centering
@@ -315,52 +314,92 @@ Table \ref{tab:perplexitytrain} displays the results of classifying the tweets i
   \label{tab:perplexitytrain}
 \end{table}
 
-\subsubsection{Sparse word representations}
+\subsubsection{Machine Learning Baselines}\label{sec:sparse-word-repr}
 
-The first baseline applying supervised machine learning will be done to test various a learning algorithms using the data...
-
-Ez-gainbegiratutako sailkatzailea garatu eta ebaluatu ostean, \textit{Machine Learning} eredua oinarri duten sailkatzaile ezberdinekin sailkatzeari ekingo zaio, artearen egoerako sistema guztiak ikasketa automatikoan oinarritzen baitira.\\
-\indent Sailkatzailea inplementatzeko lehenengo pausu moduan, corpusean zehaztu diren klaseak ondo esleituko dituen corpuseko datu edo ezaugarri egokiak aukeratu beharko dira. Artearen egoerako sistema ezberdinek ezaugarri zerrenda luze eta konplexuak barnebiltzen dituzten arren, geure kasuan, soilik testua aintzat hartuko da. Testuan oinarrituta dagoen sailkatzaile hau garatzeko, txio bakoitza kontutan hartuko da, bakoitzarekin hitzen bektore bat sortuz. Era honetan, sistemaren \textit{input}a 0 zenbakiz gainezka dagoen hitzen bektore erraldoi batean oinarrituko da. Testuan oinarritutako \textit{input}a \textit{Bag of Words} (BoW) eredu baten moduan tratatua izango da, hau da, ordenarik gabeko hitzen multzo baten moduan.\\
-\indent Sistemaren garapenerako erabiliko diren datuen multzoaren tamaina txikia dela eta (1000 txio), erabaki da entrenamendua eta ebaluazioa \textit{cross-validation} bitartez egitea. Era honetan, 5 karpetetan oinarritutako \textit{cross-validation}a burutuko dugu, entrenamendu eta testerako datu guztiak batera erabiliko ditugularik. Honela, geure sistemak \textit{overfitting}a egitea ekidingo dugu, nahiz eta \textit{dataset} edo corpusaren tamaina txikia izan.
+The first baseline applying supervised machine learning will be done to test various learning algorithms using the gold standard dataset described in Section \ref{sec:gold-standard-data}. More specifically, we will be simply applying a bag of words representation which represents each document (tweet) according to the word frequencies in each document. The result is a very sparse word representation where the dimension of the vector representing each word is equal to the number of words in the corpus. In this setting, we apply six of the most common machine learning algorithms with default parameters using the scikit-learn library \cite{pedregosa2011scikit}. Table \ref{tab:acc-ml} reports their performance by means of 5-fold cross validation on the training data.
 
 \begin{table}[H]
   \centering
   \begin{tabular}{|l|r|}
     \hline
-    \textbf{Machine Learning Classifier (BoW)} & \textbf{Asmatze tasa (accuracy)} \\ \hline 
-    \textit{5-NN (k-NN)} &  0.614 \\ \hline
-    \textit{Decision Tree} &  0.677 \\ \hline
-    \textit{Random Forest} &  0.707 \\ \hline
-    \textit{Naive Bayes} & 0.765 \\ \hline
-    \textit{Logistic Regression} & 0.775 \\ \hline
-    \textit{SVM (Linear Kernel)} & 0.777 \\ \hline
+    \textbf{Machine Learning Classifier (BoW)} & \textbf{Accuracy} \\ \hline
+    5-NN (k-NN) &  0.614 \\ \hline
+    Decision Tree &  0.677 \\ \hline
+    Random Forest &  0.707 \\ \hline
+    Naive Bayes & 0.765 \\ \hline
+    Logistic Regression & 0.775 \\ \hline
+    \textbf{SVM} & \textbf{0.777} \\ \hline
   \end{tabular}
-  \caption{Ebaluazioaren balioak, \textit{Machine Learning} eredua (5 CV).}
+  \caption{Bag of words results via 5-fold cross-validation on the training set.}
   \label{tab:acc-ml}
 \end{table}
 
-Ikasketa automatikoaren teknika ezberdinetan oinarritutako 6 sailkatzaile garatu ostean, lortutako emaitzen azterketari ekingo zaio. \ref{tab:acc-ml}. taulako emaitzei begiratuta, sailkatzaile onenak \textit{Logistic Regression} eta \textit{SVM} direla ikusi daiteke. Beraz, lortutako emaitzarik onenek zerikusia daukate artearen egoerako beste sailkatzaileekin, artearen egoerako sistemen sailkatzaile berdinak izan baitira emaitza onenak lortu dituztenak. Artearen egoerako sistemekiko ezberdintasun ugari eduki arren, etiketatzeko modua edo ezaugarrien trataera ezberdina kasu, sailkatzaile onenak berdinak direla ikusi daiteke. Hala ere, emaitza baxuak lortu direla esan daiteke, etiketatutako corpusaren tamaina txikiak, ikasketa edo entrenamendurako datu oso gutxi eskaintzen baititu.
+As it can be seen, the best performing algorithms in this very basic baseline setting are Logistic Regression and SVM, which is not surprising given the ability of SVM to perform well with very few labeled data. Next, we decided to experiment with a less-sparse representation of the tweets by means of pre-trained word embeddings.
+
+\subsubsection{Pre-trained Word Embeddings}\label{sec:pre-trained-word}
+
+Distributed word representations or word embeddings are widely used nowadays in Natural Language Processing. Several techniques have been proposed in order to obtain word embeddings, most of them based on the hypothesis that the meaning of a word is defined by the context in which it appears \cite{mikolov2013distributed,pennington-etal-2014-glove}. Thus, obtaining word embeddings usually requires large quantities of good quality training data which makes it difficult when experimenting with less-resourced languages such as Basque. However, FastText provides pre-trained models for many languages, including Basque \cite{mikolov-etal-2018-advances} by using the common crawl data\footnote{\url{http://commoncrawl.org}}. The Basque model they distribute is trained on both Common Crawl and Wikipedia using CBOW with position-weights, in 300 dimension, with character n-grams of length 5, a window of size 5 and 10 negatives\footnote{\url{https://fasttext.cc}}.
+
+For this experiment, we map the words in the corpus to their real vector representation in the FastText model and average all the vectors with respect to the vocabulary. We optimize the C hyperparameter using accuracy and evaluate by 5-fold cross-validation on the training data. In Table \ref{tab:svm-embeddings} we can see that the results improve slightly with respect to those obtained by the default baseline approach using bag of words in the previous section.
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|c|c|}
+    \hline
+    \textbf{C value} & \textbf{Accuracy} \\ \hline \hline
+    0.5 & 0.791 \\
+    0.6 & 0.791 \\
+    0.7 & 0.796 \\
+    0.9 & 0.803 \\
+    1.0 & 0.807 \\
+    \textbf{1.1} & \textbf{0.811} \\
+    1.2 & 0.803 \\
+    5.0 & 0.812 \\
+    10 & 0.807 \\ \hline
+  \end{tabular}
+  \caption{SVM with rbf kernel; 5-fold CV results on training data.}
+  \label{tab:svm-embeddings}
+\end{table}
+
+\subsubsection{IXA pipes}\label{sec:ixa}
+
+The document classification system included in the IXA pipes tools, \emph{ixa-pipe-doc}, aims to establish a simple and shallow feature set, avoiding any linguistic motivated features, with the objective of removing any reliance on costly extra gold annotations and/or cascading errors if automatic annotations are used. The underlying motivation is to obtain robust models to facilitate the development of document classification systems for several languages, datasets and domains while obtaining state of the art results.
+
+\emph{ixa-pipe-doc}, as a component of IXA pipes, includes a simple method to combine various types of clustering features induced over different data sources or corpora. This method has already obtained state of the art results in several tasks such as newswire Named Entity Recognition \cite{agerri2016robust} and Opinion Target Extraction \cite{agerri2019language}, both in out-of-domain and in-domain evaluations and for several languages, including Basque.
+
+The system consists of: (i) Local, shallow features based mostly on orthographic, word shape and n-gram features plus their context; (ii) three types of simple clustering features, based on unigram matching; (iii) publicly available gazetteers, such as sentiment lexicons. Specifically, \emph{ixa-pipe-doc} implements, on top of the local features, a combination of word representation features: (i) Brown \cite{brown1992class} clusters, taking the 4th, 8th, 12th and 20th node in the path; (ii) Clark \cite{clark2003combining} clusters and, (iii) Word2vec \cite{mikolov2013distributed} clusters, based on K-means applied over the extracted word vectors using the skip-gram algorithm. The implementation of the clustering features looks for the cluster class of the incoming token in one or more of the clustering lexicons induced following the three methods listed above. If found, then we add the class as feature. The Brown clusters only apply to the token related features, which are duplicated\footnote{More details, including examples of the features are provided in Agerri and Rigau \cite{agerri2016robust,agerri2019language}.}.
+
+Clusters of words provide denser document representations. Although still a one-hot vector representation, the dimensions of the representation gets reduced to the number of clustering classes used. This is done by mapping the words in the document to the words in each of the clustering lexicons \cite{turian-ratinov-bengio:2010:ACL}. To avoid duplication of efforts, the system uses the Apache OpenNLP project implementation of Maxent \footnote{\url{http://opennlp.apache.org/}} customized with the features described above.
+
+For the experiments, we used pre-trained clusters using the Elhuyar Web Corpus \cite{leturia2012evaluating} and from a 600M word corpus obtained from crawling local news sites. The number of clusters trained with each algorithm and data source was the following: 100-800 clusters using the Clark and Word2vec methods, and 1000, 2000 and 3200 classes with the Brown algorithm. The best combination of features was obtained by performing every possible permutation between them in a 5-fold cross validation setting using the gold standard training data. Following this methodology, the best configuration consisted of the following features (we did not use any local or lexicon-based features, just the clustering representations).
+
+\begin{itemize}
+\item Brown: Elhuyar Web Corpus 3200 classes.
+\item Clark: Elhuyar Web Corpus 600 and Local News Corpus 300 clusters.
+\item Word2vec: Elhuyar Web Corpus 300 and Local News Corpus 500 clusters.
+\end{itemize}
+
+Table \ref{tab:ixa-ml-garapen} provides the results per class using \emph{ixa-pipe-doc}. As it can be seen, they are the best results obtained so far both in terms of accuracy (0.885) and F1 measure.
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|l|c|c|c|c|c|}
+    \hline
+    \textbf{Label} & \textbf{Error} & \textbf{Total} & \textbf{Precision} & \textbf{Recall} & \textbf{F1}\\ \hline
+    \textit{Informal} &  59 & 508 & 0.889  & 0.884  & 0.886\\ \hline
+    \textit{Formal} &  56 & 492 & 0.881 & 0.886 & 0.883\\ \hline
+  \end{tabular}
+  \caption{ixa-pipe-doc results on training data via 5-fold cross-validation.}
+  \label{tab:ixa-ml-garapen}
+\end{table}
 
 
-\subsubsection{Clustering based word representations}\label{sec:ixa}
-
-Our document classification system is \emph{ixa-pipe-doc}, which aims to establish a simple and shallow feature set, avoiding any linguistic motivated features, with the objective of removing any reliance on costly extra gold annotations (POS tags, lemmas, semantics) and/or cascading errors if automatic language processors are used. The underlying motivation is to obtain robust models to facilitate the development of document classification systems for several languages, datasets and domains while obtaining state of the art results.
-
-The system consists of: (i) Local, shallow features based mostly on orthographic, word shape and n-gram features plus their context; (ii) three types of simple clustering features, based on unigram matching; (iii) publicly available gazetteers, such as sentiment lexicons. Specifically, \emph{ixa-pipe-doc} implements, on top of the local features, a combination of word representation features: (i) Brown \cite{brown1992class} clusters, taking the 4th, 8th, 12th and 20th node in the path; (ii) Clark \cite{clark2003combining} clusters and, (iii) Word2vec \cite{mikolov2013distributed} clusters, based on K-means applied over the extracted word vectors using the skip-gram algorithm. The implementation of the clustering features looks for the cluster class of the incoming token in one or more of the clustering lexicons induced following the three methods listed above. If found, then we add the class as feature. The Brown clusters only apply to the token related features, which are duplicated.
-
-\emph{ixa-pipe-doc}, as a component of IXA pipes, includes a simple method to combine various types of clustering features induced over different data sources or corpora. This method has already obtained state of the art results in several tasks such as newswire Named Entity Recognition \cite{agerri2016robust} and Opinion Target Extraction \cite{agerri2019language}, both in out-of-domain and in-domain evaluations.
-
-Clusters of words provide denser document representations. Although still a one-hot vector representation, the dimensions of the representation gets reduced to the number of clustering classes used. This is done by mapping the words in the document to the words in each of the clustering lexicons thereby obtaining a denser representations than the traditional one-hot representation based bag of words \cite{turian-ratinov-bengio:2010:ACL}.
-
-Finally, \emph{ixa-pipe-doc} learns supervised models via the Maxent algorithm \cite{ratnaparkhi1999learning}. To avoid duplication of efforts, the system uses the Apache OpenNLP project implementation of Maxent \footnote{\url{http://opennlp.apache.org/}} customized with the features described in this section.
-
-The number of clusters trained with each algorithm and data source was the following: 100-800 clusters using the Clark and Word2vec methods, and 1000 classes with the Brown algorithm. The best combination of features were obtained by performing every possible permutation between them in a 5-fold cross validation setting using the byarticle training data.
-
-\subsubsection{Neural architecture}
+\subsubsection{Neural architecture}\label{sec:neural-architecture}
 
 
 
-\subsection{Experimental Results}
+\subsection{Experimental Results}\label{sec:experimental-results}
+
 
 %\subsubsection{Perplexity}\label{sec:ebal est}
 
@@ -403,17 +442,6 @@ The number of clusters trained with each algorithm and data source was the follo
 \end{table}
 
 
-\begin{table}[H]
-  \centering
-  \begin{tabular}{|l|c|c|c|c|c|}
-    \hline
-    \textbf{Etiketa} & \textbf{Errorea} & \textbf{Totala} & \textbf{Doitasuna} & \textbf{Estaldura} & \textbf{F-neurria}\\ \hline 
-    \textit{Informala} &  59 & 508 & 0.889  & 0.884  & 0.886\\ \hline 
-    \textit{Formala} &  56 & 492 & 0.881 & 0.886 & 0.883\\ \hline
-  \end{tabular}
-  \caption{Entrenamenduaren balioak, \textit{IXA pipes} dokumentu sailkatzailea.}
-  \label{tab:ixa-ml-garapen}
-\end{table}
 
 \begin{table}[H]
   \centering
