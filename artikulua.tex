@@ -268,78 +268,40 @@ In the rest of this section we will describe the process of manual annotation of
 \end{table}
 
 
-In order to focus on learning to classify tweets according to writing style, we decided to clean the tweets keeping only those words that contained alphanumeric characters. Thus, we removed emoticons, hashtags, users' names (@) and URL links. Furthermore, we only considered those tweets that contained more than 4 tokens. We then randomly selected 1000 tweets sent from personal accounts from the 6 million tweet dataset collected as described in Section \ref{sec:data-extraction}. One annotator manually labeled every tweet as \emph{formal} or \emph{informal}. To manually label the tweets, a qualitative methodology was followed: all those tweets that contained out of vocabulary words or colloquial expressions were classified as informal. This methodology has been motivated by previous work on classifying formal and colloquial tweets \cite{gonzalez2015analysis}. Table \ref{tab:gold-corpus} shows the main features of our manually annotated dataset.
+In order to focus on learning to classify tweets according to writing style, we decided to clean the tweets keeping only those words that contained alphanumeric characters. Thus, we removed emoticons, hashtags, users' names (@) and URL links. Furthermore, we only considered those tweets that contained more than 4 tokens. We then randomly selected 1000 tweets sent from personal accounts from the 6 million tweet dataset collected as described in Section \ref{sec:data-extraction}. One annotator manually labeled every tweet as \emph{formal} or \emph{informal}. To manually label the tweets, a qualitative methodology was followed: all those tweets that contained out of vocabulary words or colloquial expressions were classified as informal. This methodology has been motivated by previous work on classifying formal and colloquial tweets \cite{gonzalez2015analysis}. Table \ref{tab:gold-corpus} shows the main features of our manually annotated dataset. For the experiments described in the next four subsections, we split the gold standard corpus in two sets, leaving 65\% for training and \%35 for testing.
 
 \subsubsection{Unsupervised approach: \textit{Perplexity}}\label{sec:unsup-appr-text}
 
-Perplexity is a widely-used evaluation metric for language models built with n-grams extracted from text corpora \cite{chen1999empirical}. Furthermore, it has been used for specific tasks, namely, to classify between formal and colloquial tweets \cite{gonzalez2015analysis} or for language identification between similar languages \cite{gamallo2017language}. Both works inspire our approach to classifying tweets as formal or informal using perplexity. The former showed that perplexity could be useful to detect out-of-vocabulary words in tweets \cite{gonzalez2015analysis}. More importantly for us, the latter formally proposed the perplexity-distance between two languages.
+Perplexity is a widely-used evaluation metric for language models built with n-grams extracted from text corpora \cite{chen1999empirical}. Furthermore, it has been used for specific tasks, namely, to classify between formal and colloquial tweets \cite{gonzalez2015analysis} or for language identification between similar languages \cite{gamallo2017language}. Both works inspire our approach to classifying tweets as formal or informal using perplexity. The former showed that perplexity could be useful to indirectly detect out-of-vocabulary words in tweets \cite{gonzalez2015analysis}. More importantly for us, the latter formally proposed the concept of \emph{perplexity-based distance} between two languages.
 
-Ez-gainbegiratutako eredu estatistikoan oinarritutako metodo hau garatzeko, txioak euskarazko \textit{hizkuntz eredu} formal batekin konparatuko dira, horiek formalak edo informalak diren zehazteko. Eredu ezberdin horien distantzia neurgarri bihurtzeko asmoarekin \textit{perplexity} neurria erabiliko da, geroz eta altuagoa izanik informalagoa dela adieraziz.
+A perplexity-based distance between two languages is established by ``comparing the n-grams of a text in one language with the n-gram language model trained for the other language. Then, the perplexity of a test text T in language L2, given the language model LM of language L1, can be used to define the distance, between L1 and L2'' \cite{gamallo2017language}. According to this definition, low perplexity indicates close proximity between languages L2 and L1.
 
-Horrela, atal honetan, \textit{hizkuntz distantzia}ren kontzeptua erabiliko da, hizkuntza barietate bat beste batetik zein ezberdina den adierazten lagunduko duena.Txio formal eta informalak bereizte aldera, txioak euskarazko \textit{hizkuntz eredu} formal batekin konparatuak izango dira eta hauen \textit{hizkuntz ereduarekiko distantzia} kalkulatu da. Hizkuntz ereduen arteko distantzia hau kalkulatze aldera, karaktereetan oinarritutako n-grama modeloan oinarritu gara, 7-gramak erabiliz, ereduen arteko distantzia kalkulatzeko asmoarekin \citep{gamallo2017language}. Hizkuntz ereduarekiko distantzia kuantifikatzeko \textit{perplexity} balioa erabili ohi da \citep{chen1999empirical}, beraz lan honetan ere ebaluatutako txio bakoitza hizkuntz eredu formaletik zenbat aldentzen den adieraziko digun balioa lortzeko \textit{perplexity}a erabiliko da. Gainera, ez da lehenengo aldia \textit{perplexity}aren balioa txioetan osagai informalak aurkitzeko erabiltzen dela, hiztegi kanpoko hitzak (OOV) detektatzeko erabilia izan baita txioak oinarri hartuta, txio informalak hautemateko \citep{gonzalez2015analysis}. Kasu horretan hitzak modu soltean aztertuak izan ziren arren, kasu zehatz honetarako txioa osorik hartu da kontutan, orokortasun bat bilatzeko asmoarekin.
+In order to classify tweets as \emph{formal} or \emph{informal}, we will calculate the perplexity-based distance between a tweet with respect to a character-based 7-gram language model. If the perplexity-based distance between each tweet and the character-based n-gram language model is low, then we will classify it as \emph{formal} and \emph{vice versa}. Of course, for this approach to work we need to establish a threshold so that if the perplexity-based distance is lower than the threshold the tweet is labeled as \emph{formal} and if higher, as \emph{informal}.
 
-%\paragraph{Diseinua}
-
-Txio bakoitza, karaktereen 7-grametan oinarrituz, hizkuntz eredu formalarekin konparatu ostean, txioaren urruntasuna kuantifikatzeari ekingo zaio, txio bakoitzari \textit{perplexity} balio bat luzatuz. \textit{Perplexity}aren balioak adierazten du, modelo bat zeinen ondo egokitzen den ebaluazio datuetara, modelora egokitzeko probabilitatearen alderantzizkoa izanik. Honela, txioak geroz eta balio altuagoa lortu, geroz eta urrunago egongo da hizkuntz eredu formaletik, hau da, geroz eta balio altuagoak esango du informalagoa dela txio hori. \textit{perplexity} balioa txikiagoa baldin bada ostera, txioa hizkuntz eredutik hurbil dagoela adieraziko du, txioa formala dela adieraziz. Beraz, txio formal eta informalak bereizteko \textit{perplexity} balio muga bat jarri beharko da, atalase hori baino baxuagoak formal moduan kontsideratuz eta hortik gorakoak informaltzat joz.
-
-7-grametan oinarritutako eredu hau garatzeko, \textit{dataset} edo corpusa bi zatitan banatu da, alde batetik garapen faserako corpusaren \%65a erabili da eta bestetik, ebaluazio faserako corpusaren \%35a. Garapen fasean informal/formal bereizteko \textit{perplexity}ak hartu beharko lukeen balioa zehaztuko da, ahalik eta txio gehien ondo sailkatzeko intentzioarekin. Ebaluazio fasean ostera, garapen fasean finkatutako atalaseak lortutako emaitzak ikusiko dira, garapenean erabili ez diren datuak baliatuz. \textit{Dataset}a bi zatitan banatuta, garapena eta ebaluazioa, sistemak datuen gehiegizko egokitzea jasatea ekidingo da, emaitzak aurrez ikusi gabeko datu multzo batetan balioztatuko baitira.
-
-%\subsubsection{Ereduaren garapena: atalasearen moldaketa}
-
-Txioak sailkatzeko sistema garatuta dagoenean, txio bat formaltzat jotzeko \textit{perplexity}ak hartu beharko lukeen balio minimo egokia aukeratu beharko da. Azaldu den moduan, \textit{perplexity}aren balioa geroz eta handiagoa izan, txioa aurrez zehaztutako \textit{Language Model}etik geroz eta gehiago aldentzearen seinale izango da. Hortaz, balio zehatz bat eman beharko zaio informal eta formalak ezberdintzen dituen balioari. Hau da, atalase bat finkatuko da, non balio horretatik behera txioak formalak direla kontsideratuko da, eta balio horretatik aurrera, txioak informaltzat joko dira.
-
-Sistemaren garapenerako etiketatutako korpusaren \%65a erabiliko da, hau da, \textit{perplexity}aren balioa zein izango den zehazteko txio bat informala den edo ez erabakitzeko. Atalasea markatuko duen balio hau, 0tik 10era doazen balio guztiekin probatu da, 0.01 iteratuz aldiro. Honela, jarraian datozen grafikoetan (\ref{fig:doi est}, \ref{fig:acc f1} eta \ref{fig:all m} irudiak), atalasearen muga balioa moldatu ahala, doitasuna, estaldura, asmatze tasa eta F-scorea nola aldatzen diren ikusi ahalko da. Honek lagunduko digu, \textit{perplexity}aren balio finko bat zehaztean txio informal zein formalak ondo sailkatuko dituena.
+Our method to calculate such threshold proceeds in the following manner. First, we take the tweets in the training set (65\% of the dataset) and classify each of them according to the perplexity-based distance with respect to the language model. We tried every value in the [0,10] range
+with an increment of 0.1 as threshold. Second, and we computed precision, recall and accuracy comparing the prediction of the threshold according to the perplexity value with respect to the gold-standard labels in the training data. Finally, the threshold chosen will be the value in which all the three metrics converge. As shown by Figure \ref{fig:threshold}, we found out that the best threshold value was 4.4.
 
 \begin{figure}[H]
   \centering
   \begin{subfigure}[b]{0.48\linewidth}
     \includegraphics[width=\linewidth]{precision}
-    \caption{Doitasuna}
-      \label{fig:doi}
+    \caption{Precision.}\label{fig:precision}
   \end{subfigure}
   \begin{subfigure}[b]{0.48\linewidth}
     \includegraphics[width=\linewidth]{recall}
-    \caption{Estaldura}
-      \label{fig:est}
+    \caption{Recall.}\label{fig:recall}
   \end{subfigure}
-  \caption{Doitasuna eta estaldura.}
-  \label{fig:doi est}
-\end{figure}
-
-\textbf{Doitasuna}ri esker, sistemak txio informalak sailkatzeko duen gaitasuna ikusi dezakegu. Honek esan nahi du, ikusi ahalko dela sistemak txio informalak ondo sailkatzeko duen gaitasuna, formal/informal muga balioa moldatzen goazen heinean. Horrela, \ref{fig:doi} irudian ikusi daitekeen moduan, \textit{perplexity}ak 3 balioa baino altuagoa lortzen duenean, \textit{baseline}a (0.5) gainditzen hasten da, honek esan nahi du, muga 3 baino balio altuagoetan jartzean, hasten dela sailkapen hobea egiten. Bestalde, \textit{perplexity}aren muga 7 edo balio altuagoetan zehaztean, hobekuntza gelditu egiten da, txio informal ia guztiak ondo sailkatzen dituelarik. Hala ere, doitasuna balioarentzat 0.8ko balio bat desiragarria izanik, atalasea \textit{perplexity}=4 baliotik gora kokatu beharko genuke gutxienez. Baina, doitasun eta estaldura desiragarri batzuen artean oreka bat lortu beharko da.
-
-Bestalde, \textbf{estaldura}ri erreparatzen bazaio, sistemak txio informalak detektatzeko duen gaitasuna ikusi daiteke, muga balio edo atalasea moldatzen den heinean. Honela, \ref{fig:est} irudian ikusi ahal da, \textit{perplexity}ak 3 balioa baino altuagoa lortzen duenean, estaldura galtzen hasten dela. Honek esan nahi du, 3 baliotik aurrera txio informalak okerrago detektatzen hasten dela. Beste behin ere, onargarritzat hartuko dugu 0.8ko estaldura izatea gutxienez, horretarako atalasearen balioa 4.5 baino txikiagoa izan beharko delarik. Hala ere, atalasearen balio finkoa aukeratzeko aurretik lortutako doitasun desiragarri baten emaitzak ere kontutan hartu beharko dira.
-
-Hortaz, bi neurri ezberdin hauen arteko oreka bat bilatu beharko da atalasearen balioa finkatu eta emaitza onak lortu nahi izatekotan. Batetik sistemak txio informalak ondo sailkatzea (doitasuna) interesatzen zaigu, eta bestetik, txio informal horiek identifikatzea (estaldura) interesatzen zaigu. Grafikoei erreparatuz gero (\ref{fig:doi est}. irudia), ikusi daiteke balio bat hobetuz doan heinean bestea okertu egiten dela. Honek esan nahi du, geroz eta txio informal gutxiago identifikatu ahala, sailkapen lan hori hobeto egingo duela. Horregatik, bi lerroen ebaketa puntuari arreta berezia jarri beharko zaio, eta baita, bi balioak konbinatzen dituen F-score neurriari ere. Jakinda doitasun desiragarria 4tik aurrera dela eta estaldura desiragarria 4.5etik behera, esan daiteke jarraibide batzuk baditugula atalasearen balio egokia aukeratzeko.
-
-\begin{figure}[H]
-  \centering
   \begin{subfigure}[b]{0.48\linewidth}
     \includegraphics[width=\linewidth]{accuracy}
-    \caption{Asmatze tasa}
-    \label{fig:acc}
+    \caption{Accuracy.}\label{fig:acc}
   \end{subfigure}
   \begin{subfigure}[b]{0.48\linewidth}
-    \includegraphics[width=\linewidth]{fmeasure}
-    \caption{F-neurria}
-    \label{fig:f1}
+    \includegraphics[width=\linewidth]{denaperp}
+    \caption{Optimal threshold value on the training data.}\label{fig:threshold}
   \end{subfigure}
-  \caption{Asmatze tasa eta f-neurria.}
-  \label{fig:acc f1}
 \end{figure}
 
-Sistemaren egokitasuna aztertzeko beste neurri bat, \textbf{asmatze tasa} dugu, sistemaren egokitasun orokorra azalduko duena. Orain arte estaldura eta doitasunarekin txio informalak detektatzeko gaitasuna ebaluatzen ibili gara, baina neurri honekin txio informal zein formalak sailkatzeko gaitasuna ebaluatuko dugu. Hortaz, asmatze tasarekin, txioak formal edo informalak diren ondo sailkatzeko kapazitatea neurtuko da. Atalasearen balioa mugitu ahala, ikusi daiteke balioa 4 ingurura iritsi ahala emaitza onenak lortzen dituela, \ref{fig:acc} irudian ikusi daitekeen moduan. Beraz, txioak \textit{Language Model}arekiko \textit{perplexity} balioaren muga 4 inguruan kokatu beharko da sailkapen egoki bat egiteko eta ahalik eta errore gutxien lortzeko.
-
-Behin doitasuna eta estaldura balioak aztertu direla, bi balio hauek konbinatzen dituen \textbf{f-neurria} aztertzeari ekingo zaio. \ref{fig:f1} irudian ikusi daitekeen moduan, 4 balio inguruan emaitza onenak lortzen direla ikusi daiteke. Asmatze tasaren balio onenekin gertatu den moduan, 4 balio inguruan aurkitzen diren balio horietan arreta jarriko da erabakia hartzerako orduan. Atalaseak 4 edo inguruko balioak hartzen dituenean, 0.8tik gorako \textit{f-neurria}k lortzen ditu, honi gehituta estaldura eta doitasun balio desiragarrienak 4 - 4.5 tartean daudela, erabakia hartzeko datu nahikoak daudela ondorioztatu daiteke.
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[height=6cm]{denaperp}
-  \caption{Aurreko neurri guztiak batera.}
-  \label{fig:all m}
-\end{figure}
-
-\indent Sistemaren garapenean lortutako emaitzen arabera, \textbf{atalaseari 4.4 balioa ematea} erabaki da, horrela txio bakoitzak \textit{Language Model}ekiko lortutako \textit{perplexity} balio honetatik gora txioak informalak direla kontsideratuko da, eta balio honetatik behera, formalak direla kontsideratuko dira. Atalaseari balio hori egokitzea erabaki da, asmatze tasa altuenetarikoa lortzen delako puntu honetan, 0.831eko balioa lortuz. Txio informalak iradokitzeko orduan, F-neurri altuenetarikoa lortzen da garapeneko puntu honetan, 0.841 balio inguruan kokatuz. Gehitu beharra dago ere, puntu zehatz honetan estaldura (0.858), doitasuna baino zertxobait hobea dela (0.824), aukeratutako balioa bi lerroen arteko ebaketa puntua baino lehenago hartzea erabaki baita (\ref{fig:all m}. irudia eta \ref{tab:ez-gain train}. taula).
+Therefore, Sistemaren garapenean lortutako emaitzen arabera, \textbf{atalaseari 4.4 balioa ematea} erabaki da, horrela txio bakoitzak \textit{Language Model}ekiko lortutako \textit{perplexity} balio honetatik gora txioak informalak direla kontsideratuko da, eta balio honetatik behera, formalak direla kontsideratuko dira. Atalaseari balio hori egokitzea erabaki da, asmatze tasa altuenetarikoa lortzen delako puntu honetan, 0.831eko balioa lortuz. Txio informalak iradokitzeko orduan, F-neurri altuenetarikoa lortzen da garapeneko puntu honetan, 0.841 balio inguruan kokatuz. Gehitu beharra dago ere, puntu zehatz honetan estaldura (0.858), doitasuna baino zertxobait hobea dela (0.824), aukeratutako balioa bi lerroen arteko ebaketa puntua baino lehenago hartzea erabaki baita (\ref{fig:all m}. irudia eta \ref{tab:ez-gain train}. taula).
 
 \begin{table}[H]
   \centering
