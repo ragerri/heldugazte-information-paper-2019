@@ -279,7 +279,7 @@ A perplexity-based distance between two languages is established by ``comparing 
 In order to classify tweets as \emph{formal} or \emph{informal}, we will calculate the perplexity-based distance between a tweet with respect to a character-based 7-gram language model. If the perplexity-based distance between each tweet and the character-based n-gram language model is low, then we will classify it as \emph{formal} and \emph{vice versa}. Of course, for this approach to work we need to establish a threshold so that if the perplexity-based distance is lower than the threshold the tweet is labeled as \emph{formal} and if higher, as \emph{informal}.
 
 Our method to calculate such threshold proceeds in the following manner. First, we take the tweets in the training set (65\% of the dataset) and classify each of them according to the perplexity-based distance with respect to the language model. We tried every value in the [0,10] range
-with an increment of 0.1 as threshold. Second, and we computed precision, recall and accuracy comparing the prediction of the threshold according to the perplexity value with respect to the gold-standard labels in the training data. Finally, the threshold chosen will be the value in which all the three metrics converge. As shown by Figure \ref{fig:threshold}, we found out that the best threshold value was 4.4
+with an increment of 0.1 as threshold. Second, we computed precision, recall and accuracy comparing the prediction of the threshold according to the perplexity value with respect to the gold-standard labels in the training data. Finally, the threshold chosen will be the value in which all the three metrics converge. As shown by Figure \ref{fig:threshold}, we found out that the best threshold value was close to 4.4.
 
 \begin{figure}[H]
   \centering
@@ -301,18 +301,18 @@ with an increment of 0.1 as threshold. Second, and we computed precision, recall
   \end{subfigure}
 \end{figure}
 
-Therefore, Sistemaren garapenean lortutako emaitzen arabera, \textbf{atalaseari 4.4 balioa ematea} erabaki da, horrela txio bakoitzak \textit{Language Model}ekiko lortutako \textit{perplexity} balio honetatik gora txioak informalak direla kontsideratuko da, eta balio honetatik behera, formalak direla kontsideratuko dira. Atalaseari balio hori egokitzea erabaki da, asmatze tasa altuenetarikoa lortzen delako puntu honetan, 0.831eko balioa lortuz. Txio informalak iradokitzeko orduan, F-neurri altuenetarikoa lortzen da garapeneko puntu honetan, 0.841 balio inguruan kokatuz. Gehitu beharra dago ere, puntu zehatz honetan estaldura (0.858), doitasuna baino zertxobait hobea dela (0.824), aukeratutako balioa bi lerroen arteko ebaketa puntua baino lehenago hartzea erabaki baita (\ref{fig:all m}. irudia eta \ref{tab:ez-gain train}. taula).
+Table \ref{tab:perplexitytrain} displays the results of classifying the tweets in the training data using perplexity-based distance using the value 4.4 as threshold.
 
 \begin{table}[H]
   \centering
   \begin{tabular}{|l|c|c|c|c|c|}
     \hline
-    \textbf{Etiketa} &  \textbf{Errorea} & \textbf{Totala} & \textbf{Doitasuna} & \textbf{Estaldura} & \textbf{F-neurria}\\ \hline
-    \textit{Informala} & 48 & 338 & 0.824  & 0.858  & 0.841\\ \hline
-    \textit{Formala} & 62 & 312 & 0.839 & 0.801 & 0.820\\ \hline
+    \textbf{Label} &  \textbf{Error} & \textbf{Total} & \textbf{Precision} & \textbf{Recall} & \textbf{F1}\\ \hline
+    \textit{Informal} & 48 & 338 & 0.824  & 0.858  & 0.841\\ \hline
+    \textit{Formal} & 62 & 312 & 0.839 & 0.801 & 0.820\\ \hline
   \end{tabular}
-  \caption{Entrenamenduaren balioak, ez-gainbegiratutako eredu estatistikoa.}
-  \label{tab:ez-gain train}
+  \caption{Results of the unsupervised approach on the training set.}
+  \label{tab:perplexitytrain}
 \end{table}
 
 \subsubsection{Sparse word representations}
