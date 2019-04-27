@@ -447,7 +447,7 @@ Given that the classifier labels each tweet as \emph{formal} or \emph{informal},
     Tweets (personal) & 4.046.512 & 1.128.124 \\
     Retweets  & 4.345.500 & 963.668 \\
     Tweets in Basque (Topics) & 2.634.534 & 530.226 \\
-    Tweets in Basque (Relations) & 2.421.058 & 400.448 \\ \hline
+    Retweets in Basque (Relations) & 2.421.058 & 400.448 \\ \hline
   \end{tabular}
   \caption{Classifying tweets in Large Corpus in terms of age stage (young/adult).}
   \label{tab:largecorpusdata}
@@ -608,62 +608,70 @@ The topics from adult users show that they mostly talk about politics, social, c
 
 
 % ################################################
-% ################    RELATIONS   ################   
+% ################    RELATIONS   ################
 % ################################################
 
 \section{Relations}\label{sec:connections}
 
-The aim of this section is to study the relationship of Basque tweeters. For this, nearly 3 million retweets in Basque have been used, separating adults and young in different groups. On the one hand, 2,421,058 retweets will be used to predict adult relations and, on the other hand, 400,448 retweets will be used to clarify the relations of young people. In this way, relations of the Basque tweeters will be inferred, using the sender and receiver information of each retweet to build a network of relationships. Finally, the relations of young and adult speakers will be shown and a comparison will be made between the two groups.
+In this section we will study the relations that appear between Basque users of Twitter. As in the previous section, the starting point will be the retweets of users classified as \emph{adult} or \emph{young} using the classifier developed in Section \ref{sec:ixa}. The number of retweets for each type of users are reported in Table \ref{tab:largecorpusdata}. Specifically, 2,421,058 retweets will be used to study the relations that are created between adult users. With respect to young users, the corpus consists of 400,448 retweets. The overall objective is to uncover the most important relations formed between users by studying the links between their retweets and comparing the different behaviour and relations of young and adult users.
 
-\subsection{Relationships graph based on retweets}\label{sec:sis harr}
+First, we created a giant graph using the data (retweets) for each type of user. To build the graph, two features extracted from each retweet were used: (i) who retweets and (ii) who has been retweeted. Thus, the data source will be the source and the target of each retweet. Based on these two characteristics, the two graphs were created using the \textit{gephi} program \cite{bastian2009gephi}.
 
-In order to see how the Basque youth and adult are related, a giant graph of each one has been created, based on the content that this groups exchange. To build the graph, two features from each retweet have been used, who retweets and who has been retweeted. In this way, the data source will be the source and the target of each retweet. Based on these two characteristics, two graphs have been created using the \textit{gephi} program \citep{bastian2009gephi}.
+Once the graphs were created, we proceed as follows: First, we divided each graph into subgroups using the modularity algorithm \cite{blondel2008fast}. Second, we gave the network a spatial structure by using the \textit{ForceAtlas2} algorithm \cite{jacomy2014forceatlas2}, ordering the nodes according to the community to which they belong. Finally, the identity of each subgroup or community was defined, using the most important nodes of the created subgroups. By doing so it can be seen how the communities within each graph are structured. Thus, in the adult graph we identified 33,277 nodes whereas  24,987 nodes were identified among the young users.
 
-Once the graphs have been created, the first step will be to divide each subgroup, using the modularity algorithm \citep{blondel2008fast}. The second step will be to give the network a spatial structure by using the \textit{ForceAtlas2} algorithm \citep{jacomy2014forceatlas2}, ordering the nodes according to the community to which they belong. Finally, the identity of each subgroup or community has been defined, using the most important nodes in these subgroups. In this way, it can be seen how the communities of each graph are structured, on the one hand the 33,277 nodes of the adults, and on the other hand, the 24,987 nodes of the young people .
+\noindent \textbf{CAN WE HAVE A PICTURE HERE?}
 
-\subsection{Results}
-\label{sec:emaitz analisi harr}
+Once the two independent network graphs, one for young users and another one for adults, were created, we split each network into subgroups to analyze how the communities or subgroups inside each group are formed. The subgroups are defined based on the most important nodes of each one. The aim is to uncover, via their retweets, the relations that are created between the Basque users of Twitter.
 
-After creating two independent graphs with the youth and adult data, each network was split into subgroups to see how the groups are formed. Then, the subgroups will be defined, based on the most important nodes of each one. With this, the relations of the Basque speakers community of Twitter can be shown.
-
-If we observe the subgroups derived from the graph of \textbf{adults} (table \ref{tab:tab harr hld}), we can see that they have a common characteristic, since all the groups have a relationship with the Basque Country. It can be seen, that in the case of adult people, Basque language is used to talk about Basque issues, highlighting politics (Nationalist left) and current affairs (news). In this way we can say that the function of Twitter is the usual (politics and current affairs), but the focus is on the Basque community itself.
-
-\begin{itemize}
-\item \textit{Nationalist Left} (27,92 \%): This subgroup is made up of nodes with a specific political orientation, specifically for the members of the Nationalist Left. In addition to the users that appear in the first column of the table \ref{tab:tab harr hld}, there are also many important nodes that are people (@ArnaldoOtegi, @jpermach, @JosebaAlvarez...) or institutions (@sortuEH, @LAB...) of the Nationalist Left. This is the main group, joined by more than a quarter of all nodes that corresponds to the relationship of a certain political orientation.
-\end{itemize}
-
-\begin{itemize}
-\item \textit{News} (23,77 \%): This group, related to news, will be formed by almost a quarter of all users. Most of the nodes of this subgroup are related to the media, specially several users related to the EITB (Basque public television) team. 
-\end{itemize}
-
-\begin{itemize}
-\item \textit{Basque language} (15,34 \%): In the 3rd subgroup, there are subjects related to the Basque language, such as media in Basque (@zuzeu, @Gaztezulo, @ArabakoALEA), associations for the promotion of Basque (@AEK\_eus, @EHEbizi...) as well as several individuals related to Basque (@KikeAmonarriz, @KoldoTellitu, @MertxeMugika).
-\end{itemize}
-
-\begin{itemize}
-\item \textit{Music and GED} (13,56 \%): In the fourth subgroup, there is a special phenomenon, since it brings together two different groups in the same subgroup. The first part would be about music, since there are different users related to the music scene (@EsneBeltza, @ZuriHidalgo, @ZeEsatek, @40minuturock, @hesiantaldea, @ItzrrSemeak ...). The second part would be related to the users of the Gure Esku Dago dynamic (@GoierrikoGED, @GEDTolosaldea, @GureEskuDagoDon ...), this dynamic could be considered as the Basque sovereignty Movement.
-\end{itemize}
-
-\begin{itemize}
-\item \textit{Basque tweeters} (13,10 \%): In this last subgroup, we would have common Basque users, being important subjects of the Basque community. It would be a group of well-known individuals, usually followed by the Basque community.
-\end{itemize}
+\subsection{Relationships in the Adult Graph}\label{sec:sis harr}
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{|l|l|l|l|l|}
-    \hline
-    \textbf{Nationalist left}  &  \textbf{News} &  \textbf{Basque language} &  \textbf{Music and GED} &  \textbf{Basque tweeters}\\ \hline 
-    @naiz\_info &  @berria &  @zuzeu &  @XMadariagaI &  @boligorria\\ \hline
-    @HamaikaTb &  @eitbAlbisteak &  @KikeAmonarriz &  @gaizkapenafiel &  @zaldieroa\\ \hline
-    @larbelaitz & @euskaltelebista &  @Sustatu &  @JGGarai &  @urtziurkizu\\ \hline
-    @topatu\_eus &  @euskadi\_irratia &  @Gaztezulo &  @EsneBeltza & @landergarro \\ \hline    
+  \begin{tabular}{lllll} \hline
+    Nationalist left  &  News & Basque language & Music and GED & Basque users \\ \hline \hline
+    @naiz\_info &  @berria &  @zuzeu &  @XMadariagaI &  @boligorria \\
+    @HamaikaTb &  @eitbAlbisteak &  @KikeAmonarriz &  @gaizkapenafiel &  @zaldieroa \\
+    @larbelaitz & @euskaltelebista &  @Sustatu &  @JGGarai &  @urtziurkizu \\
+    @topatu\_eus &  @euskadi\_irratia &  @Gaztezulo &  @EsneBeltza & @landergarro \\
     @axierL & @tolosaldeataria & @AEK\_eus  & @UrHanditan  &  @ielortza\\ \hline
   \end{tabular}
-  \caption{Most important nodes for the subgroups of adult people.}
+  \caption{Most important nodes for the subgroups in the graph of adult users.}
   \label{tab:tab harr hld}
 \end{table}
 
+Table \ref{tab:tab harr hld} shows the five main subgroups derived from the graph of \textbf{adult} users. Each of the subgroups displays a common characteristic, namely, that all of them have a direct relation with topics or issues related to the Basque Country. Thus, it can be seen that for adult users Basque language is used to talk mostly about Basque issues, highlighting politics (Separatist left) and current affairs (news). In other words, the main function is to talk about politics and social issues but with a clear focus on the Basque community itself (rather than on international affairs). In the following we describe the main characteristics of each of the subgroups contained in the graph of adult users.
+
+\begin{itemize}
+
+\item \textbf{Nationalist Left} (27.92\%): This subgroup is made up of nodes with a specific political orientation, mostly related to members of the Nationalist Left. In addition to the users that appear in the first column of Table \ref{tab:tab harr hld}, there are also many important nodes that refer to specific users (@ArnaldoOtegi, @jpermach, @JosebaAlvarez...) or institutions (@sortuEH, @LAB...) of the Nationalist Left. This is the main group, joined by more than a quarter of all nodes that corresponds to the relationship of a certain political orientation.
+
+\item \textbf{News} (23.77\%): This group, related to news, consists of almost a quarter of all users. Most of the nodes of this subgroup are related to the media, specially several users related to the Basque public television (EITB).
+
+\item \textbf{Basque language} (15.34\%): In the 3rd subgroup, there are topics related to the Basque language, such as communication media in Basque (@zuzeu, @Gaztezulo, @ArabakoALEA), associations for the promotion of the Basque language (@AEK\_eus, @EHEbizi...) as well as several individuals related to the Basque language (@KikeAmonarriz, @KoldoTellitu, @MertxeMugika).
+
+\item \textbf{Music and GED} (13.56\%): In the fourth subgroup there is a special phenomenon, since it brings together two different groups in the same subgroup. The first one is related to music, since we can appreciate different users related to the music scene (@EsneBeltza, @ZuriHidalgo, @ZeEsatek, @40minuturock, @hesiantaldea, @ItzrrSemeak ...). The second one is related to the users of the social movement ``Gure Esku Dago'' (@GoierrikoGED, @GEDTolosaldea, @GureEskuDagoDon ...).
+
+\item \textbf{Basque tweeters} (13.10\%): In this last subgroup, we would have common Basque users of Twitter, which are important within the Basque community due to their large number of follower or retweets.
+\end{itemize}
+
+\subsection{Relationships in the Young Subgraph}\label{sec:relat-young-subgr}
+
 Regarding to \textbf{young} people's graph subgroups (table \ref{tab:tab harr gzt}), it can be seen that there are similarities and differences with the adult graph. Focusing on the similarities, it can be seen that \textit{Basque language}, \textit{Nationalist left} and \textit{News} are important subgroups in both graphs. These common subgroups can be related to politics and immediacy, which are the basic characteristics of Twitter identity. On the other hand, taking into account the differences, it should be noted that groups related to leisure also take a central stage, such as \textit {Sports} and \textit{Music}. To finish, it is worth pointing out that in this case young Basque speakers also take Twitter as a channel to comment on everyday life, in which case the different subgroups are related to close events.
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{lllll} \hline
+    Sports & Basque language & Nationalist left & News & Music \\ \hline \hline
+     @berria &  @enekogara & @naiz\_info & @argia & @berritxarrak \\
+     @euskaltelebista & @GureEskuDago & @larbelaitz &  @HamaikaTb & @gaztea \\
+     @iBROKI & @EsaldiakEuskara & @topatu\_eus &  @eitbAlbisteak & @izanpirata \\
+     @RealSociedad & @ZuriHidalgo & @ArnaldoOtegi & @MaddalenIriarte & @eitbeus \\
+     @XabierEuzkitze & @MeriLing1 & @ernaigazte & @ielortza & @LeakoHitza \\ \hline
+  \end{tabular}
+  \caption{Most important nodes for the subgroups in the graph of young users.}
+  \label{tab:tab harr gzt}
+\end{table}
+
 
 \begin{itemize}
 \item \textit{Sports} (21,61 \%): This subgroup, which includes most of the nodes of the youth model, is related to sports. The group would be made up of sports teams or organizations (@RealSociety, @RealSociedadEUS, @ASPEpelota, @SDEibar ...), as well as its athletes (@InigoMartinez, @AmetsTxurruka, @XabierUsabiaga, @Markelirizar ...). However, the most important nodes are sports journalists (@iBROKI, @XabierEuzkitze, @Imagreto, @bzarrabeitia, @TxetxuUbieta...) and the media (@berria, @euskaltelebista, @eitbkirolak, @euskadi\_irratia...). Once again, it can be clearly seen that, despite being the subgroup of sports, the media are the real protagonists.
@@ -684,21 +692,6 @@ Regarding to \textbf{young} people's graph subgroups (table \ref{tab:tab harr gz
 \begin{itemize}
 \item \textit{Music} (11,35 \%): In the final subgroup, although it is quite diverse, it can be said that the most important nodes are related to music. Among these, the media that talk about music (@gaztea, @DidaGaztea), music groups (@berritxarrak, @muguruzafm, @Glaukomaband), as well as some record companies (@BagaBigaeus).
 \end{itemize}
-
-\begin{table}[H]
-  \centering
-  \begin{tabular}{|l|l|l|l|l|}
-    \hline
-    \textbf{Sports}  &  \textbf{Basque language} &  \textbf{Nationalist left} &  \textbf{News} &  \textbf{Music}\\ \hline 
-     @berria &  @enekogara & @naiz\_info  &  @argia &  @berritxarrak\\ \hline
-     @euskaltelebista & @GureEskuDago  & @larbelaitz  &  @HamaikaTb &  @gaztea\\ \hline
-     @iBROKI &  @EsaldiakEuskara &  @topatu\_eus &  @eitbAlbisteak &  @izanpirata\\ \hline
-     @RealSociedad & @ZuriHidalgo  & @ArnaldoOtegi  & @MaddalenIriarte  &  @eitbeus\\ \hline
-     @XabierEuzkitze &  @MeriLing1 & @ernaigazte  &  @ielortza &  @LeakoHitza\\ \hline
-  \end{tabular}
-  \caption{Most important nodes for the subgroups of young people.}
-  \label{tab:tab harr gzt}
-\end{table}
 
 Once the subgroups of both models have been interpreted and defined, a comparison between the two has been done. It can be seen (table \ref{tab:taldeak}), both adults and young people, even though they have different preferences in their relationship, they have a common part. On the one hand, the political nature and immediacy of this social network would be a common part, even if it is more noticeable for adults. Additionally, it should be pointed out that in most subgroups, media-related users play an important role, confirming the informative nature of Twitter. On the other hand, we must emphasize that Basque users use Basque language, especially to talk about events or topics around them, linked to the context of the Basque Country. To conclude, it must be said that the community of Basque tweeters, apart from sharing the general characteristics of Twitter (immediacy and political character), has its own peculiarity, to use Basque language to speak about Basque topics.
 
