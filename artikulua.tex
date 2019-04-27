@@ -214,7 +214,7 @@ On the other hand, to know what the way of relating of the users is, retweets wi
 % #########################################################
 % Euskal txiolarietaz gain ere, modu orokorrago batean azaldu ataza (abstrakzio malia altuagoa) -->> hiztun gutxituen komunitateari buruzko analisia.
 
-\section{Data Extraction}\label{sec:data-extraction}
+\section{Extracting a Large Corpus of Basque Tweets}\label{sec:data-extraction}
 
 As the first step the community we have to focus on has to be specified, in order to start extracting data from somewhere. With the intention of investigating a specific community, it is necessary to identify this community in the whole network, specifying the universe to be studied. In this case, people who publish tweets in Basque will be the community to investigate. For identifying basque speakers in Twitter, a list already prepared by Umap.eus has been used. This website includes in the list users who publish at least 20\% of their tweets in Basque\footnote{\url{https://umap.eus/}}. In this way, a list of 8,189 Basque users has been obtained, which will consist the sample for the investigation.
 
@@ -232,7 +232,7 @@ Once the community to investigate is specified and the sample of users, whom inf
   \label{tab:useful-data}
 \end{table}
 
-\section{Classifying Young/Adult Users}\label{sec:class-young-users}
+\section{Classifying Users by Age Stage}\label{sec:class-young-users}
 
 In this section we present our work to classify Basque Twitter users as young or adult by analyzing their tweets' writing style. As we have seen in Section \ref{sec:identifier_background}, previous work includes automatic approaches to characterize users in the context of social networks and media, the most common being those related with genre and age \citep{cesare2017detection}. Our objective of developing a classifier to characterizing Basque Twitter users according to two stages of life (young/adult) is therefore placed within that research line.
 
@@ -244,7 +244,7 @@ It has been suggested that adults tend to use more conventional language \cite{n
 
 \subsection{Experimental Framework}\label{sec:exper-fram}
 
-Following the setting established above, we will address the problem of classifying each tweet as \emph{formal} or \emph{informal} by means of several machine learning approaches. First, we will apply one unsupervised statistical method based on perplexity \cite{gamallo2017language}. Second, we will experiment with several supervised approaches: (i) a baseline method using sparse, \emph{one-hot} word representations \cite{pedregosa2011scikit}; (ii) a feature-based method using word representations as continuous word vectors, namely, word embeddings  on top of the baseline developed in (i) \cite{mikolov2013distributed,pennington-etal-2014-glove,mikolov-etal-2018-advances}; (iii) an off-the-shelf system which uses clustering features for representing the documents \cite{agerri2016robust,agerri2019language} and (iv), a deep learning approach leveraging character contextual word embeddings and a neural network architecture \cite{akbik2018contextual}.
+Following the setting established above, we will address the problem of classifying each tweet as \emph{formal} or \emph{informal} by means of several approaches. First, we will apply a statistical method based on perplexity \cite{gamallo2017language}. Second, we will experiment with several supervised methodologies: (i) a baseline method using sparse, \emph{one-hot} word representations \cite{pedregosa2011scikit}; (ii) a feature-based method using word representations as continuous word vectors, namely, word embeddings, on top of the baseline developed in (i) \cite{mikolov2013distributed,pennington-etal-2014-glove,mikolov-etal-2018-advances}; (iii) an off-the-shelf system which uses clustering features for representing the documents \cite{agerri2016robust,agerri2019language} and (iv), a deep learning approach leveraging character contextual word embeddings and a neural network architecture \cite{akbik2018contextual}.
 
 We will develop a classifier with each of the methods listed above and evaluate it on a held-out, gold-standard dataset manually annotated at tweet level for the categories of \emph{formal} and \emph{informal}. The method that obtains the best results in the experiments will be then used to annotate the 6 million tweets obtained thereby classifying their authors as \emph{young} or \emph{adult}. In this sense, users will be classified according to the writing style of the tweets in their timelines.
 
@@ -268,7 +268,7 @@ In the rest of this section we will describe the process of manual annotation of
 
 In order to focus on learning to classify tweets according to writing style, we decided to clean the tweets keeping only those words that contained alphanumeric characters. Thus, we removed emoticons, hashtags, users' names (@) and URL links. Furthermore, we only considered those tweets that contained more than 4 tokens. We then randomly selected 1000 tweets sent from personal accounts from the 6 million tweet dataset collected as described in Section \ref{sec:data-extraction}. One annotator manually labeled every tweet as \emph{formal} or \emph{informal}. To manually label the tweets, a qualitative methodology was followed: all those tweets that contained out of vocabulary words or colloquial expressions were classified as informal. This methodology has been motivated by previous work on classifying formal and colloquial tweets \cite{gonzalez2015analysis}. Table \ref{tab:gold-corpus} shows the main features of our manually annotated dataset. For the experiments described in the next four subsections, we split the gold standard corpus in three sets, leaving 65\% for training and \%35 for testing.
 
-\subsubsection{Unsupervised approach: \textit{Perplexity}}\label{sec:unsup-appr-text}
+\subsubsection{Perplexity-based Distance}\label{sec:unsup-appr-text}
 
 Perplexity is a widely-used evaluation metric for language models built with n-grams extracted from text corpora \cite{chen1999empirical}. Furthermore, it has been used for specific tasks, namely, to classify between formal and colloquial tweets \cite{gonzalez2015analysis} or for language identification between similar languages \cite{gamallo2017language}. Both works inspire our approach to classifying tweets as formal or informal using perplexity. The former showed that perplexity could be useful to indirectly detect out-of-vocabulary words in tweets \cite{gonzalez2015analysis}. More importantly for us, the latter formally proposed the concept of \emph{perplexity-based distance} between two languages.
 
@@ -510,113 +510,102 @@ If we take a look at the tweets written only in Basque, we find that 530.226 per
 
 
 % ################################################
-% ################     TOPICS     ################   
+% ################     TOPICS     ################
 % ################################################
 
 \section{Topics}\label{sec:topics}
 
-The aim of this section is to detect the most frequent topics of Basque tweeters. For this, more than 3 million personal tweets in Basque have been used, separating adults and young in different groups. On the one hand, 2,634,534 personal tweets will be used to predict adult topics and, on the other hand, 530,226 personal tweets will be used to clarify the topics of young people. In this way, from these unstructured data, the topics of the Basque tweeters will be inferred, using the technique of \textit{topic modeling}, applying the algorithm \textit{Latent Dirichlet Allocation} (LDA). Finally, the topics of young and adult speakers will be found out and a comparison will be made between the two groups.
+The aim of this section is to detect the most frequent topics of Twitter users writing in Basque. In order to do so, we start with the personal tweets of users classified as adults and young in the previous section using the classifier developed in Section \ref{sec:ixa}. As shown by Table \ref{tab:largecorpusdata}, more than 3 million personal tweets in Basque were obtained. On the one hand, 2,634,534 personal tweets will be used to predict adult topics and, on the other hand, 530,226 personal tweets for young users. We will apply topic modelling via Latent Dirichlet Allocation (LDA) \cite{blei2003latent} in order to infer relevant topics per type of user from unstructured data.
 
+Topic modeling is a commonly used tool in the field of text mining. With this technique, words are grouped or clustered according to their context, thereby generating more general contents or concepts via the clustered words and allowing to identify general topics from specific words. We apply this technique to identify the main subjects that appear in the Basque users' tweets. In order words, LDA  makes it possible to classify events that are observable in latent or hidden clusters. This is possible thanks to the many hidden features, such as the similarity of words.
 
-\subsection{\textit{Topic modeling} using LDA}
-\label{sec:datu analisi}
+Before applying LDA, we need to structured the documents in our dataset. It is difficult to directly apply LDA to our data due to the short length of tweets. Thus, we decide to group the tweets by user, namely, we will create one document per user where the document will be containing every tweet published by that person \cite{hong2010empirical, zhao2011comparing}. Additionally, and considering that Basque is an agglutinative language, we decided to lemmatize the documents to reduce the number of terms that needed to be modelled. For this pre-processing step, the IXA pipes Basque lemmatizer  was used \cite{agerri2014ixa}.
 
-The main purpose of this section is to identify the topics of Basque speakers through the LDA algorithm. \textit{Topic modeling} is a commonly used tool in the field of text mining. With this technique, words are grouped according to context, creating more general content with similar words. In this way, the related words will be grouped together, allowing to identify general topics. Thanks to the grouping of words, it will be identified what subjects Basque speakers talk about in the network. The LDA technique will be used to apply topic modeling, creating general topics using words with the same context.
+LDA requires to choose a number of topics beforehand. After several tests, 20 topics were used for the adults documents and 12 for the young ones. The different in topics is coherent with the number of tweets for each of user type. Although there is not a fixed correct number of topics, this choice affects the interpretability of the LDA results \cite{binkley2014understanding,steyvers2007probabilistic}. Thus, it is interesting to achieve the most dispersed possible model so that the overlap between topics is kept to a minimum. Furthermore, the resulting topics should correlate with social reality which is latent in the real data.
 
-\textit{Latent Dirichlet Allocation} \citep{blei2003latent} makes it possible to classify events that are observable in latent or hidden clusters. This classification occurs thanks to the many hidden features, such as the similarity of words. By linking words and documents, hidden relationships will emerge, in general categories or topics. The LDA is based on the context to classify, the grouping of a word will be based on the words that surround it, regardless of the order of the words. In addition, this groups of words of the same context will share a similar semantic meaning, which will help to define them.
-
-As the first step to complete this action, it will be structuring the documents. The special structure of Tweets makes it difficult for the LDA to be applied properly because these are too short documents and it makes it difficult to find similarities. Taking into account the short nature of the tweets, a special structuring will be carried out to allow a successful topic modeling. The tweets will be grouped by users, in other words, each document will be composed of each person's personal tweets. In this way, to apply the LDA algorithm in a correct way, each document will consist on all the tweets generated by each user \citep{hong2010empirical, zhao2011comparing}. Additionally, to reduce the number of terms and to homogenize the information, words have been lemmatized using the lemmatizer in Basque inside \textit{IXA pipes} program \citep{agerri2014ixa}. 
-
-When LDA is applied, the amount of topics to be identified must be determined, since the algorithm works in this way. With the intention of choosing the correct amount of topics for each model (young and adult), there have been tests with different amounts of topics. It must be said that there is no 'correct' number of topics \citep{binkley2014understanding}, but it should be clear that this number will affect the interpretation of the model \citep{steyvers2007probabilistic}. The amount of topics used is based on the cluster dispersion and in the interpretability. On the one hand, in terms of interpretability, the model is intended to be coherent with social reality, that is, to have a connection with the issues that can be found in Basque society. On the other hand, in terms of dispersion of groups, the intention is to achieve the most dispersed model possible, to find the least possible overlap between groups, since the distance between the groups indicates the conceptual difference of the topics. So, depending on the model (young/adult), an amount of topics have been selected, as more documents are available, more topics can be selected because there is more information. Therefore, the \textit{young} model has fewer topics because the amount of information is smaller. Thus, after completing a comparison between the number of topics for each model, it has been decided to use 20 topics for \textit{adults} model and 12 topics for \textit{young} model. \\
-
-\subsection{Results}
-\label{sec:emaitz analisi}
-Once the LDA has been completed, the result are displayed by the method \textit{LDAvis} \citep{sievert2014ldavis}, allowing an easy interpretation of each topic. The identity of the topic will be determined by its internal words, \citep{binkley2014understanding}, which will allow to clarify the usual topics spoken by Basque tweeters. Topics have been defined individually for adults (\ref{tab:adult-tp} table) and young people (\ref{tab:young-tp} table), by taking into account the relevant words of each topic.
+The results of applying LDA are displayed using LDAvis \cite{sievert2014ldavis}, which allows an easy interpretation of each topic. As it is customary, the identity or meaning of the topic is determined by the words of which it is composed \cite{binkley2014understanding}. Thus, Table \ref{tab:adult-tp} shows the topics obtained for the adult users whereas Table \ref{tab:young-tp} lists the topics for the young users.
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{|l|l|l|}
+  \begin{tabular}{llc}
     \hline
-    \textbf{Topics of adult people} &  \textbf{Representative words in the topic} & \textbf{\% of words} \\ \hline
-                   1  Conversation & entzun, iruditu, bizitza, pentsatu, pasatu & 10,5 \%  \\ \hline
+    \textbf{Topics of adult users} &  \textbf{Representative words in the topic} & \textbf{\% of words} \\ \hline \hline
+                   1  Conversation & entzun, iruditu, bizitza, pentsatu, pasatu & 10.5  \\
                    & listen, imagine, life, think, pass & \\ \hline
-                   2  Politics & Euskal Herri, espainia, politiko, estatu, eskubide & 10 \%  \\ \hline
+                   2  Politics & Euskal Herri, espainia, politiko, estatu, eskubide & 10.0  \\
                    & Basque Country, Spain, politics, states, rights & \\ \hline
-                   3  Basque tweeters & @txargain, @berria, @boligorria, euskara, idatzi & 6,9 \%  \\ \hline
+                   3  Basque tweeters & @txargain, @berria, @boligorria, euskara, idatzi & 6.9 \\
                    & @user, @newspaper, @user, Basque, write & \\ \hline
-                   4  Cultural offer & lehiaketa, sarrera, ikastaro, erakusketa, antzerki & 6,4 \%  \\ \hline
+                   4  Cultural offer & lehiaketa, sarrera, ikastaro, erakusketa, antzerki & 6.4  \\
                    & competition, entry, course, exhibition, theater & \\ \hline
-                   5  Public administration & udal, zerbitzu, publiko, aurrekontu, euskadi & 6,1 \%  \\ \hline
+                   5  Public administration & udal, zerbitzu, publiko, aurrekontu, euskadi & 6.1  \\
                    & municipal, services, public, budget, euskadi & \\ \hline
-                   6  Basque television & @euskaltelebista, urhanditan, @xabiermadariaga, herritxiki & 5,3 \%  \\ \hline
+                   6  Basque television & @euskaltelebista, urhanditan, @xabiermadariaga, herritxiki & 5.3 \\
                    & @television, TV program, @journalist, TV program & \\ \hline
-                   7  Tournaments & txapelketa, final, kirol, jokatu, kanporaketa & 5 \%  \\ \hline
+                   7  Tournaments & txapelketa, final, kirol, jokatu, kanporaketa & 5.0 \\
                    & championship, final, sports, play, playoffs & \\ \hline
-                   8  Basque prisoners & preso, herri, espetxe, iheslari, elkartasun & 4,9 \%  \\ \hline
+                   8  Basque prisoners & preso, herri, espetxe, iheslari, elkartasun & 4.9 \\
                    & prisoner, people, prison, fugitive, solidarity & \\ \hline
-                   9  Culture & liburu, literatura, filma, poesia, dokumental & 4,8 \%  \\ \hline
+                   9  Culture & liburu, literatura, filma, poesia, dokumental & 4.8 \\
                    & books, literature, film, poetry, documentary & \\ \hline
-                   10 Social movements & feminista, asanblada, gaztetxe, borroka, langile & 4,8 \%  \\ \hline
+                   10 Social movements & feminista, asanblada, gaztetxe, borroka, langile & 4.8 \\
                    & feminist, assembly, squatted house, fight, worker & \\ \hline
-                   11 Education & ikasle, hezkuntza, irakasle, ikastola, ikastetxe & 4,3 \%  \\ \hline
+                   11 Education & ikasle, hezkuntza, irakasle, ikastola, ikastetxe & 4.3 \\
                    & students, education, teachers, Basque colleges, schools & \\ \hline
-                   12 Science & euskara, artikulu, interesgarri, zientzia, teknologia & 4,1 \%  \\ \hline
+                   12 Science & euskara, artikulu, interesgarri, zientzia, teknologia & 4.1 \\
                    &  Basque, articles, interesting, science, technology& \\ \hline
-                   13 Music & kontzertu, disko, talde, entzun, musika & 3,9 \%  \\ \hline
+                   13 Music & kontzertu, disko, talde, entzun, musika & 3.9 \\
                    & concert, disc, group, listen, music & \\ \hline
-                   14 Basque language & euskara, hizkuntza, euskaldun, euskal, ikasi & 3,8 \%  \\ \hline
+                   14 Basque language & euskara, hizkuntza, euskaldun, euskal, ikasi & 3.8 \\
                    & Basque language, language, Basque speaker, Basque, learn & \\ \hline
-                   15 Sports & talde, real, partida, irabazi, jokatu & 3,8 \%  \\ \hline
+                   15 Sports & talde, real, partida, irabazi, jokatu & 3.8 \\
                    & team, real, match, win, play & \\ \hline
-                   16 Gipuzkoa & tolosa, andoain, hernani, ordizi, beasain & 3,7 \%  \\ \hline
-                   17 Media in Basque & @berria, @euskalirratia, @argia, @zebrabidea, @iehkohitza & 3,5 \%  \\ \hline
-                   18 Donostia & donostia, @donostiakoudala, ezagutu, gipuzkoa & 3,5 \%  \\ \hline
-                   19 Nafarroa & nafarroa, baztan, altsasu, irunerri, irun & 2,7 \%  \\ \hline
-                   20 Bizkaia & larrabetzu, lekeitio, durango, bermeo, arrasate & 2,6 \%  \\ \hline
+                   16 Gipuzkoa & tolosa, andoain, hernani, ordizi, beasain & 3.7  \\ \hline
+                   17 Media in Basque & @berria, @euskalirratia, @argia, @zebrabidea, @iehkohitza & 3.5  \\ \hline
+                   18 Donostia & donostia, @donostiakoudala, ezagutu, gipuzkoa & 3.5  \\ \hline
+                   19 Nafarroa & nafarroa, baztan, altsasu, irunerri, irun & 2.7  \\ \hline
+                   20 Bizkaia & larrabetzu, lekeitio, durango, bermeo, arrasate & 2.6 \\ \hline
   \end{tabular}
-  \caption{Topics of adult people}
+  \caption{Topics of adult users. Whenever necessary, English translation is provided below each row of representative words.}
   \label{tab:adult-tp}
 \end{table}
 
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{|l|l|l|}
+  \begin{tabular}{llc}
     \hline
-    \textbf{Topics of young people} &  \textbf{Representative words in the topic} & \textbf{\% of words} \\ \hline
-                   1  Gipuzkera dialect (informal chat) & in, ne, oain, atxalde, biyar & 14,7 \%  \\ \hline
+    \textbf{Topics of young users} &  \textbf{Representative words in the topic} & \textbf{\% of words} \\ \hline \hline
+                   1  Gipuzkera dialect (informal chat) & in, ne, oain, atxalde, biyar & 14.7 \\
                    & do, mine, now, late, tomorrow & \\ \hline
-                   2  Express feelings & maite, amets, gau, bizi, bihotz & 11,4 \%  \\ \hline
+                   2  Express feelings & maite, amets, gau, bizi, bihotz & 11.4 \\
                    & love, dream, night, live, heart & \\ \hline
-                   3  Bizkaiera dialect (informal chat) & dau, be, ein, dot, emun, bixar & 10,8 \%  \\ \hline
+                   3  Bizkaiera dialect (informal chat) & dau, be, ein, dot, emun, bixar & 10.8 \\
                    & is, also, do, have, give, tomorrow & \\ \hline
-                   4  Sports & partidu, irabazi, jokatu, txapeldun, etapa & 9,9 \%  \\ \hline
+                   4  Sports & partidu, irabazi, jokatu, txapeldun, etapa & 9.9 \\
                    & match, win, play, champion, stage & \\ \hline
-                   5  Cultural activities & areto, antzoki, gaztetxe, tailer, kontzertu & 9,7 \%  \\ \hline
+                   5  Cultural activities & areto, antzoki, gaztetxe, tailer, kontzertu & 9.7 \\
                    & halls, theaters, youth clubs, workshops, concerts & \\ \hline
-                   6  To congratulate & zorion, pasatu, animo, eskerrikasko, polit & 9,3 \%  \\ \hline
+                   6  To congratulate & zorion, pasatu, animo, eskerrikasko, polit & 9.3 \\
                    & congratulations, pass, courage, thank you, nice & \\ \hline
-                   7  Tell the life & jajaja, bihar, ohera, partido, ikasi & 7,6 \%  \\ \hline
+                   7  Tell the life & jajaja, bihar, ohera, partido, ikasi & 7.6 \\
                    & Hahaha, morning, to bed, party, study & \\ \hline
-                   8  Bizkaiera dialect (formal chat) & dot, dau, barri, barik, be & 7,1 \%  \\ \hline
+                   8  Bizkaiera dialect (formal chat) & dot, dau, barri, barik, be & 7.1 \\
                    & have, is, new, without, too & \\ \hline
-                   9  Gipuzkera dialect (formal chat) & det, ne, hoi, iruditu, irakurri  & 7,1 \%  \\ \hline
+                   9  Gipuzkera dialect (formal chat) & det, ne, hoi, iruditu, irakurri  & 7.1 \\
                    & do, mine, that, seem, read & \\ \hline
-                   10 Basque prisoners & herri, euskal, etxe, preso, gazte & 6,4 \%  \\ \hline
+                   10 Basque prisoners & herri, euskal, etxe, preso, gazte & 6.4 \\
                    & people, Basque, house, prisoner, youth & \\ \hline
-                   11 Athletic CB & aupa, athletic, @athletic, san mames, bilbo  & 3,3 \%  \\ \hline
-                   12 Rowing & sailkapen, jardunaldi, maila, txapelketa, estropada & 2,7 \%  \\ \hline
+                   11 Athletic CB & aupa, athletic, @athletic, san mames, bilbo  & 3.3 \\ \hline
+                   12 Rowing & sailkapen, jardunaldi, maila, txapelketa, estropada & 2.7 \\
                    & classification, event, level, championship, regatta & \\ \hline
   \end{tabular}
-  \caption{Topics of young people}
+  \caption{Topics of young users. Whenever necessary, English translation is provided below each row of representative words.}
   \label{tab:young-tp}
 \end{table}
 
-By focusing on adults (table \ref{tab:adult-tp}), it can be seen that they use Basque in social networks, especially to deal with issues of a political (politics, Basque prisoners and social movements) or a social (culture, education and Basque language) nature. It should be noted that public political institutions also have their place in this social network (public administration and different administrations from Gipuzkoa, Bizkaia or Nafarroa). It can be considered that talking about social issues is a characteristic for adults, since the topics of social interest have a leading role in this group.
+The topics from adult users show that they mostly talk about politics, social, cultural and linguistic (Basque language-related) issues. It is also interesting to notice that public institutions also appear in the social network, such as Basque Country regional offices from Gipuzkoa, Bizkaia or Nafarroa. However, if we look at the topics most common between young users (Table \ref{tab:young-tp}) we can see that they are mostly related to everyday affairs (chatting between friends, expressing feelings and emotions with respect to something, etc.). In some cases, they talk about everyday issues using their local Basque dialect (e.g., \emph{Gipuzkera} and \emph{Bizkaiera}). Additionaly, sports (Athletic Club, rowing) are also a recurring theme among young people. Thus, comparing the two different age stages, it should be noted that young people use Twitter for more day-to-day activities among friends or among contacts within the network. In the case of adults, it is clear that there is more political and social content.
 
-The most common topics of young people (table \ref{tab:young-tp}) are related to their everyday affairs (chat, express feelings, to congratulate and telling life). In some cases, they talk about everyday things, but using their own dialect (Gipuzkera and Bizkaiera). In addition, we can not ignore that sports (sports, Athletic CB, rowing) are also a recurring theme among young people. Focusing on young people, it must be said that they use Basque in social networks, especially in their daily lives to communicate with others.
-
-Comparing the two different age groups, it should be noted that young people use this network for day-to-day things (chat, express feelings, congratulate, tell the life...). It can be said that this social network is used by young people to communicate with their closest. On the other hand, adults use the network to talk about social issues (politics, media, Basque, social movements...). It seems that adults use this social network to socialize messages, especially messages with a political nature. To sum up, it can be said that while the themes of young people and adults are different, the shared functions consist on communication and in the immediate exchange of information.
 
 % ################################################
 % ################    RELATIONS   ################   
@@ -626,8 +615,7 @@ Comparing the two different age groups, it should be noted that young people use
 
 The aim of this section is to study the relationship of Basque tweeters. For this, nearly 3 million retweets in Basque have been used, separating adults and young in different groups. On the one hand, 2,421,058 retweets will be used to predict adult relations and, on the other hand, 400,448 retweets will be used to clarify the relations of young people. In this way, relations of the Basque tweeters will be inferred, using the sender and receiver information of each retweet to build a network of relationships. Finally, the relations of young and adult speakers will be shown and a comparison will be made between the two groups.
 
-\subsection{Relationships graph based on retweets} 
-\label{sec:sis harr}
+\subsection{Relationships graph based on retweets}\label{sec:sis harr}
 
 In order to see how the Basque youth and adult are related, a giant graph of each one has been created, based on the content that this groups exchange. To build the graph, two features from each retweet have been used, who retweets and who has been retweeted. In this way, the data source will be the source and the target of each retweet. Based on these two characteristics, two graphs have been created using the \textit{gephi} program \citep{bastian2009gephi}.
 
@@ -718,7 +706,6 @@ Once the subgroups of both models have been interpreted and defined, a compariso
            \centering
            \captionsetup[subtable]{position = below}
           \captionsetup[table]{position=top}
-           
            \begin{subtable}{0.45\linewidth}
                \centering
                \begin{tabular}{|l|c|}
@@ -754,12 +741,10 @@ Once the subgroups of both models have been interpreted and defined, a compariso
 
 
 % ####################################################
-% ################     CONCLUSION     ################   
+% ################     CONCLUSION     ################
 % ####################################################
 
-
-\section{Conclusion and Future Work}
-\label{sec:conclusion}
+\section{Conclusion and Future Work}\label{sec:conclusion}
 
 We have shown how to develop 
 
