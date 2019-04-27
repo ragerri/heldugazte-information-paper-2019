@@ -216,9 +216,9 @@ On the other hand, to know what the way of relating of the users is, retweets wi
 
 \section{Data Extraction}\label{sec:data-extraction}
 
-\indent As the first step the community we have to focus on has to be specified, in order to start extracting data from somewhere. With the intention of investigating a specific community, it is necessary to identify this community in the whole network, specifying the universe to be studied. In this case, people who publish tweets in Basque will be the community to investigate. For identifying basque speakers in Twitter, a list already prepared by Umap.eus has been used. This website includes in the list users who publish at least 20\% of their tweets in Basque\footnote{\url{https://umap.eus/}}. In this way, a list of 8,189 Basque users has been obtained, which will consist the sample for the investigation.
+As the first step the community we have to focus on has to be specified, in order to start extracting data from somewhere. With the intention of investigating a specific community, it is necessary to identify this community in the whole network, specifying the universe to be studied. In this case, people who publish tweets in Basque will be the community to investigate. For identifying basque speakers in Twitter, a list already prepared by Umap.eus has been used. This website includes in the list users who publish at least 20\% of their tweets in Basque\footnote{\url{https://umap.eus/}}. In this way, a list of 8,189 Basque users has been obtained, which will consist the sample for the investigation.
 
-Once the community to investigate is specified and the sample of users, whom information is going to be gathered, is chosen, the data extraction will began. To extract the data from Twitter, \textit{tweepy} package from Python is used, choosing the \textit{timeline extraction} mode to gather the last 3,200 available tweets of each user of the sample. The data collection was performed between May 30 and 31, 2018, gathering more than 10 million tweets from 7,980 basque Twitter users. As the purpose of this investigation is to identify the content in basque language of this users, the tweets generated are classified by language using metadata stored in the tweet. Once the content in basque is selected, personal tweets and retweets are separated, using each one for a specific task. After the classification, the characteristics of the data set can be seen in the table \ref{tab:useful-data}.
+Once the community to investigate is specified and the sample of users, whom information is going to be gathered, is chosen, the data extraction will began. To extract the data from Twitter, \textit{tweepy} package from Python is used, choosing the \textit{timeline extraction} mode to gather the last 3,200 available tweets of each user of the sample. The data collection was performed between May 30 and 31, 2018, gathering more than 10 million tweets from 7,980 basque Twitter users (the Large Corpus). As the purpose of this investigation is to identify the content in Basque language of this users, the tweets generated are classified by language using metadata stored in the tweet. Once the content in basque is selected, personal tweets and retweets are separated, using each one for a specific task. After the classification, the characteristics of the Heldugazte corpus can be seen in the table \ref{tab:useful-data}\footnote{The dataset is publicly available at \url{https://github.com/ixa-ehu/heldugazte-corpus}.}.
 
 \begin{table}[H]
   \centering
@@ -228,7 +228,7 @@ Once the community to investigate is specified and the sample of users, whom inf
     \textbf{Terms} & 1,434,050 & 813,833 \\
     \textbf{Tokens}  & 37,350,268 & 39,329,204 \\ \hline
   \end{tabular}
-  \caption{Useful extracted data, characteristics of tweets in Basque.}
+  \caption{Characteristics of the Heldugazte corpus.}
   \label{tab:useful-data}
 \end{table}
 
@@ -260,7 +260,7 @@ In the rest of this section we will describe the process of manual annotation of
     Informal & 508 \\
     Tokens in shortest tweet & 5 \\
     Tokens in longest tweet & 34 \\
-    Token avg. & 9.66 \\
+    Token avg. & 9.66 \\ \hline
   \end{tabular}
   \caption{Gold standard corpus.}
   \label{tab:gold-corpus}
@@ -276,7 +276,7 @@ A perplexity-based distance between two languages is established by ``comparing 
 
 In order to classify tweets as \emph{formal} or \emph{informal}, we will calculate the perplexity-based distance between a tweet with respect to a character-based 7-gram language model. If the perplexity-based distance between each tweet and the character-based n-gram language model is low, then we will classify it as \emph{formal} and \emph{vice versa}. Of course, for this approach to work we need to establish a threshold so that if the perplexity-based distance is lower than the threshold the tweet is labeled as \emph{formal} and if higher, as \emph{informal}.
 
-Our method to calculate such threshold proceeds in the following manner. First, we build a 7-gram character-based language model using the data from Second, we take the tweets in the training set (65\% of the dataset) and classify each of them according to the perplexity-based distance with respect to the language model. We tried every value in the [0,10] range
+Our method to calculate such threshold proceeds in the following manner. First, we build a 7-gram character-based language model using the data from a corpus composed of texts from the Basque  Egunkaria and Berria newspapers. Second, we take the tweets in the training set (65\% of the dataset) and classify each of them according to the perplexity-based distance with respect to the language model. We tried every value in the [0,10] range
 with an increment of 0.1 as threshold. Third, we computed precision, recall and accuracy comparing the prediction of the threshold according to the perplexity value with respect to the gold-standard labels in the training data. Finally, the threshold chosen will be the value in which all the three metrics converge. As shown by Figure \ref{fig:threshold}, we found out that the best threshold value was around 4.4. We will use this value in order to evaluate this approach in Section \ref{sec:experimental-results}.
 
 \begin{figure}[H]
@@ -312,7 +312,7 @@ Table \ref{tab:perplexitytrain} displays the results of classifying the tweets i
   \label{tab:perplexitytrain}
 \end{table}
 
-\subsubsection{Machine Learning Baselines}\label{sec:sparse-word-repr}
+\subsubsection{Supervised Baseline}\label{sec:sparse-word-repr}
 
 The first baseline applying supervised machine learning will be done to test various learning algorithms using the gold standard dataset described in Section \ref{sec:gold-standard-data}. More specifically, we will be simply applying a bag of words representation which represents each document (tweet) according to the word frequencies in each document. The result is a very sparse word representation where the dimension of the vector representing each word is equal to the number of words in the corpus. In this setting, we apply six of the most common machine learning algorithms with default parameters using the scikit-learn library \cite{pedregosa2011scikit}. Table \ref{tab:acc-ml} reports their performance by means of 5-fold cross validation on the training data.
 
@@ -337,41 +337,19 @@ As it can be seen, the best performing algorithms in this baseline setting are L
 
 Distributed word representations or word embeddings are widely used nowadays in Natural Language Processing. Several techniques have been proposed in order to obtain word embeddings, most of them based on the hypothesis that the meaning of a word is defined by the context in which it appears \cite{mikolov2013distributed,pennington-etal-2014-glove}. Thus, obtaining word embeddings usually requires large quantities of good quality training data which makes it difficult when experimenting with less-resourced languages such as Basque. However, FastText provides pre-trained models for many languages, including Basque \cite{mikolov-etal-2018-advances} by using the common crawl data\footnote{\url{http://commoncrawl.org}}. The Basque model they distribute is trained on both Common Crawl and Wikipedia using CBOW with position-weights, in 300 dimension, with character n-grams of length 5, a window of size 5 and 10 negatives\footnote{\url{https://fasttext.cc}}.
 
-For this experiment, we map the words in the corpus to their real vector representation in the FastText model and average all the vectors with respect to the vocabulary. We optimize the C hyperparameter using accuracy and evaluate by 5-fold cross-validation on the training data. In Table \ref{tab:svm-embeddings} we can see that the results improve slightly with respect to those obtained by the default baseline approach using bag of words in the previous section.
-
-\begin{table}[H]
-  \centering
-  \begin{tabular}{cc}
-    \hline
-    \textbf{C value} & \textbf{Accuracy} \\ \hline \hline
-    0.5 & 0.791 \\
-    0.6 & 0.791 \\
-    0.7 & 0.796 \\
-    0.9 & 0.803 \\
-    1.0 & 0.807 \\
-    \textbf{1.1} & \textbf{0.811} \\
-    1.2 & 0.803 \\
-    5.0 & 0.812 \\
-    10 & 0.807 \\ \hline
-  \end{tabular}
-  \caption{SVM with rbf kernel; 5-fold cross-validation results on the training set.}
-  \label{tab:svm-embeddings}
-\end{table}
-
-Table \ref{tab:svmf1} reports the detailed results of the 5-fold cross-validation using C$=$1 as hyperparameter.
+For this experiment, we map the words in the corpus to their real vector representation in the FastText model and average all the vectors with respect to the vocabulary. We optimize the C hyperparameter using accuracy and evaluate by 5-fold cross-validation on the training data. Table \ref{tab:svmf1} reports the detailed results of the 5-fold cross-validation using C$=1.1$ as hyperparameter.
 
 \begin{table}[H]
   \centering
   \begin{tabular}{lcccc}
     \hline
     Label & Error & Precision & Recall & F1 \\ \hline \hline
-    Informal & 61 & 0.898 & 0.759  & 0.823 \\
-    Formal & 65 & 0.730 & 0.878 & 0.792 \\ \hline
+    Informal & &  &   &  \\
+    Formal &  &  &  &  \\ \hline
   \end{tabular}
   \caption{SVM (rbf and FastText embeddings) results via 5-fold cross-validation on the training set.}
   \label{tab:svmf1}
 \end{table}
-
 
 \subsubsection{IXA pipes}\label{sec:ixa}
 
@@ -434,7 +412,7 @@ Flair embeddings have been successfully applied to sequence labelling tasks obta
 
 \subsection{Experimental Results}\label{sec:experimental-results}
 
-In order to finish our experiments, we evaluated the approaches that obtained best cross-validation results on the gold standard test set. We chose to compare the three best systems: the perplexity-based distance method, ixa-pipe-doc and Flair. Table \ref{tab:testresults} reports the final results of our experiments to obtain a good classifier of Basque tweets according to writing style (formal/informal).
+In order to finish our experiments, we evaluated the approaches that obtained best cross-validation results on the gold standard test set. We chose to compare the best systems: the SVM model with FastText word embeddings, the perplexity-based distance method, ixa-pipe-doc and Flair. Table \ref{tab:testresults} reports the final results of our experiments to obtain a good classifier of Basque tweets according to writing style (formal/informal).
 
 \begin{table}[H]
   \centering
@@ -442,6 +420,8 @@ In order to finish our experiments, we evaluated the approaches that obtained be
     System & Accuracy & Label & Error & Precision & Recall & F1 \\ \hline \hline
     \multirow{2}{*}{Perplexity} & \multirow{2}{*}{0.825} & Informal & 26 & 0.805 & 0.847 & 0.825 \\
     & & Formal & 35 & 0.848 & 0.806 & 0.826 \\ \hline \hline
+    \multirow{2}{*}{SVM-FastText} & \multirow{2}{*}{} & Informal &  &  &  &  \\
+    & & Formal & &  &  &  \\ \hline \hline
     \multirow{2}{*}{IXA pipes} & \multirow{2}{*}{0.886} & Informal & 20 & 0.882 & 0.881 & 0.882 \\
     & & Formal & 20 & 0.889 & 0.888 & 0.889 \\ \hline \hline
     \multirow{2}{*}{Flair} & \multirow{2}{*}{0.866} & Informal & 22 & 0.869 & 0.858 & 0.863 \\
@@ -453,115 +433,80 @@ In order to finish our experiments, we evaluated the approaches that obtained be
 
 It should be noticed that we did not implement any specific features for the experiments with our gold standard data. The main reason is that we wanted to avoid including any features that will lead to the models overfitting to the training data. By doing so, we were aiming to develop general, robust classifiers that hopefully will be equally competitive for other languages, text genres and tasks. We believe that the strong results obtained by the IXA pipes and the Flair system, and despite the lack of any specific tuning to the data, show the generalization power of using combined word representations. Furthermore, it is particularly interesting the fact that the neural network architecture provided by Flair performed so well with such a small training data. We believe that the developed classifiers are good enough to use them to classify the large dataset of 6M tweets in terms of the \emph{formal} and \emph{informal} classes. We decide to use the IXA pipes model due to the results obtained and its lower requirements in terms of memory and computing power.
 
-\subsection{Sailkatzailea corpusean aplikatuz}\label{sec:apl}
+\subsection{Labelling the Large Corpus}\label{sec:apl}
 
-This young/adult classifier will then allow us to compare those two life stages by taking into account the topics that appear on users' tweets and the relations that arise between them.
+The young/adult classifier developed in the previous section will allow us to compare the main features of those two life stages by taking into account the topics that appear on users' tweets and the relations that arise between them. After training the best performing model of \emph{ixa-pipe-doc} described in Section \ref{sec:ixa} and evaluated in Section \ref{sec:experimental-results} on the 1000 tweets of the \emph{full gold-standard corpus}, we proceed to tag every tweet in the Large corpus. We only used for classification the (multilingual) timelines of those users which contained at least 10 tweets written in the Basque language, namely, 7.087 users out of the 7.980 that we crawled in Section \ref{sec:data-extraction}.
 
-\textit{IXA pipes} dokumentu sailkatzailea erabilita, erauzitako 7.980 euskal txiolarietatik, 7.087 erabiltzaile sailkatzea lortu da, gutxienez 10 txio euskaraz dauzkaten erabiltzaileak soilik sailkatu direlarik. Sailkatzaileak txioak informal eta formal artean sailkatzen dituenez, txio informalen kontzentrazioan oinarrituko dugu erabiltzaile baten gaztetasuna. Hasiera batean txioen \%50a informala izatea ezarri zen erabiltzailea gaztetzat jotzeko. Hala ere, azterketa kualitatibo sinple bat eginda,  txio informalen muga \%45era jaistea erabaki zen, horrela erabiltzaile gazteen kopuru minimo bat bermatzen delarik. Era honetan, erabiltzaile gazte moduan kontsideratuko da txioen \%45a baino gehiago txio informalena baldin bada. Bestalde, txioen \%45a baino gutxiago informala baldin bada, erabiltzaile heldutzat joko da erabiltzaile zehatz hori. Honela, gure metodologia aplikatu da txio informalen bitartez erabiltzaile gazteak antzemanez, adina igartzeko zailtasuna alboratuz eta lasterbide metodologikoa aplikatuz.
+Given that the classifier labels each tweet as \emph{formal} or \emph{informal}, we decided, after some qualitative error analysis, that those users whose timelines in which more than 45\% of the tweets are labelled as \emph{informal} be considered as young, and adult otherwise. Following this method, we obtained 5.508 which were adult users and 1.579 labelled as young users. Details of the tagging results are displayed in Table \ref{tab:largecorpusdata}. Even though the resulting classification is quite unbalanced that is not a problem because we will perform our analysis of each type of user independently.
 
-Era honetan 5.508 erabiltzaile heldu bezala kontsideratu dira eta 1.579 gazte moduan, beti ere idazteko era kontutan hartuz. Gazte eta helduen erabiltzaileen banaketa nahiko desorekatua dagoela esan daiteke, gazteak nabarmen urriago izanik. Sailkatutako erabiltzaileen txio kopuruari erreparatuz gero, 10 milioi txioetatik, 8 milioi helduen taldeari dagozkio eta 2 milioi gazteen taldeari, berriz ere desoreka dagoela antzemanez. Hala ere, talde bakoitza modu independentean aztertuko denez, tamainaren arabera moldatu beharko dira aplikatuko diren ikerketa-teknika ezberdinak. Lehenik eta behin, heldu eta gazteen multzoak bereizi direla, azaleko azterketa bat burutu da, talde bakoitzaren baitan txioen hizkuntza ezberdinak nola banatzen diren ikusteko asmoarekin.\\
+\begin{table}[H]
+  \centering
+  \begin{tabular}{lll} \hline
+     & Adult & Young \\ \hline \hline
+    Users & 5.508 & 1.579 \\
+    Tweets (personal) & 4.046.512 & 1.128.124 \\
+    Retweets  & 4.345.500 & 963.668 \\
+    Tweets in Basque (Topics) & 2.634.534 & 530.226 \\
+    Tweets in Basque (Relations) & 2.421.058 & 400.448 \\ \hline
+  \end{tabular}
+  \caption{Classifying tweets in Large Corpus in terms of age stage (young/adult).}
+  \label{tab:largecorpusdata}
+\end{table}
 
 
-\begin{itemize}
-\item \textbf{Helduak} 
-\end{itemize}
+\subsubsection{Analyzing Adult Twitter Users}
 
-Helduei dagokien datu multzoari erreparatuz, 8 milioi txio baino gehiagoz osatutako corpus handi xamarra  daukagu tamainari begira. Sakonago aztertuz, birtxioak(4.345.500) eta txio pertsonalak (4.046.512) orekatuta daudela esan behar da, nahiz eta birtxio kopurua apur bat altuagoa izan. Birtxioen kopurua altuagoa izateak erakusten du joera bat dagoela helduen artean edukia konpartitzerako orduan, sorkuntza propioa baino, partekatzea, ohikoagoa izanik. Hizkuntzei erreparatuz gero, ikusi daiteke euskara dela hizkuntza nagusia bai txio pertsonaletan eta baita birtxioetan ere. Bigarren hizkuntza aipatuena gaztelera dugu, txioen laurden bat baino gehiago hizkuntza honetan ematen direlarik. Bestelako hizkuntzek, paper oso txikia betetzen dute euskal txiolari helduen sorkuntza edo trukean. Amaitzeko azpimarratu beharra dago, edukia konpartitzerako orduan, euskararen erabilera jaitsi egiten dela txio pertsonalekin konparatuz gero, beti ere, gaztelerak hartzen duelarik euskarak usten duen esparru hori.
+The first issue that arises when looking at the adults' tweets is that more than half of them are actually retweets. This shows that there is a disposition to share information as much as to generate it. Furthermore, it is possible to appreciate that Basque is the most used language, Spanish being the second. Finally, it is also interesting the fact that the use of Spanish increases for the retweets which probably reflects the fact that publicly available and shareable information in Spanish is much larger than in Basque.
 
 \begin{figure}[H]
   \centering
   \begin{subfigure}[b]{0.48\linewidth}
     \includegraphics[width=\linewidth]{txio_heldu}
-    \caption{Helduen Txio pertsonalak (4.046.512).}
+    \caption{Adult personal tweets.}
   \end{subfigure}
   \begin{subfigure}[b]{0.48\linewidth}
     \includegraphics[width=\linewidth]{birtxio_heldu}
-    \caption{Helduen Birtxioak (4.345.500).}
+    \caption{Adult retweets.}
   \end{subfigure}
-  \caption{Helduen corpusa, 5.508 erabiltzaile.}
-  \label{fig:heldu txbtx}
+  \caption{Adults in the Large Corpus: 5.508 users.}
+  \label{fig:adults}
 \end{figure}
 
-\indent Helduen txioen gaineko hizkuntzaren inguruko gogoeta burutu ostean, euskarazko txio pertsonaletan zentratuko gara. Helduen taldean 2.634.534 euskarazko txio pertsonal publikatu dira, 32.273.119 tokenez osatuta. \ref{fig:txio luze held}. irudian ikusi dezakegu helduen txio pertsonal hauek nola banatzen diren luzeraren arabera, normalenak 4-17 tokenetako luzera tartean kokatzen direlarik. Txioen luzerari begira, batez beste, 12,25 tokenetako luzera daukate helduen txioek, laburrenak token bakarra daukalarik eta luzeenak 126 token dauzkalarik. Batez besteko horrekiko desbiderapen tipikoa 5,65ekoa dugu, beste txioak batez beste zenbat desbideratzen diren adierazten diguna. Bestalde, mediana 12 tokenetan kokatzen da eta moda 14 tokenetan, 200.000 txio baino gehiago izanik 14 tokenetakoak.
+If we take a look at the tweets written only in Basque, we find that 2.634.534 tweets have been published, containing more than 32M tokens. Figure  \ref{fig:txio luze held} shows their distribution according to their length in tokens. The average tweet contains 12 tokens. Standard deviation with respect to the average is 5.65. Furthermore, median corresponds to 12, mode being 14 token (more than 200K tweets).
 
 \begin{figure}[H]
   \centering
   \includegraphics[height=6cm]{graf_for}
-  \caption{Helduen Txio pertsonalen tamainaren banaketa, txioen token kopuruaren arabera.}
+  \caption{Distribution of Basque tweets published by adults.}
   \label{fig:txio luze held}
 \end{figure}
 
-\begin{itemize}
-\item \textbf{Gazteak} 
-\end{itemize}
+\subsubsection{Analyzing Young Twitter Users}
 
-\indent Gazteen atalera jauzi egiten badugu, helduen corpusaren tamainaren laurdena daukan 2 milioiko corpusa daukagu. Sakonera joz, ikusi daiteke birtxio (963.668) kopurua txio pertsonalena (1.128.124) baino zertxobait txikiagoa dela, helduekin gertatzen denaren alderantzizkoa emanez. Honek erakusten du, gazteek edukia partekatzeko ohitura gutxiago daukatela helduekin konparatzen baldin bada, sorkuntza propioari leku gehiago utziz. Bestalde, txio pertsonal zein birtxioen hizkuntzei erreparatzen badiegu, argi ikusten da euskararen presentzia nabarmen txikiagoa dela helduekin konparatuta, txio pertsonaletan helduek baino \% 18 gutxiago delarik eta birtxioen kasuan helduek baino \% 24 gutxiago izanik. Euskararen presentziaren galera hau, gazteleraren mesedetan izango da berriz ere, txio pertsonalen kasuan heren bat (\% 34) lortuz eta birtxioen kasuan ia erdia (\% 48) lortuz. Birtxioen kasuan, gazteleraz emandako birtxioak, euskaraz emandakoak baino gehiago direla ikusi daiteke, edukia konpartitzeko ohituran gaztelera gehien erabiltzen dena dela erakutsiz. Honek erakusten du, gazte bezala kontsideratutako erabiltzaile hauek euskara askoz gutxiago erabiltzen dutela helduekin konparatuz gero.
+The young users corpus contains just one quarter in size with respect to the corpus of adult users. In this case, it can be seen that there are fewer retweets (963.668) than original personal tweets (1.128.124). It is perhaps more noticeable the fact that the use of Basque is less common between young users: 18\% lower for tweets and 24\% lower for retweets. As it is expected, the use of Spanish is higher between young users, reaching 47\% for retweets and 34\% for personal tweets. The data in Figure \ref{fig:gazte txbtx} shows that Basque is less used between young users of Twitter.
 
 \begin{figure}[H]
   \centering
   \begin{subfigure}[b]{0.48\linewidth}
     \includegraphics[width=\linewidth]{txio_gazte}
-    \caption{Gazteen Txio pertsonalak (1.128.124).}
+    \caption{Young personal tweets.}
   \end{subfigure}
   \begin{subfigure}[b]{0.48\linewidth}
     \includegraphics[width=\linewidth]{birtxio_gazte}
-    \caption{Gazteen Birtxioak (963.668).}
+    \caption{Young retweets.}
   \end{subfigure}
-  \caption{Gazteen corpusa, 1.579 erabiltzaile.}
+  \caption{Young users in Large Corpus: 1.579 users.}
   \label{fig:gazte txbtx}
 \end{figure}
 
-\indent Gazteen, euskarazko txio pertsonaletan zentratuz, 530.226 euskarazko txio pertsonal publikatu dira, 5.018.179 tokenez osatuta. \ref{fig:txio luze gzt}. irudian ikusi dezakegu gazteen txio pertsonal hauek nola banatzen diren luzeraren arabera, normalenak 3-13 tokenetako luzera tartean kokatzen direlarik. Txioen luzerari begira, batazbeste, 9,46 tokenetako luzera daukate gazteen txioek, laburrenak token bakarra daukalarik eta luzeenak 62 token dauzkalarik. Batez besteko horrekiko desbiderapen tipikoa 5,49ekoa dugu, beste txioak batez beste zenbat desbideratzen diren adierazten diguna. Helduen taldearekin konparatzen badugu, batez bestekoa 3 token txikiagoa da gazteen txioetan, nahiz eta desbiderapen tipikoa antzeko mantentzen den bi kasuetan. Gazteen txioen luzeraren neurketekin jarraituz, mediana 8 tokenetan kokatzen da eta moda 6 tokenetan, ia 45.000 txio izanik 6 tokenetakoak. Mediana eta moda helduen taldearekin konparatuz gero, ikusten da mediak 6 tokenetako diferentzia daukala eta medianak 8 tokeneko diferentzia, alde nabarmena dagoela erakutsiz. Gazteen txioen luzerari erreparatuta, ikusi daiteke helduenak baino motzagoak direla oro har, pauta bat dagoela erakutsiz gazteen txioen luzeran.
+If we take a look at the tweets written only in Basque, we find that 530.226 personal tweets have been published, containing more than 5M tokens. Figure  \ref{fig:txio luze gzt} shows their distribution according to their length in tokens. The average tweet contains 9 tokens, whereas the standard deviation with respect to the average is 5.49. Furthermore, median corresponds to 8, mode being 6 token (around 45K tweets). In general, it is noticeable the fact that young users published much shorter tweets than adults.
 
 \begin{figure}[H]
   \centering
   \includegraphics[height=6cm]{graf_inf}
-  \caption{Gazteen Txio pertsonalen tamainaren banaketa, txioen token kopuruaren arabera.}
+  \caption{Distribution of Basque tweets published by young users.}
   \label{fig:txio luze gzt}
 \end{figure}
-
-\begin{table}[H]
-  \centering
-  \begin{tabular}{|l|l|l|}
-    \hline
-     & \textbf{Helduak} & \textbf{Gazteak}\\ \hline
-    \textbf{Erabiltzaileak}  & 5.508 & 1.579\\ \hline
-    \textbf{Txio pertsonalak} & 4.046.512 & 1.128.124\\ \hline
-    \textbf{Birtxioak}  & 4.345.500 & 963.668\\ \hline
-    \textbf{Euskarazko txio pertsonalak} (Gaiak) & 2.634.534 & 530.226\\ \hline
-    \textbf{Euskarazko birtxioak} (Harremanak) & 2.421.058 & 400.448\\ \hline
-  \end{tabular}
-  \caption{Erauzitako datuak bizitza etaparen arabera.}
-  \label{tab:datuen nolakotasuna 2}
-\end{table}
-
-
-%% Taulak itzulita
-\begin{table}[H]
-  \centering
-  \begin{tabular}{|l|r|}
-    \hline
-    \textbf{Classifier} & \textbf{Accuracy} \\ \hline 
-    \textit{Perplexity} &  \% 82,57\\ \hline
-    \textit{IXA pipes} &  \% \textbf{86,57}\\ \hline
-  \end{tabular}
-  \caption{Test values comparison, best systems.}
-  \label{tab:acc-all}
-\end{table}
-
-\begin{table}[H]
-  \centering
-  \begin{tabular}{|l|l|c|c|c|c|c|}
-    \hline
-    \textbf{Classifier} & \textbf{Class} & \textbf{Precision} & \textbf{Recall} & \textbf{F-measure}\\ \hline 
-    \textit{Perplexity} & Informal & 0.805  & 0.847  & 0.825\\ \hline 
-    \textit{Perplexity} & Formal & 0.848 & 0.806 & 0.826\\ \hline
-    \textit{IXA pipes} & Informal & 0.864  & 0.859  & \textbf{0.861}\\ \hline 
-    \textit{IXA pipes} & Formal & 0.867 & 0.872 & \textbf{0.870}\\ \hline
-  \end{tabular}
-  \caption{Test values comparison by class, best systems.}
-  \label{tab:test-all}
-\end{table}
 
 
 % ################################################
