@@ -80,12 +80,12 @@
 
 % Affiliations / Addresses (Add [1] after \address if there is only one affiliation.)
 \address[1]{%
-IXA NLP Group, University of the Basque Country UPV/EHU; e-mail@e-mail.com\\
-%$^{2}$ \quad Affiliation 2; e-mail@e-mail.com
+IXA NLP Group, University of the Basque Country UPV/EHU\\
+%$^{2}$ \quad Affiliation 2; e-mail@e-mail.co
 }
 
 % Contact information of the corresponding author
-\corres{Correspondence: e-mail@e-mail.com; Tel.: +x-xxx-xxx-xxxx}
+\corres{Correspondence: joseba.fdl@gmail.com, rodrigo.agerri@ehu.eus}
 
 % Current address and/or shared authorship
 %\firstnote{Current address: Affiliation 3}
@@ -98,7 +98,7 @@ IXA NLP Group, University of the Basque Country UPV/EHU; e-mail@e-mail.com\\
 \abstract{Social networks like Twitter are taking more and more importance nowadays, creating new ways of communication. They are also a useful tools for social and linguistic research, because there is a lot of public data available based on social interaction using such networks. The availability of this data is particularly important for less resourced languages, because it allows to apply current Natural Language Processing techniques to large amounts of unstructured data in order to analyze both the linguistic and social behavior of users based on the text they generate. In this work, the aim will be to study the linguistic and social aspects of young and adult people’s behavior based on their tweets’ contents and the social relations that can be structured from them. With this aim in mind, we have gathered over 6 million tweets written in Basque from more than 8000 users. First, we extracted and analyzed the crawled data to find the most popular topics. Then we classified each user’s tweet by age (young/adult) by establishing whether the writing style of each tweet is formal or informal. Several classification and topic modeling methods, both supervised and unsupervised, have been applied, offering each of them different insights with respect to the feasibility of the task with the available data. Second, we establish the relations that emerge between the users  based on their re-tweets, characterizing also the various communities that arise from the analysis of the data. We conclude that social research can be done using computer techniques, giving the opportunity both to segment communities based on demographic characteristics and to discover how they interact or relate to these, using large amounts of unstructured data.}
 
 % Keywords
-\keyword{Social Informatics; Social Networks; Basque language; Young people; Topics; Relations (list three to ten pertinent keywords specific to the article, yet reasonably common within the subject discipline.)}
+\keyword{Social Informatics; Social Networks; Topics; Relations, Less-resourced languages; Information Extraction, Text Classification, Natural Language Processing}
 
 % The fields PACS, MSC, and JEL may be left empty or commented out if not applicable
 %\PACS{J0101}
@@ -763,22 +763,21 @@ Once the subgroups of both models have been interpreted and defined, a compariso
 
 We have shown how to develop 
 
-Twitter sare sozialera konektatuta dauden euskal hiztun gazteen on-line errealitatera hurbilpen bat egitea lortu da. Helburu orokor hori betetzeko hainbat pausu eman dira, lehenik eta behin Twitter sare sozialetik euskal erabiltzaileen datu kantitate erraldoiak erauzi dira. Bigarrenik, erauzitako euskal txiolariak sailkatu dira gazte eta heldu artean, gazteen errealitatea ezagutzea baita helburu nagusia. Hirugarrenik eta azkenik, gazte eta helduen gaiak zeintzuk diren eta harremanak nola ematen diren argitu da, bi talde ezberdinen errealitatea zein den erakutsiz. Lan honekin, frogatuta geratzen da gizarte-zientzia eta konputazio-zientzien arteko konbinaketa aberasgarria dela, Hizkuntzaren Prozesamenduko teknikak aplikatuz, ezaugarri demografikoak iradoki edota diskurtso analisia bezalako atazak burutu daitezkeela erakutsi delarik.\\
-\indent Datuen erauzketaren inguruko balorazioa burutzerakoan, esan daiteke datu-iturri berri bat ireki dela Twitterreko informazioa erauzteko garatutako teknikari esker. Erauzketa teknika honi esker, datu kantitate handiak (Big Data) lortu dira oso kostu txikiarekin. Horrez gain, gazteen ingurunera hurbiltzea lortu da, hauen errealitatea hobeto ezagutzeko lehenengo pausua emanez. Hala ere, datu-iturri berri honek ere baditu bere mugak, Twitterreko erabiltzaileengan mugatzen dela ikerketa. Hobekuntza moduan, datu-iturri berriak gehitu daitezke beste sare sozial batzuen erauzketa burutuz, adibidez Instagram, Snaptchat edota Facebook erauziz, edukia publiko jarriko balute. Baina, teknika honekin sare sozialen erabiltzaileen informazioa soilik lortuko litzateke eta, gaur egun behintzat, populazioaren zati handi bat kanpo geratuko litzateke. Horrez gain ere, Twitterrek berak jarritako mugak (erabiltzaileko 3200 txio gehienez jota eta 15 erabiltzaile bakarrik 15 minuturo) ere kontutan hartu behar dira, lana dezente mantsotu egiten baitute muga horiek. Datu-iturri berri honen mugak alde batera utzita, sistema arrakastatsu bat garatu dela onartu beharra dago, ia 8.000 euskal erabiltzaile erauztea lortu baitira, 10 milioi txio baino gehiago geureganatuz.\\
-\indent Ikerketa lan honen atal garrantzitsuetako bat gazteak eta helduak ezberdintzean oinarritu da, interesetako bat gazteen errealitatea ezagutzea izanik. Gazte/heldu ezberdintzea adinaren arabera burutu ordez, testuaren formaltasunaren arabera burutu da, adinaren araberako etiketatzeak kostu altuegia baitzuen. Hortaz, adinaren etiketatzearen zailtasunen aurrean, lasterbide metodologikoa erabiltzea erabaki da, testu informalaren kontzentrazioa altua bada gaztea izango dela erabakiz. Honela, txioen corpus txiki bat etiketatu ostean, sailkapena burutu da \textit{IXA pipes} dokumentu sailkatzailea erabiliz erabiltzaile bakoitzaren testuaren formaltasunean oinarrituta. Sistema honek, emaitza fidagarriak lortzeaz gain, etiketatutako corpus txikiekin ere sailkapena ondo egiten duela esan beharra dago. Etorkizunerako, egokia izango litzateke sailkapena adinaren arabera burutzea, horretarako corpus berri bat etiketatu beharko litzatekeela argi edukiz. Hala ere, \textit{IXA pipes} dokumentu sailkatzaileari esker, etiketatutako corpus txikiekin ere sailkapen egokiak burutu daitezke, sistema hornitzen duten egiturarik gabeko datu multzoetan oinarritutako hitzen irudikapenei esker. Etiketatutako corpus txikiekin ere ondo sailkatzen duen sistema bati esker, ikertzaile txikiek aukera gehiago daukate atazak modu arrakastatsuan garatzeko, corpus handiak etiketatzea lan eta kostu handia baitira.\\
-\indent Behin gazte eta helduen taldeak ezberdinduta daudelarik, hauen gai ohikoenak zeintzuk diren azaleratu eta hauen harremantzeko modua zein den argitu da hein batean. Lehenik eta behin, euskal erabiltzaileek ze gairi buruz aritzen diren argituko da, horretarako txio pertsonalen testuetan LDA teknika aplikatzean oinarritu garelarik. Gazteek gehienbat, beren gertukoekin komunikatzeko erabiltzen dute sare sozial hau, egunerokotasuneko gertakariak adieraziz. Helduen artean ostera, mezuak gizarteratzeko lanabes modura kontsideratzen dela ikusi daiteke, batez ere izaera politikoa daukaten gaiak plazaratzeko, gizartean pil-pilean dauden gaiei buruz arituz. Gazte eta helduen tematikak ezberdinak izan arren, komunikatzeko eta informazio-trukerako lanabes moduan erabilia da sare sozial hau. Bigarrenik, harremanak nola ematen diren azaleratu da, horretarako euskarazko birtxioetan oinarrituta harreman sare bat sortu delarik. Honez gain, aipatu beharra dago, komunikabideekin erlazionatutako erabiltzaileek garrantzizko papera jokatzen dutela, Twitterren izaera informatiboa konfirmatzen delarik. Erabiltzaile euskaldunek euskara erabiltzen dute, batez ere, beren inguruko gertakari edo gaien inguruan hitz egiteko, gaien arabera ere harreman-taldeak sortuz. Harremanak komunitate konkretuen baitan ematen da eta Euskal Herriko testuinguruarekin erlazionatuta daudela esan daiteke. Ondorioztatu daiteke, euskara, euskaldunen gaiei buruz hitz egiteko erabiltzen dela gehienbat.\\
-\indent Lan honen galdera nagusiari erantzuteko asmoarekin, euskaraz aritzen diren gazteak zertaz aritzen diren eta zeinekin harremantzen diren argitzen saiatu gara. Sarritan ezezaguna den gazteen errealitateari hurbilpen honekin, etorkizuna izango diren gazteen euskararekiko portaera ikusi ahal izango da. Gazteak euskaraz hitz egitera bultzatzen dituen gaiak eta harremantzeko moduak azaleratzea izango da asmoa, gazteak euskaraz hitz egitera animatzen dituzten zergatiak argituz. Gazteak eguneroko bizitzari eta kirolei buruz aritzen dira gehienbat, honek erakusten du, beren gertukoekin komunikatzeko erabiltzen dutela sare sozial hau, egunerokotasuneko gertakariak adieraziz. Harremanei begira, euskal erabiltzaileak intereseko gaien arabera harremantzen direla ikusi da, gazteen harremanak, euskal herriko gai politikoekin eta aisialdiarekin lotzen direlarik.\\
-\indent Lan honek euskara XXI. mendeko testuingurura nola moldatzen ari den ezagutzeko aukera eman du ere, ikusi ahal izan da, euskara presente dagoela sare sozialetan, euskarazko 6 milioi txio baino gehiago lortu baititugu ia 8.000 erabiltzaile ezberdinenak. Euskara sare sozialak bezalako teknologia berrietan presente egoteak esan nahi du, geure hizkuntza erronka berrietara egokitzeko kapaza dela, euskaldunen sorkuntza kapazitateari esker teknologia berrietan ere erabilia delarik. Euskal komunitatearen baitako erakunde eta norbanako erreferentzial gehienak komunikabideekin eta Ezker Abertzalearekin zerikusia daukatela ikusi ahal izan da. Honez gain, erabiltzaile euskaldunek eginiko erabileratik ondorioztatu dezakegu euskara euskaldunen inguruko gaiez aritzeko erabiltzen dela gehienbat. Laburbilduz, esan daiteke, euskara testuinguru berrietara moldatzeko gai dela, betiere hiztunen komunitatearen egunerokotasuneko errealitatearekin modu estuan lotuta. Honek erakusten digu, globalizatutako eta etengabe konektatutako mundu honetan ere, euskaldunek badutela gaitasun berezi bat beren lekua bilatu eta bertan finkatzeko.\\ 
+Twitter sare sozialera konektatuta dauden euskal hiztun gazteen on-line errealitatera hurbilpen bat egitea lortu da. Helburu orokor hori betetzeko hainbat pausu eman dira, lehenik eta behin Twitter sare sozialetik euskal erabiltzaileen datu kantitate erraldoiak erauzi dira. Bigarrenik, erauzitako euskal txiolariak sailkatu dira gazte eta heldu artean, gazteen errealitatea ezagutzea baita helburu nagusia. Hirugarrenik eta azkenik, gazte eta helduen gaiak zeintzuk diren eta harremanak nola ematen diren argitu da, bi talde ezberdinen errealitatea zein den erakutsiz. Lan honekin, frogatuta geratzen da gizarte-zientzia eta konputazio-zientzien arteko konbinaketa aberasgarria dela, Hizkuntzaren Prozesamenduko teknikak aplikatuz, ezaugarri demografikoak iradoki edota diskurtso analisia bezalako atazak burutu daitezkeela erakutsi delarik.
+
+Datuen erauzketaren inguruko balorazioa burutzerakoan, esan daiteke datu-iturri berri bat ireki dela Twitterreko informazioa erauzteko garatutako teknikari esker. Erauzketa teknika honi esker, datu kantitate handiak (Big Data) lortu dira oso kostu txikiarekin. Horrez gain, gazteen ingurunera hurbiltzea lortu da, hauen errealitatea hobeto ezagutzeko lehenengo pausua emanez. Hala ere, datu-iturri berri honek ere baditu bere mugak, Twitterreko erabiltzaileengan mugatzen dela ikerketa. Hobekuntza moduan, datu-iturri berriak gehitu daitezke beste sare sozial batzuen erauzketa burutuz, adibidez Instagram, Snaptchat edota Facebook erauziz, edukia publiko jarriko balute. Baina, teknika honekin sare sozialen erabiltzaileen informazioa soilik lortuko litzateke eta, gaur egun behintzat, populazioaren zati handi bat kanpo geratuko litzateke. Horrez gain ere, Twitterrek berak jarritako mugak (erabiltzaileko 3200 txio gehienez jota eta 15 erabiltzaile bakarrik 15 minuturo) ere kontutan hartu behar dira, lana dezente mantsotu egiten baitute muga horiek. Datu-iturri berri honen mugak alde batera utzita, sistema arrakastatsu bat garatu dela onartu beharra dago, ia 8.000 euskal erabiltzaile erauztea lortu baitira, 10 milioi txio baino gehiago geureganatuz.
+
+Ikerketa lan honen atal garrantzitsuetako bat gazteak eta helduak ezberdintzean oinarritu da, interesetako bat gazteen errealitatea ezagutzea izanik. Gazte/heldu ezberdintzea adinaren arabera burutu ordez, testuaren formaltasunaren arabera burutu da, adinaren araberako etiketatzeak kostu altuegia baitzuen. Hortaz, adinaren etiketatzearen zailtasunen aurrean, lasterbide metodologikoa erabiltzea erabaki da, testu informalaren kontzentrazioa altua bada gaztea izango dela erabakiz. Honela, txioen corpus txiki bat etiketatu ostean, sailkapena burutu da \textit{IXA pipes} dokumentu sailkatzailea erabiliz erabiltzaile bakoitzaren testuaren formaltasunean oinarrituta. Sistema honek, emaitza fidagarriak lortzeaz gain, etiketatutako corpus txikiekin ere sailkapena ondo egiten duela esan beharra dago. Etorkizunerako, egokia izango litzateke sailkapena adinaren arabera burutzea, horretarako corpus berri bat etiketatu beharko litzatekeela argi edukiz. Hala ere, \textit{IXA pipes} dokumentu sailkatzaileari esker, etiketatutako corpus txikiekin ere sailkapen egokiak burutu daitezke, sistema hornitzen duten egiturarik gabeko datu multzoetan oinarritutako hitzen irudikapenei esker. Etiketatutako corpus txikiekin ere ondo sailkatzen duen sistema bati esker, ikertzaile txikiek aukera gehiago daukate atazak modu arrakastatsuan garatzeko, corpus handiak etiketatzea lan eta kostu handia baitira.
+
+Behin gazte eta helduen taldeak ezberdinduta daudelarik, hauen gai ohikoenak zeintzuk diren azaleratu eta hauen harremantzeko modua zein den argitu da hein batean. Lehenik eta behin, euskal erabiltzaileek ze gairi buruz aritzen diren argituko da, horretarako txio pertsonalen testuetan LDA teknika aplikatzean oinarritu garelarik. Gazteek gehienbat, beren gertukoekin komunikatzeko erabiltzen dute sare sozial hau, egunerokotasuneko gertakariak adieraziz. Helduen artean ostera, mezuak gizarteratzeko lanabes modura kontsideratzen dela ikusi daiteke, batez ere izaera politikoa daukaten gaiak plazaratzeko, gizartean pil-pilean dauden gaiei buruz arituz. Gazte eta helduen tematikak ezberdinak izan arren, komunikatzeko eta informazio-trukerako lanabes moduan erabilia da sare sozial hau. Bigarrenik, harremanak nola ematen diren azaleratu da, horretarako euskarazko birtxioetan oinarrituta harreman sare bat sortu delarik. Honez gain, aipatu beharra dago, komunikabideekin erlazionatutako erabiltzaileek garrantzizko papera jokatzen dutela, Twitterren izaera informatiboa konfirmatzen delarik. Erabiltzaile euskaldunek euskara erabiltzen dute, batez ere, beren inguruko gertakari edo gaien inguruan hitz egiteko, gaien arabera ere harreman-taldeak sortuz. Harremanak komunitate konkretuen baitan ematen da eta Euskal Herriko testuinguruarekin erlazionatuta daudela esan daiteke. Ondorioztatu daiteke, euskara, euskaldunen gaiei buruz hitz egiteko erabiltzen dela gehienbat.
+
+Lan honen galdera nagusiari erantzuteko asmoarekin, euskaraz aritzen diren gazteak zertaz aritzen diren eta zeinekin harremantzen diren argitzen saiatu gara. Sarritan ezezaguna den gazteen errealitateari hurbilpen honekin, etorkizuna izango diren gazteen euskararekiko portaera ikusi ahal izango da. Gazteak euskaraz hitz egitera bultzatzen dituen gaiak eta harremantzeko moduak azaleratzea izango da asmoa, gazteak euskaraz hitz egitera animatzen dituzten zergatiak argituz. Gazteak eguneroko bizitzari eta kirolei buruz aritzen dira gehienbat, honek erakusten du, beren gertukoekin komunikatzeko erabiltzen dutela sare sozial hau, egunerokotasuneko gertakariak adieraziz. Harremanei begira, euskal erabiltzaileak intereseko gaien arabera harremantzen direla ikusi da, gazteen harremanak, euskal herriko gai politikoekin eta aisialdiarekin lotzen direlarik.
+
+Lan honek euskara XXI. mendeko testuingurura nola moldatzen ari den ezagutzeko aukera eman du ere, ikusi ahal izan da, euskara presente dagoela sare sozialetan, euskarazko 6 milioi txio baino gehiago lortu baititugu ia 8.000 erabiltzaile ezberdinenak. Euskara sare sozialak bezalako teknologia berrietan presente egoteak esan nahi du, geure hizkuntza erronka berrietara egokitzeko kapaza dela, euskaldunen sorkuntza kapazitateari esker teknologia berrietan ere erabilia delarik. Euskal komunitatearen baitako erakunde eta norbanako erreferentzial gehienak komunikabideekin eta Ezker Abertzalearekin zerikusia daukatela ikusi ahal izan da. Honez gain, erabiltzaile euskaldunek eginiko erabileratik ondorioztatu dezakegu euskara euskaldunen inguruko gaiez aritzeko erabiltzen dela gehienbat. Laburbilduz, esan daiteke, euskara testuinguru berrietara moldatzeko gai dela, betiere hiztunen komunitatearen egunerokotasuneko errealitatearekin modu estuan lotuta. Honek erakusten digu, globalizatutako eta etengabe konektatutako mundu honetan ere, euskaldunek badutela gaitasun berezi bat beren lekua bilatu eta bertan finkatzeko.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\section{Patents}
-This section is not mandatory, but may be added if there are patents resulting from the work reported in this manuscript.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\vspace{6pt} 
+\vspace{6pt}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% optional
@@ -789,41 +788,41 @@ This section is not mandatory, but may be added if there are patents resulting f
 % \supplementary{The following are available at \linksupplementary{s1}, Figure S1: title, Table S1: title, Video S1: title. A supporting video article is available at doi: link.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\authorcontributions{For research articles with several authors, a short paragraph specifying their individual contributions must be provided. The following statements should be used “conceptualization, X.X. and Y.Y.; methodology, X.X.; software, X.X.; validation, X.X., Y.Y. and Z.Z.; formal analysis, X.X.; investigation, X.X.; resources, X.X.; data curation, X.X.; writing—original draft preparation, X.X.; writing—review and editing, X.X.; visualization, X.X.; supervision, X.X.; project administration, X.X.; funding acquisition, Y.Y.”, please turn to the  \href{http://img.mdpi.org/data/contributor-role-instruction.pdf}{CRediT taxonomy} for the term explanation. Authorship must be limited to those who have contributed substantially to the work reported.}
+\authorcontributions{Conceptualization, JFdL, RA and IA; methodology, JFdL, RA and IA; software, JFdL, RA and IA; formal analysis, JFdL, RA, IA; data curation, JFdL and RA; writing—original draft preparation, RA and JFdL; writing—review and editing, RA; supervision, RA and IA.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\funding{Please add: ``This research received no external funding'' or ``This research was funded by NAME OF FUNDER grant number XXX.'' and  and ``The APC was funded by XXX''. Check carefully that the details given are accurate and use the standard spelling of funding agency names at \url{https://search.crossref.org/funding}, any errors may affect your future funding.}
+\funding{The second author has been funded by the Spanish Ministry of Economy and Competitiveness (MINECO/FEDER, UE), under the project CROSSTEXT (TIN2015-72646-EXP) and the Ramon y Cajal Fellowship RYC-2017-23647. He also acknowledges the support of the BBVA Big Data 2018 ``BigKnowledge for Text Mining (BigKnowledge)'' project.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\acknowledgments{In this section you can acknowledge any support given which is not covered by the author contribution or funding sections. This may include administrative and technical support, or donations in kind (e.g., materials used for experiments).}
+\acknowledgments{We gratefully acknowledge the support of NVIDIA Corporation with the donation of the Titan V GPU used for this research.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\conflictsofinterest{Declare conflicts of interest or state ``The authors declare no conflict of interest.'' Authors must identify and declare any personal circumstances or interest that may be perceived as inappropriately influencing the representation or interpretation of reported research results. Any role of the funders in the design of the study; in the collection, analyses or interpretation of data; in the writing of the manuscript, or in the decision to publish the results must be declared in this section. If there is no role, please state ``The funders had no role in the design of the study; in the collection, analyses, or interpretation of data; in the writing of the manuscript, or in the decision to publish the results''.} 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% optional
-\abbreviations{The following abbreviations are used in this manuscript:\\
-
-\noindent 
-\begin{tabular}{@{}ll}
-MDPI & Multidisciplinary Digital Publishing Institute\\
-DOAJ & Directory of open access journals\\
-TLA & Three letter acronym\\
-LD & linear dichroism
-\end{tabular}}
+%\conflictsofinterest{Declare conflicts of interest or state ``The authors declare no conflict of interest.'' Authors must identify and declare any personal circumstances or interest that may be perceived as inappropriately influencing the representation or interpretation of reported research results. Any role of the funders in the design of the study; in the collection, analyses or interpretation of data; in the writing of the manuscript, or in the decision to publish the results must be declared in this section. If there is no role, please state ``The funders had no role in the design of the study; in the collection, analyses, or interpretation of data; in the writing of the manuscript, or in the decision to publish the results''.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% optional
-\appendixtitles{no} %Leave argument "no" if all appendix headings stay EMPTY (then no dot is printed after "Appendix A"). If the appendix sections contain a heading then change the argument to "yes".
-\appendixsections{multiple} %Leave argument "multiple" if there are multiple sections. Then a counter is printed ("Appendix A"). If there is only one appendix section then change the argument to "one" and no counter is printed ("Appendix").
-\appendix
-\section{}
-\unskip
-\subsection{}
-The appendix is an optional section that can contain details and data supplemental to the main text. For example, explanations of experimental details that would disrupt the flow of the main text, but nonetheless remain crucial to understanding and reproducing the research shown; figures of replicates for experiments of which representative data is shown in the main text can be added here if brief, or as Supplementary data. Mathematical proofs of results not central to the paper can be added as an appendix.
+%\abbreviations{The following abbreviations are used in this manuscript:\\
 
-\section{}
-All appendix sections must be cited in the main text. In the appendixes, Figures, Tables, etc. should be labeled starting with `A', e.g., Figure A1, Figure A2, etc. 
+%\noindent
+%\begin{tabular}{@{}ll}
+%MDPI & Multidisciplinary Digital Publishing Institute\\
+%DOAJ & Directory of open access journals\\
+%TLA & Three letter acronym\\
+%LD & linear dichroism
+%\end{tabular}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% optional
+% \appendixtitles{no} %Leave argument "no" if all appendix headings stay EMPTY (then no dot is printed after "Appendix A"). If the appendix sections contain a heading then change the argument to "yes".
+% \appendixsections{multiple} %Leave argument "multiple" if there are multiple sections. Then a counter is printed ("Appendix A"). If there is only one appendix section then change the argument to "one" and no counter is printed ("Appendix").
+% \appendix
+% \section{}
+% \unskip
+% \subsection{}
+% The appendix is an optional section that can contain details and data supplemental to the main text. For example, explanations of experimental details that would disrupt the flow of the main text, but nonetheless remain crucial to understanding and reproducing the research shown; figures of replicates for experiments of which representative data is shown in the main text can be added here if brief, or as Supplementary data. Mathematical proofs of results not central to the paper can be added as an appendix.
+
+% \section{}
+% All appendix sections must be cited in the main text. In the appendixes, Figures, Tables, etc. should be labeled starting with `A', e.g., Figure A1, Figure A2, etc. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Citations and References in Supplementary files are permitted provided that they also appear in the reference list here. 
@@ -853,7 +852,7 @@ All appendix sections must be cited in the main text. In the appendixes, Figures
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% optional
-\sampleavailability{Samples of the compounds ...... are available from the authors.}
+%\sampleavailability{Samples of the compounds ...... are available from the authors.}
 
 %% for journal Sci
 %\reviewreports{\\
