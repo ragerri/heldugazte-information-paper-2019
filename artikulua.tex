@@ -222,12 +222,11 @@ Once the community to investigate is specified and the sample of users, whom inf
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{|l|l|l|}
-    \hline
-     & \textbf{Personal tweets in Basque} & \textbf{Retweets in Basque}\\ \hline
-    \textbf{Tweets} & 3,171,785 & 2,891,136\\ \hline
-    \textbf{Terms} & 1,434,050 & 813,833\\ \hline
-    \textbf{Tokens}  & 37,350,268 & 39,329,204\\ \hline
+  \begin{tabular}{lll} \hline
+     & \textbf{Personal tweets in Basque} & \textbf{Retweets in Basque}\\ \hline \hline
+    \textbf{Tweets} & 3,171,785 & 2,891,136 \\
+    \textbf{Terms} & 1,434,050 & 813,833 \\
+    \textbf{Tokens}  & 37,350,268 & 39,329,204 \\ \hline
   \end{tabular}
   \caption{Useful extracted data, characteristics of tweets in Basque.}
   \label{tab:useful-data}
@@ -245,7 +244,7 @@ It has been suggested that adults tend to use more conventional language \cite{n
 
 \subsection{Experimental Framework}\label{sec:exper-fram}
 
-Following the setting established above, we will address the problem of classifying each tweet as \emph{formal} or \emph{informal} by means of several machine learning approaches. First, we will apply one unsupervised statistical method based on perplexity \cite{gamallo2017language}. Second, we will experiment with several supervised approaches: (i) a baseline method using sparse, \emph{one-hot} word representations \cite{pedregosa2011scikit}; (ii) a feature-based method using word representations as continuous word vectors, namely, word embeddings \cite{mikolov2013distributed,pennington-etal-2014-glove,mikolov-etal-2018-advances}; (iii) a feature-based method using word clusters \cite{agerri2016robust,agerri2019language} and (iv), a deep learning approach leveraging character contextual word embeddings and a neural network architecture \cite{akbik2018contextual}.
+Following the setting established above, we will address the problem of classifying each tweet as \emph{formal} or \emph{informal} by means of several machine learning approaches. First, we will apply one unsupervised statistical method based on perplexity \cite{gamallo2017language}. Second, we will experiment with several supervised approaches: (i) a baseline method using sparse, \emph{one-hot} word representations \cite{pedregosa2011scikit}; (ii) a feature-based method using word representations as continuous word vectors, namely, word embeddings  on top of the baseline developed in (i) \cite{mikolov2013distributed,pennington-etal-2014-glove,mikolov-etal-2018-advances}; (iii) an off-the-shelf system which uses clustering features for representing the documents \cite{agerri2016robust,agerri2019language} and (iv), a deep learning approach leveraging character contextual word embeddings and a neural network architecture \cite{akbik2018contextual}.
 
 We will develop a classifier with each of the methods listed above and evaluate it on a held-out, gold-standard dataset manually annotated at tweet level for the categories of \emph{formal} and \emph{informal}. The method that obtains the best results in the experiments will be then used to annotate the 6 million tweets obtained thereby classifying their authors as \emph{young} or \emph{adult}. In this sense, users will be classified according to the writing style of the tweets in their timelines.
 
@@ -255,19 +254,19 @@ In the rest of this section we will describe the process of manual annotation of
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{|l|r|} \hline
-    Total number of tweets & 1.000 \\ \hline
-    Formal & 492 \\ \hline
-    Informal & 508 \\ \hline
-    Tokens in shortest tweet & 5 \\ \hline
-    Tokens in longest tweet & 34 \\ \hline
-    Token avg. & 9.66 \\ \hline
+  \begin{tabular}{lr} \hline \hline
+    Total number of tweets & 1.000 \\
+    Formal & 492 \\
+    Informal & 508 \\
+    Tokens in shortest tweet & 5 \\
+    Tokens in longest tweet & 34 \\
+    Token avg. & 9.66 \\
   \end{tabular}
   \caption{Gold standard corpus.}
   \label{tab:gold-corpus}
 \end{table}
 
-In order to focus on learning to classify tweets according to writing style, we decided to clean the tweets keeping only those words that contained alphanumeric characters. Thus, we removed emoticons, hashtags, users' names (@) and URL links. Furthermore, we only considered those tweets that contained more than 4 tokens. We then randomly selected 1000 tweets sent from personal accounts from the 6 million tweet dataset collected as described in Section \ref{sec:data-extraction}. One annotator manually labeled every tweet as \emph{formal} or \emph{informal}. To manually label the tweets, a qualitative methodology was followed: all those tweets that contained out of vocabulary words or colloquial expressions were classified as informal. This methodology has been motivated by previous work on classifying formal and colloquial tweets \cite{gonzalez2015analysis}. Table \ref{tab:gold-corpus} shows the main features of our manually annotated dataset. For the experiments described in the next four subsections, we split the gold standard corpus in two sets, leaving 65\% for training and \%35 for testing.
+In order to focus on learning to classify tweets according to writing style, we decided to clean the tweets keeping only those words that contained alphanumeric characters. Thus, we removed emoticons, hashtags, users' names (@) and URL links. Furthermore, we only considered those tweets that contained more than 4 tokens. We then randomly selected 1000 tweets sent from personal accounts from the 6 million tweet dataset collected as described in Section \ref{sec:data-extraction}. One annotator manually labeled every tweet as \emph{formal} or \emph{informal}. To manually label the tweets, a qualitative methodology was followed: all those tweets that contained out of vocabulary words or colloquial expressions were classified as informal. This methodology has been motivated by previous work on classifying formal and colloquial tweets \cite{gonzalez2015analysis}. Table \ref{tab:gold-corpus} shows the main features of our manually annotated dataset. For the experiments described in the next four subsections, we split the gold standard corpus in three sets, leaving 65\% for training and \%35 for testing.
 
 \subsubsection{Unsupervised approach: \textit{Perplexity}}\label{sec:unsup-appr-text}
 
@@ -304,11 +303,10 @@ Table \ref{tab:perplexitytrain} displays the results of classifying the tweets i
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{|l|c|c|c|c|c|}
-    \hline
-    \textbf{Label} &  \textbf{Error} & \textbf{Total} & \textbf{Precision} & \textbf{Recall} & \textbf{F1}\\ \hline
-    \textit{Informal} & 48 & 338 & 0.824  & 0.858  & 0.841\\ \hline
-    \textit{Formal} & 62 & 312 & 0.839 & 0.801 & 0.820\\ \hline
+  \begin{tabular}{lcccc} \hline
+    Label & Error & Precision & Recall & F1 \\ \hline \hline
+    Informal & 48 & 0.824  & 0.858  & 0.841 \\
+    Formal & 62 & 0.839 & 0.801 & 0.820 \\ \hline
   \end{tabular}
   \caption{Results of the unsupervised approach on the training set.}
   \label{tab:perplexitytrain}
@@ -320,21 +318,20 @@ The first baseline applying supervised machine learning will be done to test var
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{|l|r|}
-    \hline
-    \textbf{Machine Learning Classifier (BoW)} & \textbf{Accuracy} \\ \hline
-    5-NN (k-NN) &  0.614 \\ \hline
-    Decision Tree &  0.677 \\ \hline
-    Random Forest &  0.707 \\ \hline
-    Naive Bayes & 0.765 \\ \hline
-    Logistic Regression & 0.775 \\ \hline
+  \begin{tabular}{lr} \hline
+    Machine Learning Classifier (BoW) & Accuracy \\ \hline \hline
+    5-NN (k-NN) &  0.614 \\
+    Decision Tree &  0.677 \\
+    Random Forest &  0.707 \\
+    Naive Bayes & 0.765 \\
+    Logistic Regression & 0.775 \\
     \textbf{SVM} & \textbf{0.777} \\ \hline
   \end{tabular}
   \caption{Bag of words results via 5-fold cross-validation on the training set.}
   \label{tab:acc-ml}
 \end{table}
 
-As it can be seen, the best performing algorithms in this baseline setting are Logistic Regression and SVM. This is not surprising given the ability of SVM to perform well with very few labeled data. Next, we decided to experiment with a less-sparse representation of the tweets by means of pre-trained word embeddings.
+As it can be seen, the best performing algorithms in this baseline setting are Logistic Regression and SVM. This is not surprising given the ability of SVM to perform well with very few labeled data. Next, we decided to experiment with a less-sparse representation of the tweets by means of pre-trained word embeddings and the SVM classifier.
 
 \subsubsection{Pre-trained Word Embeddings}\label{sec:pre-trained-word}
 
@@ -344,7 +341,7 @@ For this experiment, we map the words in the corpus to their real vector represe
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{|c|c|}
+  \begin{tabular}{cc}
     \hline
     \textbf{C value} & \textbf{Accuracy} \\ \hline \hline
     0.5 & 0.791 \\
@@ -357,9 +354,24 @@ For this experiment, we map the words in the corpus to their real vector represe
     5.0 & 0.812 \\
     10 & 0.807 \\ \hline
   \end{tabular}
-  \caption{SVM with rbf kernel; 5-fold CV results on training data.}
+  \caption{SVM with rbf kernel; 5-fold cross-validation results on the training set.}
   \label{tab:svm-embeddings}
 \end{table}
+
+Table \ref{tab:svmf1} reports the detailed results of the 5-fold cross-validation using C$=$1 as hyperparameter.
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{lcccc}
+    \hline
+    Label & Error & Precision & Recall & F1 \\ \hline \hline
+    Informal & 61 & 0.898 & 0.759  & 0.823 \\
+    Formal & 65 & 0.730 & 0.878 & 0.792 \\ \hline
+  \end{tabular}
+  \caption{SVM (rbf and FastText embeddings) results via 5-fold cross-validation on the training set.}
+  \label{tab:svmf1}
+\end{table}
+
 
 \subsubsection{IXA pipes}\label{sec:ixa}
 
@@ -376,7 +388,7 @@ For the experiments, we used pre-trained clusters using the Elhuyar Web Corpus \
 \begin{table}[H]
   \centering
   \begin{tabular}{l|l} \hline
-    Cluster type & Corpus \& \# clusters\\ \hline \hline
+    Cluster type & Corpus - \# clusters\\ \hline \hline
     Brown & EWC-3200 \\
     Clark & EWC-600 \& LNC-300  \\
     Word2vec & EWC-300 \& LNC-500\\ \hline
@@ -386,17 +398,17 @@ For the experiments, we used pre-trained clusters using the Elhuyar Web Corpus \
 \end{table}
 
 
-Table \ref{tab:ixa-ml-garapen} provides the results per class using \emph{ixa-pipe-doc}. As it can be seen, they are the best results obtained so far both in terms of accuracy (0.885) and F1 measure.
+Table \ref{tab:ixa-ml-garapen} provides the results per class using \emph{ixa-pipe-doc}. As it can be seen, they are the best results obtained so far both in terms of accuracy (0.887) and F1 measure.
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{|l|c|c|c|c|c|}
+  \begin{tabular}{lcccc}
     \hline
-    \textbf{Label} & \textbf{Error} & \textbf{Total} & \textbf{Precision} & \textbf{Recall} & \textbf{F1}\\ \hline
-    \textit{Informal} &  59 & 508 & 0.889  & 0.884  & 0.886\\ \hline
-    \textit{Formal} &  56 & 492 & 0.881 & 0.886 & 0.883\\ \hline
+    Label & Error & Precision & Recall & F1\\ \hline \hline
+    Informal & 32 & 0.892  & 0.886  & 0.889 \\
+    Formal & 30 & 0.883 & 0.889 & 0.886 \\ \hline
   \end{tabular}
-  \caption{ixa-pipe-doc results via 5-fold cross-validation on training set.}
+  \caption{ixa-pipe-doc results via 5-fold cross-validation on the training set.}
   \label{tab:ixa-ml-garapen}
 \end{table}
 
@@ -405,151 +417,56 @@ Table \ref{tab:ixa-ml-garapen} provides the results per class using \emph{ixa-pi
 
 Flair refers to both a deep learning toolkit based on neural networks and to a specific type of character-based contextual word embeddings \cite{akbik2018contextual}. Unlike static word embeddings such as those of Word2vec \cite{mikolov2013distributed}, Glove \cite{pennington-etal-2014-glove} or FastText \cite{mikolov-etal-2018-advances}, contextual embeddings allow to obtain word representations in a vector space taking into account the sense of the word given the context in which it appears. Thus, while a polysemous word would be given a unique real valued representation in the FastText pre-trained word embedding model used in Section \ref{sec:pre-trained-word}, Flair embeddings will aim to provide different representations depending on the contextual meaning of the word. Another important difference is that Flair embeddings are not word-based, they are trained by modeling words as sequences of characters.
 
-Flair embeddings have been successfully applied to sequence labelling tasks obtaining best results for a number of public benchmarks \cite{akbik2018contextual}. In this paper, we apply the Flair toolkit to train document classification systems for classifying tweets as \emph{formal} or \emph{informal}. Flair provides a recurrent neural network (RNN) architecture (Cho et al., 2014) to represent documents, modelling text as a sequence of characters passed to the RNN which at each point in the sequence is trained to predict the next character \cite{akbik2018contextual}. We used this architecture to train document classification systems leveraging several pre-trained word embedding models: Flair contextual embeddings for Basque, character embeddings and the FastText Basque embeddings used previously. The Flair contextual embeddings for Basque were trained on various sources and it contains around 249M words. We performed 5-fold cross-validation on the training data obtaining the best results with a combination of the Flair and the FastText embeddings, obtaining 0.866 in word accuracy. Table \ref{tab:flair} reports on the final cross-validation results for each label.
+Flair embeddings have been successfully applied to sequence labelling tasks obtaining best results for a number of public benchmarks \cite{akbik2018contextual}. In this paper, we apply the Flair toolkit to train document classification systems for classifying tweets as \emph{formal} or \emph{informal}. Flair provides a recurrent neural network (RNN) architecture (Cho et al., 2014) to represent documents, modelling text as a sequence of characters passed to the RNN which at each point in the sequence is trained to predict the next character \cite{akbik2018contextual}. We used this architecture to train document classification systems leveraging several pre-trained word embedding models: Flair contextual embeddings for Basque, character embeddings and the FastText Basque embeddings used previously. The Flair contextual embeddings for Basque were trained on various sources and it contains around 249M words. We performed 5-fold cross-validation on the training data obtaining the best results with a combination of the Flair and the FastText embeddings, obtaining 0.808 in word accuracy. Table \ref{tab:flair} reports on the final cross-validation results for each label.
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{|l|c|c|c|c|c|}
+  \begin{tabular}{lcccc}
     \hline
-    \textbf{Label} & \textbf{Error} & \textbf{Total} & \textbf{Precision} & \textbf{Recall} & \textbf{F1}\\ \hline
-    \textit{Informal} & 46 & 508 & 0.869  & 0.858  & 0.863\\ \hline
-    \textit{Formal} &  47 & 492 & 0.868 & 0.877 & 0.872\\ \hline
+    Label & Error & Precision & Recall & F1 \\ \hline \hline
+    Informal & 61 & 0.898 & 0.759  & 0.823 \\
+    Formal & 65 & 0.730 & 0.878 & 0.792 \\ \hline
   \end{tabular}
-  \caption{ixa-pipe-doc results via 5-fold cross-validation on training set.}
+  \caption{Flair results via 5-fold cross-validation on the training set.}
   \label{tab:flair}
 \end{table}
 
 
 \subsection{Experimental Results}\label{sec:experimental-results}
 
-
-%\subsubsection{Perplexity}\label{sec:ebal est}
-
-\indent Garapenaren atalean atalaseari balioa egokitu eta gero, aukeratutako eredua ebaluatzeari ekingo zaio. Aurretik azaldu den moduan, atalaseari luzatutako balioa 4.4ekoa izango da. Honek esan nahi du, \textit{Language Model}ekiko 4.4 \textit{perplexity} balioa baino gehiago lortzen duten txioak informaltzat joko direla.\\
-\indent Ebaluazio lan honetarako, garapenerako erabili ez den corpus etiketatuaren zatia erabili da, hau da, geratzen den \%35a. Jarraian ikusi daitezkeen tauletan (\ref{tab:Test ez-gain} eta \ref{tab:ez-gain ema} taulak), asmatze tasa, doitasuna, estaldura zein \textit{f-neurria} balioak daude, atalasearen 4.4 \textit{perplexity} balioarentzat. Ikusi daitekeen moduan, garatutako sistema estatistiko honek, 0.825ko \textit{f-neurria}a lortzen du txio informalak sailkatzerako orduan, eta baita, \%83,57ko asmatze tasa txioak formal edo informalak diren sailkatzean.
+In order to finish our experiments, we evaluated the approaches that obtained best cross-validation results on the gold standard test set. We chose to compare the three best systems: the perplexity-based distance method, ixa-pipe-doc and Flair. Table \ref{tab:testresults} reports the final results of our experiments to obtain a good classifier of Basque tweets according to writing style (formal/informal).
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{|l|c|c|}
-    \hline
-    & \textbf{Informal} iragarriak & \textbf{Formal} iragarriak \\ \hline 
-    \textbf{Informal} errealak & \textbf{144} & 26\\ \hline
-    \textbf{Formal} errealak & 35 & \textbf{145}\\ \hline
-  \end{tabular}
-  \caption{Konfusio-matrizea, ez-gainbegiratutako eredu estatistikoa.}
-  \label{tab:ez-gain cm}
+  \begin{tabular}{lcccccc} \hline
+    System & Accuracy & Label & Error & Precision & Recall & F1 \\ \hline \hline
+    \multirow{2}{*}{Perplexity} & \multirow{2}{*}{0.825} & Informal & 26 & 0.805 & 0.847 & 0.825 \\
+    & & Formal & 35 & 0.848 & 0.806 & 0.826 \\ \hline \hline
+    \multirow{2}{*}{IXA pipes} & \multirow{2}{*}{0.886} & Informal & 20 & 0.882 & 0.881 & 0.882 \\
+    & & Formal & 20 & 0.889 & 0.888 & 0.889 \\ \hline \hline
+    \multirow{2}{*}{Flair} & \multirow{2}{*}{0.866} & Informal & 22 & 0.869 & 0.858 & 0.863 \\
+    & & Formal & 24 & 0.868 & 0.877 & 0.872 \\ \hline
+ \end{tabular}
+  \caption{Final evaluation results on the test set.}
+  \label{tab:testresults}
 \end{table}
 
-\begin{table}[H]
-  \centering
-  \begin{tabular}{|l|r|}
-    \hline
-    \textbf{Testa (atalasea = 4.4)} &  \\ \hline 
-    Asmatze tasa & \textbf{0.826} \\ \hline
-  \end{tabular}
-  \caption{Testaren balioak, ez-gainbegiratutako eredu estatistikoa.}
-  \label{tab:Test ez-gain}
-\end{table}
-
-\begin{table}[H]
-  \centering
-  \begin{tabular}{|l|c|c|c|c|c|}
-    \hline
-    \textbf{Etiketa} &  \textbf{Errorea} & \textbf{Totala} & \textbf{Doitasuna} & \textbf{Estaldura} & \textbf{F-neurria}\\ \hline 
-    \textit{Informala} & 26 & 170 & 0.805  & 0.847  & 0.825\\ \hline 
-    \textit{Formala} & 35 & 180 & 0.848 & 0.806 & 0.826\\ \hline
-  \end{tabular}
-  \caption{Testaren balioak, ez-gainbegiratutako eredu estatistikoa.}
-  \label{tab:ez-gain ema}
-\end{table}
-
-
-
-\begin{table}[H]
-  \centering
-  \begin{tabular}{|l|c|c|}
-    \hline  
-    & \textbf{Informal} iragarriak & \textbf{Formal} iragarriak \\ \hline 
-    \textbf{Informal} errealak & \textbf{146} & 24\\ \hline
-    \textbf{Formal} errealak & 23 & \textbf{157}\\ \hline
-  \end{tabular}
-  \caption{Konfusio-matrizea, \textit{IXA pipes} dokuementu sailkatzailea.}
-  \label{tab:ixa-ml-cm}
-\end{table}
-
-\begin{table}[H]
-  \centering
-  \begin{tabular}{|l|r|}
-    \hline
-    \textbf{Testa} &  \\ \hline 
-    Asmatze tasa & \textbf{0.866} \\ \hline
-  \end{tabular}
-  \caption{Testaren balioak, \textit{IXA pipes} dokuementu sailkatzailea.}
-  \label{tab:Test ixa}
-\end{table}
-
-\begin{table}[H]
-  \centering
-  \begin{tabular}{|l|c|c|c|c|c|}
-    \hline
-    \textbf{Etiketa} & \textbf{Errorea} & \textbf{Totala} & \textbf{Doitasuna} & \textbf{Estaldura} & \textbf{F-neurria}\\ \hline 
-    \textit{Informala} &  24 & 170 & 0.864  & 0.859  & 0.861\\ \hline 
-    \textit{Formala} &  23 & 180 & 0.867 & 0.872 & 0.870\\ \hline
-  \end{tabular}
-  \caption{Testaren balioak, \textit{IXA pipes} dokumentu sailkatzailea.}
-  \label{tab:ixa-ml-test}
-\end{table}
-
-\subsection{Results Analysis}\label{sec:sail ond}
-
-\indent Behin modelo ezberdinetan oinarritutako sailkatzaileak garatu ostean, guztien artean onena aukeratzeari ekin zaio, arrakastaren zergatiak argituz. Garapen edo entrenamendurako \textit{dataset}aren tamaina txikia kontutan hartu beharko da ere ebaluazioa burutzerakoan, sailkatzaileek izan ditzaketen datu-iturri lagungarrietan (\textit{metodo ez-gainbegiratu} eta \textit{IXA pipes} kasu) arreta berezia jarriko delarik analisi honetan.\\
-\indent Lehenbizi, esan beharra dago ikasketa automatikoan oinarritutako ereduek zailtasunak eduki dituztela datu hauek sailkatzeko, entrenamendurako corpusa txikiegia delako. Datu kopuru txiki honek sorrarazten du, sistemak soilik berezitasunak ikasiko dituela, ebaluazio orduan asmatze tasa desegoki bati bide emanez gain-sorkuntzaren erruz. Arazo hau konpontzeko asmoarekin, etiketatutako corpusa handitzea izango litzateke konponbideetako bat, orokorragoak diren datuak ikasiz. Hala ere, etiketatzea ataza zail eta nekeza izateaz gain, ikasketa datuekin sortzen diren hitzen bektoreen dispertsioa handia izaten jarraituko luke, hobekuntza nabarmenki zailduz. Era honetan, Ikasketa Automatikoan oinarritutako sailkatzaile onenak Erregresio Logistikoa (\textit{logistic regression}) eta SVM (\textit{Support Vector Machine}), beste metodoen emaitzetatik urrun geratzen dira.\\
-\indent Ez-gainbegiratutako eredu Estatistikoan oinarritutako \textit{Perplexity}aren neurketak ikasketa automatikoan oinarritutako metodoek baino hobeto egin du, SVM sailkatzailearen emaitza asko hobetuz. Hobekuntza nabarmen hau, hizkuntz ereduak eskaintzen duen datu kopuru gehigarrian oinarritua egon daiteke, ikasketa automatikoan oinarritutako sailkatzaileek baino datu gehiago baitauzka garapen faserako. Hortaz, emaitza hobeak lortu ditu hizkuntz ereduak datu kopuru ugari eskaintzen baititu. Datu multzo gehigarri hori lagungarri izanda ere, metodo estatistikoetan oinarritutako sistema hau ez da onena izan.\\ 
-\indent Baieztatu da \textit{IXA pipes} dokumentu sailkatzailea sistema onena dela Twitterren euskal txiolari gazteak identifikatzeko, txio informaletan oinarrituz. Ikasketa automatikoan oinarrituta egon arren eta etiketatutako corpusa txikia izanda ere (1000 txio), bestelako datuak lortzeko aukerari esker (hitzen irudikapena), emaitza altuak lortu dira, garatu diren beste sistemen emaitzak nabarmen gaindituz. Hitzen esanahi semantikoa jasotzen duten clusterrek gehitu dioten informazioari esker lortu ditu emaitza onenak, hobekuntza garrantzitsua lortzen dela agerian utziz.\\
-\indent Argi ikusten da sailkatzaile estatistiko ez-gainbegiratua eta \textit{IXA pipes} dokumentu sailkatzailea hoberen egiten dutenak direla. Hala ere, bien artean konparaketa egitea beharrezkoa da, horretarako ebaluazio faseko emaitzak alderatuko direlarik. Bi sailkatzaile hauek konparatu ahal izateko, train eta test set berdinak erabili dira, datu multzo berdinekin sistema bakoitza frogatuz gerora konparatu ahal izateko. Lehenik eta behin, asmatze tasari begira, ikusi daiteke \textit{IXA pipes} sailkatzaileak \textit{Perplexity} neurrian oinarritutako sailkatzailea baino lau puntu hobeto egiten duela (\ref{tab:acc-dena}. taula). Modu berean, f-neurriari erreparatzen bazaio, \textit{IXA pipes}en emaitzak askoz hobeak direla ikusi daiteke (\ref{tab:final test}. taula). Emaitzak aztertu ostean, ikusi daiteke \textit{IXA pipes} dokumentu sailkatzailea metodo onena dela txio informal eta formalak sailkatzerako orduan, bestelako sistemek baino emaitza aski altuagoak lortzen baitira sistema honekin.
-
-\begin{table}[H]
-  \centering
-  \begin{tabular}{|l|r|}
-    \hline
-    \textbf{Sailkatzailea} & \textbf{Asmatze tasa} \\ \hline 
-    \textit{Perplexity} &  \% 82,57\\ \hline
-    \textit{IXA pipes} &  \% \textbf{86,57}\\ \hline
-  \end{tabular}
-  \caption{Testaren balioen konparaketa sistema onenekin.}
-  \label{tab:acc-dena}
-\end{table}
-
-\begin{table}[H]
-  \centering
-  \begin{tabular}{|l|l|c|c|c|c|c|}
-    \hline
-    \textbf{Sailkatzailea} & \textbf{Klasea} & \textbf{Doitasuna} & \textbf{Estaldura} & \textbf{F-neurria}\\ \hline 
-    \textit{Perplexity} & Informala & 0.805  & 0.847  & 0.825\\ \hline 
-    \textit{Perplexity} & Formala & 0.848 & 0.806 & 0.826\\ \hline
-    \textit{IXA pipes} & Informala & 0.864  & 0.859  & \textbf{0.861}\\ \hline 
-    \textit{IXA pipes} & Formala & 0.867 & 0.872 & \textbf{0.870}\\ \hline
-  \end{tabular}
-  \caption{Testaren balioen konparaketa sistema onenekin, klasearen arabera.}
-  \label{tab:final test}
-\end{table}
-
-\indent Garatutako sistemak aztertzerako orduan, ikusi da sistemak geroz eta informazio gehiago daukanean, sailkapen hobea egiten duela. Ondorio hau ebidentziaren frogapena besterik ez izan arren, ate berri bat irekitzen du ikertzaile xumeentzat, etiketatutako corpusa txikia izan arren, posible egiten duelako emaitza onak lortzea. Era honetan, etiketatutako corpus txiki bat, etiketatu gabeko datu ugarirekin konbinatzen ditugunean garapenaren fasean, emaitza hobeak lortzen dira. Egun, etiketatu gabeko datuei zentzua edo ordena emateko aukera ugari daude, besteak-beste NLP atazetarako hitzen irudikapena (\textit{word representation}) erabiliz. Honela, sailkapenaren atazak emaitza hobeak lortzen ditu egun sarean eskuragarri dauden egiturarik gabeko datuak lagungarri izanik. Horregatik, bereziki garrantzitsua da \textit{IXA pipes}en dokumentu sailkatzaileak eremu honetan egindako ekarpena, hainbat hitzen irudikapen ezberdinak konbinatzen baititu, emaitzak hobetuz.\\
-\indent Garatu den sistema onena ariketa praktiko erreal batean aplikatuko da hurrengo atalean, txiolari gazteak eta helduak desberdintzeko erabiliko dena idazteko eran oinarrituz. Honela, \textit{IXA pipes} dokumentu sailkatzailea erabiliko da, Twitterretik erauzitako corpus erraldoia sailkatzeko asmoekin, txio bakoitza formal eta informal artean banatuz. Erabiltzaileen txio informalen kontzentrazioan oinarrituta, gazteen eta helduen artean ezberdintzeari ekingo zaio, adinaren arabera egin ordez, idazteko moduaren arabera eginez. Sailkapen honek, gerora bereizitako bi talde hauen gai ohikoenak eta harremanak azaleratzeko aukera emango du. Era honetan, modu independentean landu ahalko da talde bakoitza eta lortutako emaitzak alderatuz, heldu eta gazteen ezberdintasun zein puntu komunak zeintzuk diren argitara emango da.
+It should be noticed that we did not implement any specific features for the experiments with our gold standard data. The main reason is that we wanted to avoid including any features that will lead to the models overfitting to the training data. By doing so, we were aiming to develop general, robust classifiers that hopefully will be equally competitive for other languages, text genres and tasks. We believe that the strong results obtained by the IXA pipes and the Flair system, and despite the lack of any specific tuning to the data, show the generalization power of using combined word representations. Furthermore, it is particularly interesting the fact that the neural network architecture provided by Flair performed so well with such a small training data. We believe that the developed classifiers are good enough to use them to classify the large dataset of 6M tweets in terms of the \emph{formal} and \emph{informal} classes. We decide to use the IXA pipes model due to the results obtained and its lower requirements in terms of memory and computing power.
 
 \subsection{Sailkatzailea corpusean aplikatuz}\label{sec:apl}
 
 This young/adult classifier will then allow us to compare those two life stages by taking into account the topics that appear on users' tweets and the relations that arise between them.
 
-\indent \textit{IXA pipes} dokumentu sailkatzailea erabilita, erauzitako 7.980 euskal txiolarietatik, 7.087 erabiltzaile sailkatzea lortu da, gutxienez 10 txio euskaraz dauzkaten erabiltzaileak soilik sailkatu direlarik. Sailkatzaileak txioak informal eta formal artean sailkatzen dituenez, txio informalen kontzentrazioan oinarrituko dugu erabiltzaile baten gaztetasuna. Hasiera batean txioen \%50a informala izatea ezarri zen erabiltzailea gaztetzat jotzeko. Hala ere, azterketa kualitatibo sinple bat eginda,  txio informalen muga \%45era jaistea erabaki zen, horrela erabiltzaile gazteen kopuru minimo bat bermatzen delarik. Era honetan, erabiltzaile gazte moduan kontsideratuko da txioen \%45a baino gehiago txio informalena baldin bada. Bestalde, txioen \%45a baino gutxiago informala baldin bada, erabiltzaile heldutzat joko da erabiltzaile zehatz hori. Honela, gure metodologia aplikatu da txio informalen bitartez erabiltzaile gazteak antzemanez, adina igartzeko zailtasuna alboratuz eta lasterbide metodologikoa aplikatuz.\\
-\indent Era honetan 5.508 erabiltzaile heldu bezala kontsideratu dira eta 1.579 gazte moduan, beti ere idazteko era kontutan hartuz. Gazte eta helduen erabiltzaileen banaketa nahiko desorekatua dagoela esan daiteke, gazteak nabarmen urriago izanik. Sailkatutako erabiltzaileen txio kopuruari erreparatuz gero, 10 milioi txioetatik, 8 milioi helduen taldeari dagozkio eta 2 milioi gazteen taldeari, berriz ere desoreka dagoela antzemanez. Hala ere, talde bakoitza modu independentean aztertuko denez, tamainaren arabera moldatu beharko dira aplikatuko diren ikerketa-teknika ezberdinak. Lehenik eta behin, heldu eta gazteen multzoak bereizi direla, azaleko azterketa bat burutu da, talde bakoitzaren baitan txioen hizkuntza ezberdinak nola banatzen diren ikusteko asmoarekin.\\
+\textit{IXA pipes} dokumentu sailkatzailea erabilita, erauzitako 7.980 euskal txiolarietatik, 7.087 erabiltzaile sailkatzea lortu da, gutxienez 10 txio euskaraz dauzkaten erabiltzaileak soilik sailkatu direlarik. Sailkatzaileak txioak informal eta formal artean sailkatzen dituenez, txio informalen kontzentrazioan oinarrituko dugu erabiltzaile baten gaztetasuna. Hasiera batean txioen \%50a informala izatea ezarri zen erabiltzailea gaztetzat jotzeko. Hala ere, azterketa kualitatibo sinple bat eginda,  txio informalen muga \%45era jaistea erabaki zen, horrela erabiltzaile gazteen kopuru minimo bat bermatzen delarik. Era honetan, erabiltzaile gazte moduan kontsideratuko da txioen \%45a baino gehiago txio informalena baldin bada. Bestalde, txioen \%45a baino gutxiago informala baldin bada, erabiltzaile heldutzat joko da erabiltzaile zehatz hori. Honela, gure metodologia aplikatu da txio informalen bitartez erabiltzaile gazteak antzemanez, adina igartzeko zailtasuna alboratuz eta lasterbide metodologikoa aplikatuz.
+
+Era honetan 5.508 erabiltzaile heldu bezala kontsideratu dira eta 1.579 gazte moduan, beti ere idazteko era kontutan hartuz. Gazte eta helduen erabiltzaileen banaketa nahiko desorekatua dagoela esan daiteke, gazteak nabarmen urriago izanik. Sailkatutako erabiltzaileen txio kopuruari erreparatuz gero, 10 milioi txioetatik, 8 milioi helduen taldeari dagozkio eta 2 milioi gazteen taldeari, berriz ere desoreka dagoela antzemanez. Hala ere, talde bakoitza modu independentean aztertuko denez, tamainaren arabera moldatu beharko dira aplikatuko diren ikerketa-teknika ezberdinak. Lehenik eta behin, heldu eta gazteen multzoak bereizi direla, azaleko azterketa bat burutu da, talde bakoitzaren baitan txioen hizkuntza ezberdinak nola banatzen diren ikusteko asmoarekin.\\
 
 
 \begin{itemize}
 \item \textbf{Helduak} 
 \end{itemize}
 
-\indent  Helduei dagokien datu multzoari erreparatuz, 8 milioi txio baino gehiagoz osatutako corpus handi xamarra  daukagu tamainari begira. Sakonago aztertuz, birtxioak(4.345.500) eta txio pertsonalak (4.046.512) orekatuta daudela esan behar da, nahiz eta birtxio kopurua apur bat altuagoa izan. Birtxioen kopurua altuagoa izateak erakusten du joera bat dagoela helduen artean edukia konpartitzerako orduan, sorkuntza propioa baino, partekatzea, ohikoagoa izanik. Hizkuntzei erreparatuz gero, ikusi daiteke euskara dela hizkuntza nagusia bai txio pertsonaletan eta baita birtxioetan ere. Bigarren hizkuntza aipatuena gaztelera dugu, txioen laurden bat baino gehiago hizkuntza honetan ematen direlarik. Bestelako hizkuntzek, paper oso txikia betetzen dute euskal txiolari helduen sorkuntza edo trukean. Amaitzeko azpimarratu beharra dago, edukia konpartitzerako orduan, euskararen erabilera jaitsi egiten dela txio pertsonalekin konparatuz gero, beti ere, gaztelerak hartzen duelarik euskarak usten duen esparru hori.
+Helduei dagokien datu multzoari erreparatuz, 8 milioi txio baino gehiagoz osatutako corpus handi xamarra  daukagu tamainari begira. Sakonago aztertuz, birtxioak(4.345.500) eta txio pertsonalak (4.046.512) orekatuta daudela esan behar da, nahiz eta birtxio kopurua apur bat altuagoa izan. Birtxioen kopurua altuagoa izateak erakusten du joera bat dagoela helduen artean edukia konpartitzerako orduan, sorkuntza propioa baino, partekatzea, ohikoagoa izanik. Hizkuntzei erreparatuz gero, ikusi daiteke euskara dela hizkuntza nagusia bai txio pertsonaletan eta baita birtxioetan ere. Bigarren hizkuntza aipatuena gaztelera dugu, txioen laurden bat baino gehiago hizkuntza honetan ematen direlarik. Bestelako hizkuntzek, paper oso txikia betetzen dute euskal txiolari helduen sorkuntza edo trukean. Amaitzeko azpimarratu beharra dago, edukia konpartitzerako orduan, euskararen erabilera jaitsi egiten dela txio pertsonalekin konparatuz gero, beti ere, gaztelerak hartzen duelarik euskarak usten duen esparru hori.
 
 \begin{figure}[H]
   \centering
