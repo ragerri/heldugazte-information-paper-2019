@@ -334,7 +334,7 @@ The first baseline applying supervised machine learning will be done to test var
   \label{tab:acc-ml}
 \end{table}
 
-As it can be seen, the best performing algorithms in this very basic baseline setting are Logistic Regression and SVM, which is not surprising given the ability of SVM to perform well with very few labeled data. Next, we decided to experiment with a less-sparse representation of the tweets by means of pre-trained word embeddings.
+As it can be seen, the best performing algorithms in this baseline setting are Logistic Regression and SVM. This is not surprising given the ability of SVM to perform well with very few labeled data. Next, we decided to experiment with a less-sparse representation of the tweets by means of pre-trained word embeddings.
 
 \subsubsection{Pre-trained Word Embeddings}\label{sec:pre-trained-word}
 
@@ -371,13 +371,20 @@ The system consists of: (i) Local, shallow features based mostly on orthographic
 
 Clusters of words provide denser document representations. Although still a one-hot vector representation, the dimensions of the representation gets reduced to the number of clustering classes used. This is done by mapping the words in the document to the words in each of the clustering lexicons \cite{turian-ratinov-bengio:2010:ACL}. To avoid duplication of efforts, the system uses the Apache OpenNLP project implementation of Maxent \footnote{\url{http://opennlp.apache.org/}} customized with the features described above.
 
-For the experiments, we used pre-trained clusters using the Elhuyar Web Corpus \cite{leturia2012evaluating} and from a 600M word corpus obtained from crawling local news sites. The number of clusters trained with each algorithm and data source was the following: 100-800 clusters using the Clark and Word2vec methods, and 1000, 2000 and 3200 classes with the Brown algorithm. The best combination of features was obtained by performing every possible permutation between them in a 5-fold cross validation setting using the gold standard training data. Following this methodology, the best configuration consisted of the following features (we did not use any local or lexicon-based features, just the clustering representations).
+For the experiments, we used pre-trained clusters using the Elhuyar Web Corpus \cite{leturia2012evaluating} and from a 600M word corpus obtained from crawling local news sites (Local News Corpus). The number of clusters trained with each algorithm and data source was the following: 100-800 clusters using the Clark and Word2vec methods, and 1000, 2000 and 3200 classes with the Brown algorithm. The best combination of features was obtained by performing every possible permutation between them in a 5-fold cross validation setting using the gold standard training data. Following this methodology, the best configuration consisted of the features listed in Table \ref{tab:clusters} (we did not use any local or lexicon-based features, just the clustering representations).
 
-\begin{itemize}
-\item Brown: Elhuyar Web Corpus 3200 classes.
-\item Clark: Elhuyar Web Corpus 600 and Local News Corpus 300 clusters.
-\item Word2vec: Elhuyar Web Corpus 300 and Local News Corpus 500 clusters.
-\end{itemize}
+\begin{table}[H]
+  \centering
+  \begin{tabular}{l|l} \hline
+    Cluster type & Corpus \& \# clusters\\ \hline \hline
+    Brown & EWC-3200 \\
+    Clark & EWC-600 \& LNC-300  \\
+    Word2vec & EWC-300 \& LNC-500\\ \hline
+  \end{tabular}
+  \caption{Source data and number of clusters used with ixa-pipe-doc system. EWC: Elhuyar Web Corpus. LNC: Local News Corpus.}
+  \label{tab:clusters}
+\end{table}
+
 
 Table \ref{tab:ixa-ml-garapen} provides the results per class using \emph{ixa-pipe-doc}. As it can be seen, they are the best results obtained so far both in terms of accuracy (0.885) and F1 measure.
 
@@ -389,13 +396,28 @@ Table \ref{tab:ixa-ml-garapen} provides the results per class using \emph{ixa-pi
     \textit{Informal} &  59 & 508 & 0.889  & 0.884  & 0.886\\ \hline
     \textit{Formal} &  56 & 492 & 0.881 & 0.886 & 0.883\\ \hline
   \end{tabular}
-  \caption{ixa-pipe-doc results on training data via 5-fold cross-validation.}
+  \caption{ixa-pipe-doc results via 5-fold cross-validation on training set.}
   \label{tab:ixa-ml-garapen}
 \end{table}
 
 
-\subsubsection{Neural architecture}\label{sec:neural-architecture}
+\subsubsection{Flair}\label{sec:neural-architecture}
 
+Flair refers to both a deep learning toolkit based on neural networks and to a specific type of character-based contextual word embeddings \cite{akbik2018contextual}. Unlike static word embeddings such as those of Word2vec \cite{mikolov2013distributed}, Glove \cite{pennington-etal-2014-glove} or FastText \cite{mikolov-etal-2018-advances}, contextual embeddings allow to obtain word representations in a vector space taking into account the sense of the word given the context in which it appears. Thus, while a polysemous word would be given a unique real valued representation in the FastText pre-trained word embedding model used in Section \ref{sec:pre-trained-word}, Flair embeddings will aim to provide different representations depending on the contextual meaning of the word. Another important difference is that Flair embeddings are not word-based, they are trained by modeling words as sequences of characters.
+
+Flair embeddings have been successfully applied to sequence labelling tasks obtaining best results for a number of public benchmarks \cite{akbik2018contextual}. In this paper, we apply the Flair toolkit to train document classification systems for classifying tweets as \emph{formal} or \emph{informal}. Flair provides a recurrent neural network (RNN) architecture (Cho et al., 2014) to represent documents, modelling text as a sequence of characters passed to the RNN which at each point in the sequence is trained to predict the next character \cite{akbik2018contextual}. We used this architecture to train document classification systems leveraging several pre-trained word embedding models: Flair contextual embeddings for Basque, character embeddings and the FastText Basque embeddings used previously. The Flair contextual embeddings for Basque were trained on various sources and it contains around 249M words. We performed 5-fold cross-validation on the training data obtaining the best results with a combination of the Flair and the FastText embeddings, obtaining 0.866 in word accuracy. Table \ref{tab:flair} reports on the final cross-validation results for each label.
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|l|c|c|c|c|c|}
+    \hline
+    \textbf{Label} & \textbf{Error} & \textbf{Total} & \textbf{Precision} & \textbf{Recall} & \textbf{F1}\\ \hline
+    \textit{Informal} & 46 & 508 & 0.869  & 0.858  & 0.863\\ \hline
+    \textit{Formal} &  47 & 492 & 0.868 & 0.877 & 0.872\\ \hline
+  \end{tabular}
+  \caption{ixa-pipe-doc results via 5-fold cross-validation on training set.}
+  \label{tab:flair}
+\end{table}
 
 
 \subsection{Experimental Results}\label{sec:experimental-results}
