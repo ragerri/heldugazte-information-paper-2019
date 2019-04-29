@@ -132,64 +132,32 @@ The work presented in this paper consists of the following main steps. First, we
 
 
 \section{Related Work}\label{sec:background}
-%% Atal bakoitzaren artearen egoera azaldu beharko litzateke? edo orokorrean egindako lan guztiena?
-General obs.
 
-\subsection{Data Extraction}\label{sec:extraction_background}
+Analyzing demographic characteristics in social media is receiving increasing attention in the area of Social Media Mining \cite{morgan2017predicting}. The popularity of Twitter has in fact benefited such approaches as it is possible now to mine spontaneous contributions and opinions of users about any kind of topic in many languages, including less resource languages. At the same time, by taking into account the relations created between retweets will allow us to analyze and try to understand the type of relations and user communities that are being created within the social network. Both social and linguistic aspects are important for our work as we will try to perform social and demographic analysis via large scale linguistic processing on written texts extracted from a social network such as Twitter. The main techniques used here are those related to topic modelling, the study of social relationships and text processing or Natural Language Processing (NLP).
 
-Data extraction.
+With respect to topic modelling, many different approaches have tried to extract common information contained in large amounts of tweets scattered through the network, such as topic extraction with respect to an event and their related tweets \cite{hu2012lda}, real-time classification of twitter trends \cite{zubiaga2015real} or to compare the content of Twitter with traditional news media \cite{zhao2011comparing}. Applying topic modelling to tweets, like for other tasks, requires some pre-processing to make the task appropriate for such short texts or documents \cite{hong2010empirical}.
 
-\subsection{Young/Adult Identification}\label{sec:identifier_background}
+In relation to the study of the social relationships that are generated within the network, closer to use are those studies that have aimed to identify communities of users based on their retweets. Among these, one can find studies about political polarization \cite{conover2011political}, political affiliation detection \cite{pennacchiotti2011democrats} or even studies about identifying communities in movements for independence \cite{zubiaga2017stance}. In these studies, based on the retweets made by the user, it is shown that there identification of communities or groups is quite feasible. In our work we will use similar methodologies to the ones mentioned here with the objective of uncovering latent communities formed within Basque users of Twitter.
 
-Analyzing demographic characteristics in social media is receiving increasing attention in the area of Social Media Mining.
+The use of Twitter is very popular in the area of Natural Language Processing (NLP), where tweets are used for many tasks such as mining opinions about specific products or topics \cite{rosenthal2017semeval,villena2013tass}, analyzing stance detection and fake news \cite{S16-1003,zubiaga2017stance} or in more low level NLP tasks such as POS tagging \cite{ritter_named_2011}, Named Entity Recognition \cite{baldwin2015shared}, normalization \cite{alegria2015tweetnorm} and language identification \cite{zubiaga2016tweetlid}, among many others. Previous NLP work is relevant to us as we will work with tweets to perform text classification with the aim of labelling tweets according to their writing style (conventional-informal or formal), although we will be working on our specifically created gold dataset of Basque tweets. The results of this work will allow us to classify Twitter users by their life stage (young or adult) which in turn would allow us to analyze their demographic characteristics with respect to the most important topics and with respect to the type of social relations that get created.
 
-Twitterren adinaren detekziorako
-%, artearen egoerako metodo aipagarrienak bildu dira jarraian azaltzen zaigun taulan (\ref{tab:arte}. taula). %Taula horretan metodo bakoitzaren erreferentzia, sailkatzaile mota eta asmatze tasa ikusi daitezke. Taula %honetan ikusi daitekeen moduan,
-sailkatzaile ohikoenak ataza honetarako \textit{Logistic Regression} \citep{nguyen2013old,morgan2017predicting} eta \textit{Support Vector Machine} \citep{rao2010classifying,al2012homophily,marquardt2014age} dira. Sailkatzaile guzti horiek ikasketa automatikoan oinarritutako metodo gainbegiratuak dira, guztiak tamaina esanguratsu bateko etiketatutako corpus batean oinarrituta. Ikerketa guzti horietan datuen etiketatzea erabiltzaile bakoitzaren adinean oinarrituta dago, eskuz erabiltzaile kopuru esanguratsu bat anotatu dutelarik.
-
-%\begin{table}[H]
-%  \centering
-%  \begin{tabular}{|l|l|r|}
-%    \hline
-%    \textbf{Sistema} & \textbf{Sailkatzailea} & \textbf{Asmatze tasa}\\ \hline
-%    Rao et al. (2010) & \textit{Support Vector Machine} & \% 74,11\\ \hline
-%    Al Zamal et al.  (2012) & \textit{Support Vector Machine} & \% 80,50\\ \hline
-%    Marquart et al. (2014) & \textit{Support Vector Machine} & \% 48,31\\ \hline
-%    Nguyen et al. (2014) & \textit{Logistic Regression} & \% 86,32\\ \hline
-%    Morgan-Lopez et al. (2017) & \textit{Logistic Regression} & \% 74,00\\ \hline
-%  \end{tabular}
-%  \caption{Bibliografiako sistemak, adinaren detekzioa Twitterren.}
-%  \label{tab:arte}
-%\end{table}
-
-Jarraian sistema bakoitzean murgilketa txiki bat egingo da, etiketatutako corpusa eta klase kopurua ezagutzeko asmoarekin (\ref{tab:arte ezaug}. taula). Sistemak oso ezberdinak dira ikusi daitekeen moduan, behar ezberdinetara egokitutako ikerketak baitira. Alde batetik, eskuz etiketatutako corpus hauen tamaina ikerketaren arabera aldatuz doa, baina guztiek 300 eta 3000 erabiltzaile artean dauzkate etiketatuta. Bestalde, bibliografiako sistema onenek, beren sailkapena burutzeko asmoarekin, adin tarte bitarrak \citep{rao2010classifying,al2012homophily} edo hirutarrak \citep{nguyen2013old,morgan2017predicting} erabili dituzte, geroz eta klase gutxiago edukiz (bitarra edo hirutarra) sailkatzeko ataza errazago burutzen dela frogatuz.
-
-Erabiltzaile bakoitza adinaren arabera sailkatzeko asmoz, lortutako txio bakoitzeko testua zein meta-datuak bezalako aldagaiak erabili dira. Honela, artearen egoerako autore ezberdinek, bakoitzak bere ezaugarri propioak aukeratu ditu, txioen testuaz gain, erabiltzaile zehatzen meta-datuetan oinarritutako hainbat ezaugarri ere konbinatuz. Hala ere, sistema hauek bata bestearengandik oso ezberdinak direla ikusi den arren, guztiek testua hartzen dute kontutan, gehienak sailkatzailea txioen idazkera estiloan oinarritzen direlarik \citep{rao2010classifying,al2012homophily,nguyen2013old,morgan2017predicting}.\\
+Of particular interest to us is the body of work performed with the objective of age or life stage detection for Twitter users. Table \ref{tab:arte ezaug} lists the most relevant work on this task. Most of them create their own datasets with manually annotated data to learn life stages or age ranges. As it can be seen the number of users varies from 300 to 3000. It is also important to mention that the best performing systems are those that use at most two  \cite{rao2010classifying,al2012homophily} or three \cite{nguyen2013old,morgan2017predicting} labels denoting the life stages of interest for the classification task.
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{|l|l|c|r|}
-    \hline
-    \textbf{Sistema} & \textbf{Corpus tamaina} & \textbf{Klase kopurua} & \textbf{Hizkuntza}\\ \hline
-    Rao et al.(2010) & 1000 erabiltzaile & 2 & Ingelera\\ \hline
-    Al Zamal et al.(2012) & 400 erabiltzaile & 2 & Ingelera\\ \hline
-    Marquart et al.(2014) & 306 erabiltzaile & 5 & Gaztelera\\ \hline
-    Nguyen et al.(2014) & 3110 erabiltzaile & 3 & Nederlandera\\ \hline
-    Morgan-Lopez et al.(2017) & 3184 erabiltzaile & 3 & Ingelera\\ \hline
+  \begin{tabular}{llcr}\hline
+    Reference & Corpus size \# users & \# labels & Language \\ \hline \hline
+    Rao et al.(2010) & 1000 erabiltzaile & 2 & en \\
+    Al Zamal et al.(2012) & 400 erabiltzaile & 2 & en \\
+    Marquart et al.(2014) & 306 erabiltzaile & 5 & es \\
+    Nguyen et al.(2013) & 3110 erabiltzaile & 3 & nl \\
+    Morgan-Lopez et al.(2017) & 3184 erabiltzaile & 3 & en \\ \hline
   \end{tabular}
-  \caption{Bibliografiako sistemak, adinaren detekzioa Twitterren.}
+  \caption{Most relevant systems for age detection in Twitter.}
   \label{tab:arte ezaug}
 \end{table}
 
-Amaitzeko, esan beharra dago sailkatzaile bakoitzaren asmatze tasari (\textit{accuracy}) erreparatuz gero, oraindik bide luze bat geratzen dela adina bezalako ezaugarri demografikoak egoki iragartzeko sare sozialetan. Adinaren sailkatzaileen asmatze ahalmena perfekziotik urruti daudela kontutan hartuta, ikerketa soziala zaildu egiten da, oinarrizkoak diren datu demografikoetan errore altuak daudelako. Adina bezalako datuk gizarte ikerketaren oinarrietako bat dira eta errore altuak emaitzak desitxuratu ditzake. Hala ere, ezin dugu ahaztu, txikia baldin bada ere, errorea beti egongo dela, gizartea konplexutasunez beteta baitago eta orokortze perfektu bat izatea ezinezkoa izango litzateke. Horregatik, errorea izanda ere, gizarte multzo zehatz honen orokortasunak jasotzeko arazorik ez da egongo, euskal txiolari gazteen eta helduen arteko konparaketa orokor bat egitea baita asmoa.\\
-
-\subsection{Topics}\label{sec:topics_background}
-
-Extracting information from huge amounts of unstructured text is the aim of topic modeling. In this way, different approaches try to extract the common information that contains the numerous tweets scattered through the network, such as extract the topics covered by the event and the tweets \citep{hu2012lda}, real-time classification of twitter trends \citep{zubiaga2015real} or to compare the content of Twitter with a traditional news medium \citep{zhao2011comparing}. Apart from the different uses, they have to take into account the nature of the tweets because the length of the text makes the topic modeling have to be applied in a certain way, appropriate for short texts \citep{hong2010empirical}.
-
-\subsection{Relations}\label{sec:connections_background}
-
-There are several studies that have tried to identify different communities based on retweets. Among these, one can find studies about political polarization \citep{conover2011political}, political affiliation detection \citep{pennacchiotti2011democrats} or even studies about identifying communities in movements for independence \citep{zubiaga2017stance}. In these studies, based on the retweets made by the user, it shows that there is the possibility of identifying communities or groups. Therefore, in this specific work, similar methodologies will be used to predict how communities are formed and how they are related.
+For the task of age detection, most of previous works use both the text and the metadata provided by the Twitter API, most importantly the age of each user in order to guide the supervised learning methods. Previous work is based on Logistic Regression \cite{nguyen2013old,morgan2017predicting} and Support Vector Machines \cite{rao2010classifying,al2012homophily,marquardt2014age}. Best results in this area obtained 86.32 word accuracy \cite{nguyen2013old} for three age or life stages, although others scored well below that, most of them ranging around 74-80 word accuracy. These comparatively lower scores makes it more difficult to perform meaningful social and demographic research using such automatic classifiers. Therefore, an important contribution of this work will be to strive in providing good performing and classifiers for Basque tweets but also with the aim of the models to be robust and general enough to be applicable for different text classification tasks across different languages.
 
 
 % #########################################################
@@ -217,9 +185,9 @@ The Twitter API was used via the tweepy package, choosing the \textit{timeline e
 
 \section{Classifying Users by Age Stage}\label{sec:class-young-users}
 
-In this section we present our work to classify Basque Twitter users as young or adult by analyzing their tweets' writing style. As we have seen in Section \ref{sec:identifier_background}, previous work includes automatic approaches to characterize users in the context of social networks and media, the most common being those related with genre and age \citep{cesare2017detection}. Our objective of developing a classifier to characterizing Basque Twitter users according to two stages of life (young/adult) is therefore placed within that research line.
+In this section we present our work to classify Basque Twitter users as young or adult by analyzing their tweets' writing style. As we have seen in Section \ref{sec:background}, previous work includes automatic approaches to characterize users in the context of social networks and media, the most common being those related with genre and age \citep{cesare2017detection}. Our objective of developing a classifier to characterizing Basque Twitter users according to two stages of life (young/adult) is therefore placed within that research line.
 
-Furthermore, section \ref{sec:identifier_background} also shows that most of previous work addresses the problem of classifying age stages using supervised machine learning techniques. This implies that some training data must be annotated according to the age or age stage of each user. Moreover state of the art  results indicate that classifying by age stages allows to obtain better results than when the problem is formulated in terms of age ranges \citep{nguyen2013old}. This seems to be due to the fact that shared experiences are easier to relate along time by using age stages rather than age ranges \citep{nguyen2016computational,eckert2017age}. Therefore, in this work we decided to focus on classifying users in terms of two general age stages, namely, young and adult.
+Furthermore, Section \ref{sec:background} also shows that most of previous work addresses the problem of classifying age stages using supervised machine learning techniques. This implies that some training data must be annotated according to the age or age stage of each user. Moreover state of the art  results indicate that classifying by age stages allows to obtain better results than when the problem is formulated in terms of age ranges \citep{nguyen2013old}. This seems to be due to the fact that shared experiences are easier to relate along time by using age stages rather than age ranges \citep{nguyen2016computational,eckert2017age}. Therefore, in this work we decided to focus on classifying users in terms of two general age stages, namely, young and adult.
 
 However, this decision encountered an early methodological problem. In order to annotate tweets written in Basque according to the age stages of their authors it is obviously necessary to have available some data providing such information. Unfortunately, for the large majority of users from which we mined tweets this information is not available. Thus, our decision to overcome this problem consisted of focusing on the information available on the tweets themselves by taking into account writing style features. After all, most of the previous work widely uses writing style based features in order to classify users in terms of age stages \citep{rao2010classifying,al2012homophily,nguyen2013old,morgan2017predicting}.
 
