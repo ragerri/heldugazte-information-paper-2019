@@ -187,7 +187,6 @@ Extracting information from huge amounts of unstructured text is the aim of topi
 
 There are several studies that have tried to identify different communities based on retweets. Among these, one can find studies about political polarization \citep{conover2011political}, political affiliation detection \citep{pennacchiotti2011democrats} or even studies about identifying communities in movements for independence \citep{zubiaga2017stance}. In these studies, based on the retweets made by the user, it shows that there is the possibility of identifying communities or groups. Therefore, in this specific work, similar methodologies will be used to predict how communities are formed and how they are related.
 
-
 \section{Methodology}\label{sec:methodology}
 
 To investigate the reality of young Basque Twitter users, the study is going to be divided into four different steps. The first step consist on identifying Basque Twitter users and extracting the data from this Social Network. After that, as second step, Basque Twitter users have been classified between adult and young users, based on the stile of the written tweet. Once basque Twitter users are separated between young and adults, we will try to find out the topics and relations of each of the groups. To find out the topics of these communities, we will take into account the personal tweets in basque of each user. On the other hand, to find out the relations, we will take into account the retweets in basque of each user. For each task indicated, a specific methodology will be used, as will be demonstrated below.
@@ -214,19 +213,19 @@ On the other hand, to know what the way of relating of the users is, retweets wi
 % #########################################################
 % Euskal txiolarietaz gain ere, modu orokorrago batean azaldu ataza (abstrakzio malia altuagoa) -->> hiztun gutxituen komunitateari buruzko analisia.
 
-\section{Extracting a Large Corpus of Basque Tweets}\label{sec:data-extraction}
+\section{Extracting a Large Corpus of Tweets from Basque Users}\label{sec:data-extraction}
 
-As the first step the community we have to focus on has to be specified, in order to start extracting data from somewhere. With the intention of investigating a specific community, it is necessary to identify this community in the whole network, specifying the universe to be studied. In this case, people who publish tweets in Basque will be the community to investigate. For identifying basque speakers in Twitter, a list already prepared by Umap.eus has been used. This website includes in the list users who publish at least 20\% of their tweets in Basque\footnote{\url{https://umap.eus/}}. In this way, a list of 8,189 Basque users has been obtained, which will consist the sample for the investigation.
+As we have already commented in the introduction, Twitter allows to obtain relatively large datasets to work with even for less resourced languages. Before starting to collect the data, we defined the community of users that will be the subject (or, in other words, the universe) of our study. In our case the choice was quite simple, namely, we wanted to use tweets from every Twitter user that publishes tweets in Basque. The task of identifying such users was facilitated thanks to UMAP, a platform that monitors every tweet written in Basque. More specifically, UMAP includes a list of users who publish at least 20\% of their tweets in Basque. We used such source to obtain a list of 8189 users.
 
-Once the community to investigate is specified and the sample of users, whom information is going to be gathered, is chosen, the data extraction will began. To extract the data from Twitter, \textit{tweepy} package from Python is used, choosing the \textit{timeline extraction} mode to gather the last 3,200 available tweets of each user of the sample. The data collection was performed between May 30 and 31, 2018, gathering more than 10 million tweets from 7,980 basque Twitter users (the Large Corpus). As the purpose of this investigation is to identify the content in Basque language of this users, the tweets generated are classified by language using metadata stored in the tweet. Once the content in basque is selected, personal tweets and retweets are separated, using each one for a specific task. After the classification, the characteristics of the Heldugazte corpus can be seen in the table \ref{tab:useful-data}\footnote{The dataset is publicly available at \url{https://github.com/ixa-ehu/heldugazte-corpus}.}.
+The Twitter API was used via the tweepy package, choosing the \textit{timeline extraction} mode to gather the last 3,200 available tweets of each of the 8189 users in our sample. The data collection was performed between May 30th and 31st of 2018, gathering, after some errors, more than 10 million (multilingual) tweets from 7980 users. We call this data the \emph{Large Corpus}. Next, we classify the tweets by language using the metadata provided by the Twitter API, identifying those that are written in Basque. The result is a dataset of around 6M tweets that we refer to as the \emph{Heldugazte Corpus}, which we split in personal tweets and retweets. The main statistics of the Heldugazte corpus are provided by Table \ref{tab:useful-data}\footnote{The corpus is publicly available at \url{https://github.com/ixa-ehu/heldugazte-corpus}.}.
 
 \begin{table}[H]
   \centering
   \begin{tabular}{lll} \hline
-     & \textbf{Personal tweets in Basque} & \textbf{Retweets in Basque}\\ \hline \hline
-    \textbf{Tweets} & 3,171,785 & 2,891,136 \\
-    \textbf{Terms} & 1,434,050 & 813,833 \\
-    \textbf{Tokens}  & 37,350,268 & 39,329,204 \\ \hline
+     & Personal tweets in Basque & Retweets in Basque \\ \hline \hline
+    Tweets & 3,171,785 & 2,891,136 \\
+    Terms & 1,434,050 & 813,833 \\
+    Tokens & 37,350,268 & 39,329,204 \\ \hline
   \end{tabular}
   \caption{Characteristics of the Heldugazte corpus.}
   \label{tab:useful-data}
@@ -250,7 +249,9 @@ We will develop a classifier with each of the methods listed above and evaluate 
 
 In the rest of this section we will describe the process of manual annotation of the training and evaluation data. After that, we describe the configuration settings of each of the systems used or implemented for the experiments.
 
-\subsubsection{Gold Standard Data}\label{sec:gold-standard-data}
+\subsubsection{The Heldugazte Gold Standard Corpus}\label{sec:gold-standard-data}
+
+In order to focus on learning to classify tweets according to writing style, we decided to clean the tweets keeping only those words that contained alphanumeric characters. Thus, we removed emoticons, hashtags, users' names (@) and URL links. Furthermore, we only considered those tweets that contained more than 4 tokens. We then randomly selected 1000 tweets sent from personal accounts from the 6 million tweet dataset collected as described in Section \ref{sec:data-extraction}. One annotator manually labeled every tweet as \emph{formal} or \emph{informal}.
 
 \begin{table}[H]
   \centering
@@ -262,11 +263,11 @@ In the rest of this section we will describe the process of manual annotation of
     Tokens in longest tweet & 34 \\
     Token avg. & 9.66 \\ \hline
   \end{tabular}
-  \caption{Gold standard corpus.}
+  \caption{The Heldugazte gold standard corpus.}
   \label{tab:gold-corpus}
 \end{table}
 
-In order to focus on learning to classify tweets according to writing style, we decided to clean the tweets keeping only those words that contained alphanumeric characters. Thus, we removed emoticons, hashtags, users' names (@) and URL links. Furthermore, we only considered those tweets that contained more than 4 tokens. We then randomly selected 1000 tweets sent from personal accounts from the 6 million tweet dataset collected as described in Section \ref{sec:data-extraction}. One annotator manually labeled every tweet as \emph{formal} or \emph{informal}. To manually label the tweets, a qualitative methodology was followed: all those tweets that contained out of vocabulary words or colloquial expressions were classified as informal. This methodology has been motivated by previous work on classifying formal and colloquial tweets \cite{gonzalez2015analysis}. Table \ref{tab:gold-corpus} shows the main features of our manually annotated dataset. For the experiments described in the next four subsections, we split the gold standard corpus in three sets, leaving 65\% for training and \%35 for testing.
+To manually label the tweets, a qualitative methodology was followed: all those tweets that contained out of vocabulary words or colloquial expressions were classified as informal. This methodology has been motivated by previous work on classifying formal and colloquial tweets \cite{gonzalez2015analysis}. Table \ref{tab:gold-corpus} shows the main features of our manually annotated dataset. For the experiments described in the next four subsections, we split the gold standard corpus in three sets, leaving 65\% for training and \%35 for testing\footnote{The Heldugazte gold-standard corpus is publicly available at \url{https://github.com/ixa-ehu/heldugazte-corpus}.}.
 
 \subsubsection{Perplexity-based Distance}\label{sec:unsup-appr-text}
 
@@ -308,7 +309,7 @@ Table \ref{tab:perplexitytrain} displays the results of classifying the tweets i
     Informal & 48 & 0.824  & 0.858  & 0.841 \\
     Formal & 62 & 0.839 & 0.801 & 0.820 \\ \hline
   \end{tabular}
-  \caption{Results of the unsupervised approach on the training set.}
+  \caption{Results of the perplexity-based approach on the training set.}
   \label{tab:perplexitytrain}
 \end{table}
 
@@ -412,7 +413,7 @@ Flair embeddings have been successfully applied to sequence labelling tasks obta
 
 \subsection{Experimental Results}\label{sec:experimental-results}
 
-In order to finish our experiments, we evaluated the approaches that obtained best cross-validation results on the gold standard test set. We chose to compare the best systems: the SVM model with FastText word embeddings, the perplexity-based distance method, ixa-pipe-doc and Flair. Table \ref{tab:testresults} reports the final results of our experiments to obtain a good classifier of Basque tweets according to writing style (formal/informal).
+In order to finish our experiments, we used the training set to trained the systems that obtained best cross-validation results and evaluated them on the gold standard test set. Thus, we tested the following systems: the SVM model with FastText word embeddings, the perplexity-based distance method, ixa-pipe-doc and Flair. Table \ref{tab:testresults} reports the final results of our experiments to obtain a good classifier of Basque tweets according to writing style (formal/informal).
 
 \begin{table}[H]
   \centering
