@@ -58,15 +58,11 @@
 %\pdfoutput=1
 
 %=================================================================
-% Add packages and commands here. The following packages are loaded in our class file: fontenc, calc, indentfirst, fancyhdr, graphicx, lastpage, ifthen, lineno, float, amsmath, setspace, enumitem, mathpazo, booktabs, titlesec, etoolbox, amsthm, hyphenat, natbib, hyperref, footmisc, geometry, caption, url, mdframed, tabto, soul, multirow, microtype, tikz
+% Add packages and commands here. The following packages are loaded in our class file: fontenc, calc, indentfirst, fancyhdr, [demo]graphicx, lastpage, ifthen, lineno, float, amsmath, setspace, enumitem, mathpazo, booktabs, titlesec, etoolbox, amsthm, hyphenat, natbib, hyperref, footmisc, geometry, caption, url, mdframed, tabto, soul, multirow, microtype, tikz
 
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{todonotes}
-
-\usepackage{float}
-\usepackage{subfig}
-\usepackage[demo]{graphicx}
 
 %=================================================================
 %% Please use the following mathematics environments: Theorem, Lemma, Corollary, Proposition, Characterization, Property, Problem, Example, ExamplesandDefinitions, Hypothesis, Remark, Definition
@@ -268,34 +264,31 @@ In order to classify tweets as \emph{formal} or \emph{informal}, we will calcula
 Our method to calculate such threshold proceeds in the following manner. First, we build a 7-gram character-based language model using the data from a corpus composed of texts from the Basque  Egunkaria and Berria newspapers. Second, we take the tweets in the training set (65\% of the dataset) and classify each of them according to the perplexity-based distance with respect to the language model. We tried every value in the [0,10] range
 with an increment of 0.1 as threshold. Third, we computed precision, recall and accuracy comparing the prediction of the threshold according to the perplexity value with respect to the gold-standard labels in the training data. Finally, the threshold chosen will be the value in which all the three metrics converge. As shown by Figure \ref{fig:threshold}, we found out that the best threshold value was around 4.4. We will use this value in order to evaluate this approach in Section \ref{sec:experimental-results}.
 
-%\begin{figure}[H]
-%  \centering
-%  \begin{subfigure}[b]{0.49\linewidth}
-%    \includegraphics[width=\linewidth]{precision}
-%    \caption{Precision.}\label{fig:precision}
-%  \end{subfigure}
-%  \begin{subfigure}[b]{0.49\linewidth}
-%    \includegraphics[width=\linewidth]{recall}
-%    \caption{Recall.}\label{fig:recall}
-%  \end{subfigure} 
-%  \begin{subfigure}[b]{0.49\linewidth}
-%    \includegraphics[width=\linewidth]{accuracy}
-%    \caption{Accuracy.}\label{fig:acc}
-%  \end{subfigure}
-%  \begin{subfigure}[b]{0.49\linewidth}
-%    \includegraphics[width=\linewidth]{denaperp}
-%    \caption{Optimal threshold value on the training data.}\label{fig:threshold}
-%  \end{subfigure}
-%\end{figure}
-
 \begin{figure}[H]
-  \centering
-    \subfloat[Precision.]{\includegraphics[width = .5\linewidth]{precision}} 
-    \subfloat[Recall.]{\includegraphics[width = .5\linewidth]{recall}}\\
-    \subfloat[Accuracy.]{\includegraphics[width = .5\linewidth]{accuracy}}
-    \subfloat[Optimal threshold value on the training data.]{\includegraphics[width = .5\linewidth]{denaperp}}
-%\caption{Perplexity}  
+ \centering
+ \begin{subfigure}[b]{0.49\linewidth}
+   \includegraphics[width=\linewidth]{precision}
+ \end{subfigure}
+ \begin{subfigure}[b]{0.49\linewidth}
+   \includegraphics[width=\linewidth]{recall}
+ \end{subfigure}
+ \begin{subfigure}[b]{0.49\linewidth}
+   \includegraphics[width=\linewidth]{accuracy}
+ \end{subfigure}
+ \begin{subfigure}[b]{0.49\linewidth}
+   \includegraphics[width=\linewidth]{denaperp}
+ \end{subfigure}
+   \caption{Finding the optimal threshold value (down, right) on the training data using Precision (top left), Recall (top right) and Accuracy (left, down) curves.}\label{fig:threshold}
 \end{figure}
+
+% \begin{figure}[H]
+%   \centering
+%     \subfloat[Precision.]{\includegraphics[width = .5\linewidth]{precision}}
+%     \subfloat[Recall.]{\includegraphics[width = .5\linewidth]{recall}}\\
+%     \subfloat[Accuracy.]{\includegraphics[width = .5\linewidth]{accuracy}}
+%     \subfloat[Optimal threshold value on the training data.]{\includegraphics[width = .5\linewidth]{denaperp}}
+% \caption{Obtaining the optimal threshold value on the training data.}\label{fig:threshold}
+% \end{figure}
 
 Table \ref{tab:perplexitytrain} displays the results of classifying the tweets in the training data using perplexity-based distance using the value 4.4 as threshold. The obtained overall accuracy using 4.4 as threshold was 0.831.
 
@@ -456,6 +449,7 @@ Given that the classifier labels each tweet as \emph{formal} or \emph{informal},
 
 The first issue that arises when looking at the adults' tweets is that more than half of them are actually retweets. This shows that there is a disposition to share information as much as to generate it. Furthermore, it is possible to appreciate that Basque is the most used language, Spanish being the second. Finally, it is also interesting the fact that the use of Spanish increases for the retweets which probably reflects the fact that publicly available and shareable information in Spanish is much larger than in Basque.
 
+
 \begin{figure}[H]
   \centering
   \begin{subfigure}[b]{0.48\linewidth}
@@ -615,25 +609,23 @@ In this section we will study the relations that appear between Basque users of 
 
 First, we created a giant graph using the data (retweets) for each type of user. To build the graph, two features extracted from each retweet were used: (i) who retweets and (ii) who has been retweeted. Thus, the data source will be the source and the target of each retweet. Based on these two characteristics, the two graphs were created using the \textit{gephi} program \cite{bastian2009gephi}.
 
-Once the graphs were created, we proceed as follows: First, we divided each graph into subgroups using the modularity algorithm \cite{blondel2008fast}. Second, we gave the network a spatial structure by using the \textit{ForceAtlas2} algorithm \cite{jacomy2014forceatlas2}, ordering the nodes according to the community to which they belong. Finally, the identity of each subgroup or community was defined, using the most important nodes of the created subgroups. By doing so it can be seen how the communities within each graph are structured. Thus, in the adult graph we identified 33,277 nodes whereas  24,987 nodes were identified among the young users.
+Once the graphs were created, we proceed as follows: First, we divided each graph into subgroups using the modularity algorithm \cite{blondel2008fast}. Second, we gave the network a spatial structure by using the \textit{ForceAtlas2} algorithm \cite{jacomy2014forceatlas2}, ordering the nodes according to the community to which they belong. Finally, the identity of each subgroup or community was defined, using the most important nodes of the created subgroups. By doing so it can be seen how the communities within each graph are structured.
 
-\noindent \textbf{CAN WE HAVE A PICTURE HERE?}
+Thus, in the adult graph we identified 33,277 nodes whereas  24,987 nodes were identified among the young users. Once the two independent network graphs, one for young users and another one for adults, were created, we split each network into subgroups to analyze how the communities or subgroups inside each one are formed. The subgroups are defined based on their most important nodes. The aim is to uncover, via their retweets, the relations that are created between the Basque users of Twitter. As an example of the graphs obtained, Figure \ref{fig:hd ha2} displays the two most important subgroups within the adult and young graphs, respectively.
 
 \begin{figure}[H]
   \centering
   \begin{subfigure}[b]{0.49\linewidth}
     \includegraphics[width=\linewidth]{harremanak_heldu/c1for}
-    \caption{Adults, most important community (Nationalist left)}
+    \caption{Most important community (Nationalist left) in the adult graph.}
   \end{subfigure}
   \begin{subfigure}[b]{0.49\linewidth}
     \includegraphics[width=\linewidth]{harremanak_gazte/c1inf}
-    \caption{Youngs, most important community (Sports)}
+    \caption{Most important community (Sports) in the young graph.}
   \end{subfigure}
-  \caption{Adult and Young Basque speakers' relations in Twitter}
+  \caption{Example graphs of the two most important subgroups within the adult and young graphs.}
   \label{fig:hd ha2}
 \end{figure}
-
-Once the two independent network graphs, one for young users and another one for adults, were created, we split each network into subgroups to analyze how the communities or subgroups inside each group are formed. The subgroups are defined based on the most important nodes of each one. The aim is to uncover, via their retweets, the relations that are created between the Basque users of Twitter.
 
 \subsection{Relationships in the Adult Graph}\label{sec:sis harr}
 
@@ -666,8 +658,7 @@ Table \ref{tab:tab harr hld} shows the five main subgroups derived from the grap
 \item \textbf{Basque tweeters} (13.10\%): In this last subgroup, we would have common Basque users of Twitter, which are important within the Basque community due to their large number of follower or retweets.
 \end{itemize}
 
-\todo{Aurreko tituluan "Relationships in the Adult Graph" daukagu, hemen Subgraph ordez Graph jarriko nuke ere}
-\subsection{Relationships in the Young Subgraph}\label{sec:relat-young-subgr}
+\subsection{Relationships in the Young Graph}\label{sec:relat-young-subgr}
 
 The subgroups in the graph of \textbf{young} users (see Table \ref{tab:tab harr gzt}) display both similarities and differences with respect to the adult graph.
 
