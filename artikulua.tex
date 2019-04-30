@@ -305,8 +305,8 @@ For this experiment, we map the words in the corpus to their real vector represe
   \begin{tabular}{lcccc}
     \hline
     Label & Error & Precision & Recall & F1 \\ \hline \hline
-    Informal & &  &   &  \\
-    Formal &  &  &  &  \\ \hline
+    Informal & 68 & 0.810 & 0.768 & 0.793 \\
+    Formal & 66 & 0.818 & 0.747 & 0.781  \\ \hline
   \end{tabular}
   \caption{SVM (rbf and FastText embeddings) results via 5-fold cross-validation on the training set.}
   \label{tab:svmf1}
@@ -381,8 +381,8 @@ In order to finish our experiments, we used the full training set for the system
     System & Accuracy & Label & Error & Precision & Recall & F1 \\ \hline \hline
     \multirow{2}{*}{Perplexity} & \multirow{2}{*}{0.825} & Informal & 26 & 0.805 & 0.847 & 0.825 \\
     & & Formal & 35 & 0.848 & 0.806 & 0.826 \\ \hline \hline
-    \multirow{2}{*}{SVM-FastText} & \multirow{2}{*}{} & Informal &  &  &  &  \\
-    & & Formal & &  &  &  \\ \hline \hline
+    \multirow{2}{*}{SVM-FastText} & \multirow{2}{*}{} & Informal & 24 & 0.843  & 0.823 & 0.836 \\
+    & & Formal & 33 & 0.834  & 0.828 & 0.829 \\ \hline \hline
     \multirow{2}{*}{IXA pipes} & \multirow{2}{*}{0.886} & Informal & 20 & 0.882 & 0.881 & \textbf{0.882} \\
     & & Formal & 20 & 0.889 & 0.888 & \textbf{0.889} \\ \hline \hline
     \multirow{2}{*}{Flair} & \multirow{2}{*}{0.866} & Informal & 22 & 0.869 & 0.858 & 0.863 \\
