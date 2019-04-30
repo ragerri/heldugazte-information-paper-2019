@@ -216,7 +216,12 @@ In order to focus on learning to classify tweets according to writing style, we 
   \label{tab:gold-corpus}
 \end{table}
 
-To manually label the tweets, a qualitative methodology was followed: all those tweets that contained out of vocabulary words or colloquial expressions were classified as informal. This methodology has been motivated by previous work on classifying formal and colloquial tweets \cite{gonzalez2015analysis}. Table \ref{tab:gold-corpus} shows the main features of our manually annotated dataset. For the experiments described in the next four subsections, we split the gold standard corpus in three sets, leaving 65\% for training and \%35 for testing\footnote{The Heldugazte gold-standard corpus is publicly available at \url{https://github.com/ixa-ehu/heldugazte-corpus}.}.
+To manually label the tweets, a qualitative methodology was followed: all those tweets that contained out of vocabulary words or colloquial expressions were classified as informal. This methodology has been motivated by previous work on classifying formal and colloquial tweets \cite{gonzalez2015analysis}. Table \ref{tab:gold-corpus} shows the main features of our manually annotated dataset. For the experiments described in the next four subsections, we split the gold standard corpus in three sets, leaving 65\% for training and \%35 for testing\footnote{The Heldugazte gold-standard corpus is publicly available at \url{https://github.com/ixa-ehu/heldugazte-corpus}.}. In the following we present two examples of the type of tweets we classify in this work. In both cases it can be seen the differences in writing style. Thus, in the informal tweets appear dialectal and/or slang forms (ein, examin, bau, det), whereas the formal tweet displays quite a standard Basque grammar.
+
+\begin{itemize}
+\item[(1)] \textbf{Informal tweet}: ``inoizz ezdet ein mateko examin bau au baino okerro''\footnote{Informal: This is worst exam I have ever done.}
+\item[(2)] \textbf{Formal tweet}: ``killian jornet fenomenoa da zegamaaizkorri irabazi du beste behin non dago mendizale gazte honen muga''.\footnote{Formal: Killian Jornet is a phenomenon he won the Zegama-Aizkorri again. Where is this mountaineer's limit?}
+\end{itemize}
 
 \subsubsection{Perplexity-based Distance}\label{sec:unsup-appr-text}
 
